@@ -1,5 +1,6 @@
 package com.imooc.activitiweb;
 
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.zip.ZipInputStream;
 
 @SpringBootTest
+@Slf4j
 public class Part1_Deployment {
 
     @Autowired
@@ -55,7 +57,9 @@ public class Part1_Deployment {
         }
 
     }
-
-
+    @Test
+    void deleteDeployments(){
+        repositoryService.deleteDeployment("61341214-9edf-11eb-bc22-001a7dda7111");
+    }
 
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
     <springProperty scope="context" name="logHome" source="logging.home" defaultValue="logs"/>
-    <property name="LOG_HOME" value="c:/logs"></property>
+    <property name="LOG_HOME" value="c:/logs"/>
 
     <springProperty scope="context" name="logName" source="logging.name" defaultValue="app"/>
-    <property name="LOG_NAME" value="logs"></property>
+    <property name="LOG_NAME" value="logs"/>
 
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex"
@@ -74,4 +74,6 @@
         <appender-ref ref="fileInfoLog"/>
         <appender-ref ref="fileErrorLog"/>
     </root>
+    <logger name="org.activiti" level="DEBUG" />
+
 </configuration>

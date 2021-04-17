@@ -9,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class Part4_Task {
+class Part4_Task {
 
     @Autowired
     private TaskService taskService;
 
     //任务查询
     @Test
-    public void getTasks(){
+    void getTasks(){
         List<Task> list = taskService.createTaskQuery().list();
         for(Task tk : list){
             System.out.println("Id："+tk.getId());
@@ -27,9 +27,9 @@ public class Part4_Task {
 
     //查询我的代办任务
     @Test
-    public void getTasksByAssignee(){
+    void getTasksByAssignee(){
         List<Task> list = taskService.createTaskQuery()
-                .taskAssignee("bajie")
+                .taskAssignee("wukong")
                 .list();
         for(Task tk : list){
             System.out.println("Id："+tk.getId());
@@ -41,22 +41,22 @@ public class Part4_Task {
 
     //执行任务
     @Test
-    public void completeTask(){
-        taskService.complete("d07d6026-cef8-11ea-a5f7-dcfb4875e032");
+    void completeTask(){
+        taskService.complete("902c5794-9ee0-11eb-8d12-001a7dda7111");
         System.out.println("完成任务");
 
     }
 
     //拾取任务
     @Test
-    public void claimTask(){
-        Task task = taskService.createTaskQuery().taskId("1f2a8edf-cefa-11ea-84aa-dcfb4875e032").singleResult();
-        taskService.claim("1f2a8edf-cefa-11ea-84aa-dcfb4875e032","bajie");
+    void claimTask(){
+        Task task = taskService.createTaskQuery().taskId("835e8323-9f93-11eb-85e0-001a7dda7111").singleResult();
+        taskService.claim("835e8323-9f93-11eb-85e0-001a7dda7111","bajie");
     }
 
     //归还与交办任务
     @Test
-    public void setTaskAssignee(){
+    void setTaskAssignee(){
         Task task = taskService.createTaskQuery().taskId("1f2a8edf-cefa-11ea-84aa-dcfb4875e032").singleResult();
         taskService.setAssignee("1f2a8edf-cefa-11ea-84aa-dcfb4875e032","null");//归还候选任务
         taskService.setAssignee("1f2a8edf-cefa-11ea-84aa-dcfb4875e032","wukong");//交办

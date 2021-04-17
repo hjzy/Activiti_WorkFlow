@@ -2,6 +2,7 @@ package com.imooc.activitiweb;
 
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +37,9 @@ public class Part2_ProcessDefinition {
     public void delDefinition(){
 
         String pdID="44b15cfe-ce3e-11ea-92a3-dcfb4875e032";
-        repositoryService.deleteDeployment(pdID,true);
+        ProcessDefinitionQuery definitionQuery = repositoryService.createProcessDefinitionQuery();
+        ProcessDefinition processDefinition=definitionQuery.processDefinitionName("第一个测试流程").singleResult();
+        repositoryService.deleteDeployment(processDefinition.getDeploymentId(),true);
         System.out.println("删除流程定义成功");
     }
 }

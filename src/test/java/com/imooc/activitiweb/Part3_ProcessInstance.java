@@ -33,7 +33,7 @@ public class Part3_ProcessInstance {
             System.out.println("--------流程实例------");
             System.out.println("ProcessInstanceId："+pi.getProcessInstanceId());
             System.out.println("ProcessDefinitionId："+pi.getProcessDefinitionId());
-            System.out.println("isEnded"+pi.isEnded());
+            System.out.println("isEnded:"+pi.isEnded());
             System.out.println("isSuspended："+pi.isSuspended());
 
         }
@@ -47,14 +47,14 @@ public class Part3_ProcessInstance {
         // runtimeService.suspendProcessInstanceById("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032");
         //System.out.println("挂起流程实例");
 
-        runtimeService.activateProcessInstanceById("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032");
+        runtimeService.activateProcessInstanceById("d366ad3f-9edb-11eb-bb99-001a7dda7111");
         System.out.println("激活流程实例");
     }
 
     //删除流程实例
     @Test
     public void delProcessInstance(){
-        runtimeService.deleteProcessInstance("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032","删着玩");
+        runtimeService.deleteProcessInstance("d366ad3f-9edb-11eb-bb99-001a7dda7111","删着玩");
         System.out.println("删除流程实例");
     }
 }
