@@ -39,6 +39,6 @@ public class ActivitiSecurityController {
             }
         }*/
 
-        return new SimpleResponse("需要登录，使用/demo-login.html或发起post求情");
+        return new SimpleResponse("需要登录，使用/demo-login.html或发起post请求");
     }
 }

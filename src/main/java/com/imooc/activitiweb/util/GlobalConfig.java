@@ -1,10 +1,13 @@
 package com.imooc.activitiweb.util;
-
+/*
+ * @Description 枚举与静态常量
+ * @Date 2021/4/19 17:44
+ **/
 public class GlobalConfig {
     /**
      * 测试场景
      */
-    public static final Boolean Test = false;
+    public static final Boolean Test = true;
 
     //windows路径
     public static final String BPMN_PathMapping = "file:D:\\WangJianIDEA_Test\\activiti-imooc\\src\\main\\resources\\resources\\bpmn\\";

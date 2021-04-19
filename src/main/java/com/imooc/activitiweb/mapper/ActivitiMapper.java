@@ -46,7 +46,7 @@ public interface ActivitiMapper {
     //进行中的流程实例
     //SELECT COUNT(DISTINCT PROC_INST_ID_) from act_ru_execution
 
-    //查询流程定义产生的流程实例数
+    //查询流程定义产生的流程实例数e
 /*    SELECT p.NAME_,COUNT(DISTINCT e.PROC_INST_ID_) as PiNUM from act_ru_execution AS e
     RIGHT JOIN ACT_RE_PROCDEF AS p on e.PROC_DEF_ID_ = p.ID_
     WHERE p.NAME_ IS NOT NULL GROUP BY p.NAME_*/

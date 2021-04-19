@@ -22,7 +22,7 @@ public class Part9_TaskRuntime {
     //获取当前登录用户任务
     @Test
     public void getTasks() {
-        securityUtil.logInAs("wukong");
+        securityUtil.logInAs("bajie");
 
         Page<Task> tasks = taskRuntime.tasks(Pageable.of(0,100));
         List<Task> list=tasks.getContent();

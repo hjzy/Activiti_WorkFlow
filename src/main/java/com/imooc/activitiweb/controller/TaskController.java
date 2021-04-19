@@ -47,7 +47,7 @@ public class TaskController {
     public AjaxResponse getTasks() {
         try {
             if (GlobalConfig.Test) {
-                securityUtil.logInAs("wukong");
+                securityUtil.logInAs("bajie");
             }
             Page<Task> tasks = taskRuntime.tasks(Pageable.of(0, 100));
 
@@ -90,7 +90,7 @@ public class TaskController {
 
             Task task = taskRuntime.task(taskID);
 
-
+            //Assignee为空而又能查出任务，说明该用户是候选人
             if (task.getAssignee() == null) {
                 taskRuntime.claim(TaskPayloadBuilder.claim().withTaskId(task.getId()).build());
             }

@@ -1,8 +1,13 @@
 package com.imooc.activitiweb.util;
 
-
+/*
+ * @Description //数据返回给前端处理
+ * @Date 2021/4/19 17:43
+ **/
 public class AjaxResponse {
+    //成功或失败
     private Integer status;
+    //一般在错误时返回信息
     private String msg;
     private Object obj;
 

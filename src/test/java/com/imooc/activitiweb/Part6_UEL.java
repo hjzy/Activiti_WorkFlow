@@ -21,18 +21,18 @@ public class Part6_UEL {
     @Autowired
     private TaskService taskService;
 
-    //启动流程实例带参数，执行执行人
+    //启动流程实例带参数，指定执行人
     @Test
     public void initProcessInstanceWithArgs() {
-        //流程变量
+        //流程变量赋值，形式${}
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("ZhiXingRen", "wukong");
         //variables.put("ZhiXingRen2", "aaa");
         //variables.put("ZhiXingRen3", "wukbbbong");
         ProcessInstance processInstance = runtimeService
                 .startProcessInstanceByKey(
-                        "myProcess_UEL_V1"
-                        , "bKey002"
+                        "myProcess_UEL_V2"
+                        , "bKeyUELV2"
                         , variables);
         System.out.println("流程实例ID：" + processInstance.getProcessDefinitionId());
 
@@ -43,7 +43,7 @@ public class Part6_UEL {
     public void completeTaskWithArgs() {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("pay", "101");
-        taskService.complete("a616ea19-d3a7-11ea-9e14-dcfb4875e032",variables);
+        taskService.complete("19ccaa63-9f9c-11eb-b493-001a7dda7111",variables);
         System.out.println("完成任务");
     }
 
@@ -78,9 +78,13 @@ public class Part6_UEL {
     //直接指定流程变量
     @Test
     public void otherArgs() {
+        //使用runtimeService注入单个参数
         runtimeService.setVariable("4f6c9e23-d3ae-11ea-82ba-dcfb4875e032","pay","101");
+        //使用runtimeService注入多个参数
 //        runtimeService.setVariables();
+        //使用taskService注入单个参数
 //        taskService.setVariable();
+        //使用taskService注入多个参数
 //        taskService.setVariables();
 
     }

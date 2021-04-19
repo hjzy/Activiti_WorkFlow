@@ -18,7 +18,9 @@ import org.activiti.api.task.runtime.TaskRuntime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-@RestController
+@Controller
 public class HelloController {
 
     @Autowired
@@ -45,12 +47,13 @@ public class HelloController {
 
 
 
-
+    @ResponseBody
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String say() {
         return "你好";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/me1", method = RequestMethod.GET)
     public Object getCurrentUser() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
@@ -62,7 +65,7 @@ public class HelloController {
         return UuserInfoBean.name;
     }
 
-
+    @ResponseBody
     @RequestMapping(value = "/task", method = RequestMethod.GET)
     public Object gettask() {
         String userName=SecurityContextHolder.getContext().getAuthentication().getName();
@@ -75,7 +78,7 @@ public class HelloController {
         }
     }
 
-
+    @ResponseBody
     @RequestMapping(value = "/db", method = RequestMethod.GET)
     public Object getdb() {
 
@@ -88,6 +91,7 @@ public class HelloController {
     }
 
     //启动带参数---------------测试方法-----------------------
+    @ResponseBody
     @GetMapping(value = "/testStartProcess")
     public AjaxResponse testStartProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                          @RequestParam("instanceName") String instanceName) {
@@ -116,6 +120,7 @@ public class HelloController {
 
 
     //完成待办任务带参数
+    @ResponseBody
     @GetMapping(value = "/testcompleteTask")
     public AjaxResponse testcompleteTask(@RequestParam("taskID") String taskID) {
         try {

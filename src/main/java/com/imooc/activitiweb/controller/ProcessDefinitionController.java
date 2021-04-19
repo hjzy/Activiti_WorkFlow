@@ -41,7 +41,7 @@ public class ProcessDefinitionController {
     @Autowired
     ActivitiMapper mapper;
 
-
+    //添加流程定义->上传BPMN
     @PostMapping(value = "/uploadStreamAndDeployment")
     public AjaxResponse uploadStreamAndDeployment(@RequestParam("processFile") MultipartFile multipartFile) {
         // 获取上传的文件名
@@ -62,17 +62,17 @@ public class ProcessDefinitionController {
                 ZipInputStream zip = new ZipInputStream(fileInputStream);
                 deployment = repositoryService.createDeployment()//初始化流程
                         .addZipInputStream(zip)
-                        .name("流程部署名称可通过接口传递现在写死")
+                        .name("流程部署名称可通过接口传递，现在写死")
                         .deploy();
             } else {
                 deployment = repositoryService.createDeployment()//初始化流程
                         .addInputStream(fileName, fileInputStream)
-                        .name("流程部署名称可通过接口传递现在写死")
+                        .name("流程部署名称可通过接口传递，现在写死")
                         .deploy();
             }
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), deployment.getId()+";"+fileName);
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), deployment.getId() + ";" + fileName);
 
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
@@ -97,7 +97,7 @@ public class ProcessDefinitionController {
         filePath = filePath.replace("\\", "/");
         filePath = filePath.replace("file:", "");
 
-       // String filePath = request.getSession().getServletContext().getRealPath("/") + "bpmn/";
+        // String filePath = request.getSession().getServletContext().getRealPath("/") + "bpmn/";
         fileName = UUID.randomUUID() + suffixName; // 新文件名
         File file = new File(filePath + fileName);
         if (!file.getParentFile().exists()) {
@@ -114,9 +114,9 @@ public class ProcessDefinitionController {
 
 
     /**
-     *
      * @param deploymentFileUUID
      * @return
+     * @desc 添加流程定义->通过在线提交的BPMN
      */
     @PostMapping(value = "/addDeploymentByFileNameBPMN")
     public AjaxResponse addDeploymentByFileNameBPMN(@RequestParam("deploymentFileUUID") String deploymentFileUUID, @RequestParam("deploymentName") String deploymentName) {
@@ -140,7 +140,7 @@ public class ProcessDefinitionController {
     public AjaxResponse addDeploymentByString(@RequestParam("stringBPMN") String stringBPMN) {
         try {
             Deployment deployment = repositoryService.createDeployment()
-                    .addString("CreateWithBPMNJS.bpmn",stringBPMN)
+                    .addString("CreateWithBPMNJS.bpmn", stringBPMN)
                     .name("不知道在哪显示的部署名称")
                     .deploy();
             //System.out.println(deployment.getName());
@@ -180,14 +180,16 @@ public class ProcessDefinitionController {
 
 
     //import org.activiti.engine.RepositoryService;
+    //获取流程定义信息
     @GetMapping(value = "/getDefinitions")
     public AjaxResponse getDefinitions() {
 
         try {
-            List<HashMap<String, Object>> listMap= new ArrayList<HashMap<String, Object>>();
+            //实际返回的ListMap
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
             List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().list();
 
-            list.sort((y,x)->x.getVersion()-y.getVersion());
+            list.sort((y, x) -> x.getVersion() - y.getVersion());
 
             for (ProcessDefinition pd : list) {
                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -204,7 +206,7 @@ public class ProcessDefinitionController {
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "获取流程定义失败", e.toString());
         }
@@ -215,11 +217,8 @@ public class ProcessDefinitionController {
     public void getProcessDefineXML(HttpServletResponse response,
                                     @RequestParam("deploymentId") String deploymentId,
                                     @RequestParam("resourceName") String resourceName) {
-
-
-
         try {
-            InputStream inputStream = repositoryService.getResourceAsStream(deploymentId,resourceName);
+            InputStream inputStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
             int count = inputStream.available();
             byte[] bytes = new byte[count];
             response.setContentType("text/xml");
@@ -233,12 +232,12 @@ public class ProcessDefinitionController {
         }
     }
 
-
+    //获取流程部署列表
     @GetMapping(value = "/getDeployments")
     public AjaxResponse getDeployments() {
         try {
 
-            List<HashMap<String, Object>> listMap= new ArrayList<HashMap<String, Object>>();
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
             List<Deployment> list = repositoryService.createDeploymentQuery().list();
             for (Deployment dep : list) {
                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -258,8 +257,14 @@ public class ProcessDefinitionController {
     }
 
 
-
     //删除流程定义
+    /**
+     * @Description //TODO
+     * @Date 2021/4/19 18:26
+     * @param depID 流程部署id
+     * @param pdID 流程定义id
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/delDefinition")
     public AjaxResponse delDefinition(@RequestParam("depID") String depID, @RequestParam("pdID") String pdID) {
         try {

@@ -20,7 +20,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    UserInfoBeanMapper mapper;
+    UserInfoBeanMapper userInfoBeanMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,7 +52,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         //-------------------根据自定义用户属性登录-----------------------------
 
-        UserInfoBean userInfoBean = mapper.selectByUsername(username);
+        UserInfoBean userInfoBean = userInfoBeanMapper.selectByUsername(username);
         if (userInfoBean == null) {
             throw new UsernameNotFoundException("数据库中无此用户！");
         }

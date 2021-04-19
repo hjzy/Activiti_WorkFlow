@@ -24,11 +24,16 @@ public class Part8_ProcessRuntime {
     //获取流程实例
     @Test
     public void getProcessInstance() {
+        //用户使用securityUtil登录
         securityUtil.logInAs("bajie");
+        //获取流程实例
         Page<ProcessInstance> processInstancePage = processRuntime
                 .processInstances(Pageable.of(0,100));
+
         System.out.println("流程实例数量："+processInstancePage.getTotalItems());
+
         List<ProcessInstance> list = processInstancePage.getContent();
+
         for(ProcessInstance pi : list){
             System.out.println("-----------------------");
             System.out.println("getId：" + pi.getId());
@@ -51,7 +56,7 @@ public class Part8_ProcessRuntime {
                 .start()
                 .withProcessDefinitionKey("myProcess_ProcessRuntime")
                 .withName("第一个流程实例名称")
-                //.withVariable("","")
+                //.withVariable("","")//启动时添加参数
                 .withBusinessKey("自定义bKey")
                 .build()
         );

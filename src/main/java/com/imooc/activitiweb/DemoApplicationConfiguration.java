@@ -14,7 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+//取消该类在Spring容器中的注册，该类主要用于将给定用户加载到内存中，实际项目一般从数据库加载，用不到该类
 //@Configuration
 public class DemoApplicationConfiguration {
 

@@ -1,5 +1,8 @@
 package com.imooc.activitiweb.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +14,9 @@ import java.util.stream.Collectors;
 
 
 @Component
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfoBean implements UserDetails {
     private Long id;
     public String name;
@@ -21,11 +27,12 @@ public class UserInfoBean implements UserDetails {
 
     /**
      * 从数据库中取出roles字符串后，进行分解，构成一个GrantedAuthority的List返回
+     *
      * @return
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(roles.split(",")).map(e->new SimpleGrantedAuthority(e)).collect(Collectors.toSet());
+        return Arrays.stream(roles.split(",")).map(e -> new SimpleGrantedAuthority(e)).collect(Collectors.toSet());
     }
 
     @Override

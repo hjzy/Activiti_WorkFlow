@@ -54,14 +54,14 @@ public class ActivitiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
                 */
         //--------------------------验证都关闭-----------------------------
-               //http.authorizeRequests().anyRequest().permitAll().and().logout().permitAll().and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
+        //http.authorizeRequests().anyRequest().permitAll().and().logout().permitAll().and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
         //--------------------------activiti与layui的自定义登录-----------------------------
         http
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login")//登录页面
                 .loginProcessingUrl("/login")
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailureHandler)
+                .successHandler(loginSuccessHandler)//登录成功
+                .failureHandler(loginFailureHandler)//登录失败
                 //.defaultSuccessUrl("/hello")
                 //.successForwardUrl("success.html")
                 //.failureForwardUrl("failure.html")
@@ -69,7 +69,9 @@ public class ActivitiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login", "/demo-login.html", "/demo-login1.html", "/layuimini/page/login-1.html").permitAll()
                 .anyRequest()
-                .permitAll().and().logout().permitAll().and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
+                .permitAll()
+                .and().logout().permitAll()
+                .and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
 
 
     }

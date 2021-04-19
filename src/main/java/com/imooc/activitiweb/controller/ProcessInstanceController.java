@@ -39,7 +39,7 @@ public class ProcessInstanceController {
 
 
 
-
+    //查询流程定义
     @GetMapping(value = "/getInstances")
     public AjaxResponse getInstances(@AuthenticationPrincipal UserInfoBean userInfoBean) {
         Page<ProcessInstance> processInstances = null;
@@ -48,7 +48,7 @@ public class ProcessInstanceController {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("wukong");
             }
-            //else {
+            //else {不能
             //  securityUtil.logInAs(userInfoBean.getUsername());//这句不需要
             // }
             processInstances=processRuntime.processInstances(Pageable.of(0,  50));
@@ -87,7 +87,7 @@ public class ProcessInstanceController {
     }
 
 
-    //启动
+    //启动流程实例
     @GetMapping(value = "/startProcess")
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                      @RequestParam("instanceName") String instanceName,
@@ -96,7 +96,7 @@ public class ProcessInstanceController {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");
             }else{
-                securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());
+                securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());//登录的第二种方法
             }
             ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
                     .start()

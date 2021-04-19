@@ -33,7 +33,7 @@ public class ActivitiHistoryController {
     @Autowired
     private HistoryService historyService;
 
-    //用户历史
+    //根据用户名查询任务
     @GetMapping(value = "/getInstancesByUserName")
     public AjaxResponse InstancesByUser() {
         try {
@@ -51,8 +51,13 @@ public class ActivitiHistoryController {
         }
 
     }
-
-    //任务实例历史
+    /**
+     * @Description //TODO 
+     * @Date 2021/4/19 5:53
+     * @param piID 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
+    //根据流程实例id查询任务
     @GetMapping(value = "/getInstancesByPiID")
     public AjaxResponse getInstancesByPiID(@RequestParam("piID") String piID) {
         try {
