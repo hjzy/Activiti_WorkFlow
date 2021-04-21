@@ -151,14 +151,14 @@ public class TaskController {
 
 //-----------------------构建表单控件历史数据字典------------------------------------------------
             //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
-            HashMap<String, String> controlistMap = new HashMap<>();
-            //本实例所有保存的表单数据
+            HashMap<String, String> controlListMap = new HashMap<>();
+            //根据流程实例ID查出本实例所有保存的表单数据
             List<HashMap<String, Object>> tempControlList = mapper.selectFormData(task.getProcessInstanceId());
 
             for (HashMap ls : tempControlList) {
                 //String Control_ID = ls.get("Control_ID_").toString();
                 //String Control_VALUE = ls.get("Control_VALUE_").toString();
-                controlistMap.put(ls.get("Control_ID_").toString(), ls.get("Control_VALUE_").toString());
+                controlListMap.put(ls.get("Control_ID_").toString(), ls.get("Control_VALUE_").toString());
             }
             //String controlistMapValue = controlistMap.get("控件ID");
             //controlistMap.containsKey()
@@ -176,7 +176,7 @@ public class TaskController {
             注：类型是可以获取到的，但是为了统一配置原则，都配置到
             */
 
-            //注意!!!!!!!!:表单Key必须要任务编号一模一样，因为参数需要任务key，但是无法获取，只能获取表单key“task.getFormKey()”当做任务key
+            //注意!!!!!!!!:表单Key必须要和任务编号一模一样，因为参数需要任务key，但是无法获取，只能获取表单key“task.getFormKey()”当做任务key
             UserTask userTask = (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
                     .getFlowElement(task.getFormKey());
 
@@ -194,12 +194,15 @@ public class TaskController {
                 hashMap.put("controlType", splitFP[1]);
                 hashMap.put("controlLable", splitFP[2]);
 
-
+                //使得可以读取上一个环节填入的参数值
                 //默认值如果是表单控件ID
                 if (splitFP[3].startsWith("FormProperty_")) {
+                    /*
+                    如果默认值是“FormProperty_开头定义过的控件ID”这种形式，说明我们想读取之前的这个控件填入的数据，就可以根据控件id得到该值
+                     **/
                     //控件ID存在
-                    if (controlistMap.containsKey(splitFP[3])) {
-                        hashMap.put("controlDefValue", controlistMap.get(splitFP[3]));
+                    if (controlListMap.containsKey(splitFP[3])) {
+                        hashMap.put("controlDefValue", controlListMap.get(splitFP[3]));
                     } else {
                         //控件ID不存在
                         hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
@@ -238,39 +241,40 @@ public class TaskController {
 
 
             HashMap<String, Object> variables = new HashMap<String, Object>();
-            Boolean hasVariables = false;//没有任何参数
+            Boolean hasVariables = false;//是否有参数
 
 
             List<HashMap<String, Object>> listMap = new ArrayList<>();
 
             //前端传来的字符串，拆分成每个控件
-            String[] formDataList = formData.split("!_!");//
+            String[] formDataList = formData.split("!_!");//分割每个控件
+            //提取控件的值
             for (String controlItem : formDataList) {
                 String[] formDataItem = controlItem.split("-_!");
 
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());
-                hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());
-                hashMap.put("FORM_KEY_", task.getFormKey());
-                hashMap.put("Control_ID_", formDataItem[0]);
-                hashMap.put("Control_VALUE_", formDataItem[1]);
+                hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());//流程定义id
+                hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());//流程实例id
+                hashMap.put("FORM_KEY_", task.getFormKey());//表单key
+                hashMap.put("Control_ID_", formDataItem[0]);//控件id
+                hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
                 listMap.add(hashMap);
 
                 //构建参数集合
                 switch (formDataItem[2]) {
-                    case "f":
+                    case "f"://非参数
                         System.out.println("控件值不作为参数");
                         break;
-                    case "s":
+                    case "s"://字符
                         variables.put(formDataItem[0], formDataItem[1]);
                         hasVariables = true;
                         break;
-                    case "t":
+                    case "t"://时间
                         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         variables.put(formDataItem[0], timeFormat.parse(formDataItem[2]));
                         hasVariables = true;
                         break;
-                    case "b":
+                    case "b"://布尔型
                         variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
                         hasVariables = true;
                         break;

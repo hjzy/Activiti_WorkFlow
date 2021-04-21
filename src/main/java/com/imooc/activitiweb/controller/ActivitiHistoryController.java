@@ -77,10 +77,15 @@ public class ActivitiHistoryController {
 
     }
 
-
-    //流程图高亮
+    /**
+     * @Description //流程图高亮
+     * @Date 2021/4/21 2:05
+     * @param instanceId
+     * @param UserInfoBean
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping("/gethighLine")
-    public AjaxResponse gethighLine(@RequestParam("instanceId") String instanceId, @AuthenticationPrincipal UserInfoBean UuserInfoBean) {
+    public AjaxResponse gethighLine(@RequestParam("instanceId") String instanceId, @AuthenticationPrincipal UserInfoBean UserInfoBean) {
         try {
             HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
                     .processInstanceId(instanceId).singleResult();
@@ -96,8 +101,8 @@ public class ActivitiHistoryController {
                 //判断是否是连线
                 if (flowElement instanceof SequenceFlow) {
                     SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
-                    String ref = sequenceFlow.getSourceRef();
-                    String targetRef = sequenceFlow.getTargetRef();
+                    String ref = sequenceFlow.getSourceRef();//连线的源头task
+                    String targetRef = sequenceFlow.getTargetRef();//连线指向的task
                     map.put(ref + targetRef, sequenceFlow.getId());
                 }
             }
@@ -116,6 +121,8 @@ public class ActivitiHistoryController {
                 }
             }
             //高亮连线ID
+            //直接从bpmn得到的连线key是StartEvent_1Task1的形式，无法直接得到连线对应的端点
+            //以端点两两组合的key和已执行的线的key比对，从而找到已执行的线对应的端点
             Set<String> highLine = new HashSet<>();
             keyList.forEach(s -> highLine.add(map.get(s)));
 
@@ -149,7 +156,8 @@ public class ActivitiHistoryController {
 
                         if (userTask.getId().equals(s.getActivityId())) {
                             List<SequenceFlow> outgoingFlows = userTask.getOutgoingFlows();
-                            //因为 高亮连线查询的是所有节点  两两组合 把待办 之后  往外发出的连线 也包含进去了  所以要把高亮待办节点 之后 即出的连线去掉
+                            //因为高亮连线查询的是所有节点两两组合，把待办之后往外发出的连线也包含进去了，
+                            // 所以要把高亮待办节点之后出的连线去掉
                             if (outgoingFlows != null && outgoingFlows.size() > 0) {
                                 outgoingFlows.forEach(a -> {
                                     if (a.getSourceRef().equals(s.getActivityId())) {
@@ -174,7 +182,7 @@ public class ActivitiHistoryController {
             if (GlobalConfig.Test) {
                 AssigneeName = "bajie";
             } else {
-                AssigneeName = UuserInfoBean.getUsername();
+                AssigneeName = UserInfoBean.getUsername();
             }
 
             List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
@@ -185,10 +193,10 @@ public class ActivitiHistoryController {
             taskInstanceList.forEach(a -> iDo.add(a.getTaskDefinitionKey()));
 
             Map<String, Object> reMap = new HashMap<>();
-            reMap.put("highPoint", highPoint);
-            reMap.put("highLine", highLine);
-            reMap.put("waitingToDo", waitingToDo);
-            reMap.put("iDo", iDo);
+            reMap.put("highPoint", highPoint);//高亮节点
+            reMap.put("highLine", highLine);//高亮连线
+            reMap.put("waitingToDo", waitingToDo);//待办节点
+            reMap.put("iDo", iDo);//当前用户已完成的任务
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), reMap);
