@@ -5,7 +5,9 @@
  */
 
 import $ from 'jquery';
+//获取当前访问的url前缀，以访问项目地址
 const proHost = window.location.protocol + "//" + window.location.host;
+//
 const href = window.location.href.split("bpmnjs")[0];
 const key = href.split(window.location.host)[1];
 const publicurl = proHost + key;
@@ -81,7 +83,7 @@ const tools = {
                 data: param,
                 //headers:{'Content-Type':'application/json;charset=utf8'},
                 success: function (result) {
-                    if(result.msg=='成功'){
+                    if(result.msg==='成 功'){
                         tools.syhide('alert')
                         alert('保存成功')
                     }else{

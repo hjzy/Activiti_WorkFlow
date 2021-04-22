@@ -10,7 +10,7 @@ public class GlobalConfig {
     public static final Boolean Test = true;
 
     //windows路径
-    public static final String BPMN_PathMapping = "file:D:\\WangJianIDEA_Test\\activiti-imooc\\src\\main\\resources\\resources\\bpmn\\";
+    public static final String BPMN_PathMapping = "file:F:\\Develop_Project\\Activiti_WorkFlow\\src\\main\\resources\\resources\\bpmn\\";
 
     //Liunx路径
     //public static final String BPMN_PathMapping = "file:/root/Activiti/";

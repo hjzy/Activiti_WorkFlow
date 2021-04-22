@@ -8,7 +8,12 @@ import org.activiti.engine.runtime.Execution;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+/**
+ * @Description //信号事件，使用代码抛出信号，触发捕获事件
+ * @Date 2021/4/22 21:54
+ *
+ * @return
+ **/
 @SpringBootTest
 public class Part10_EventAndTask {
 
@@ -24,7 +29,7 @@ public class Part10_EventAndTask {
     public void signalStart() {
         runtimeService.signalEventReceived("Signal_0igedde");
     }
-
+  //消息事件，利用消息事件撤回申请
     @Test
     public void msgBack() {
         Execution exec = runtimeService.createExecutionQuery()
