@@ -12,7 +12,7 @@ public class GlobalConfig {
     //windows路径
     public static final String BPMN_PathMapping = "file:F:\\Develop_Project\\Activiti_WorkFlow\\src\\main\\resources\\resources\\bpmn\\";
 
-    //Liunx路径
+    //Linux路径
     //public static final String BPMN_PathMapping = "file:/root/Activiti/";
 
     public enum ResponseCode {
