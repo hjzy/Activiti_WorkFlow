@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!-- 
+Template Name: Marvin
+
+
+
+
+-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>公告</title>
+    <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework"/>
+    <base th:href="@{/}">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Custom CSS -->
+    <link href="dist/css/style.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <title>中标下达LOAD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework"/>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Bootstrap table CSS -->
+    <link href="vendors/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="hk-wrapper hk-vertical-nav">
+
+    <!-- HK Wrapper -->
+    <div class="hk-wrapper hk-vertical-nav">
+
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-xl navbar-light fixed-top hk-navbar">
+            <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
+                    class="feather-icon"><i data-feather="menu"></i></span></a>
+            <a class="navbar-brand font-weight-700" href="index.html">
+                国电煤炭交易平台
+            </a>
+        </nav>
+
+        <!-- /Top Navbar -->
+
+        <!-- Vertical Nav -->
+        <nav class="hk-nav hk-nav-dark">
+            <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
+                    data-feather="x"></i></span></a>
+            <div class="nicescroll-bar">
+                <div class="navbar-nav-wrap">
+                    <ul class="navbar-nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                                <span class="feather-icon"><i data-feather="home"></i></span>
+                                <span class="nav-link-text">首页</span>
+                            </a>
+                            <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" th:href="@{'/indexPage/toIndex'}">待办事项</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#auth_drp">
+                                <span class="feather-icon"><i data-feather="file-text"></i></span>
+                                <span class="nav-link-text">采购申请管理</span>
+                            </a>
+                            <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="http://localhost:8081/index/tofindPurchase">采购审批</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                   data-target="#Components_drp">
+                                    <span class="feather-icon"><i data-feather="edit"></i></span>
+                                    <span class="nav-link-text">采购执行管理</span>
+                                </a>
+                                <ul id="Components_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                   href="http://localhost:8081/purchasemanage/page">中标下达</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/purchasemanage/winOrder">中标审核</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                   data-target="#content_drp">
+                                    <span class="feather-icon"><i data-feather="type"></i></span>
+                                    <span class="nav-link-text">供应商管理</span>
+                                </a>
+                                <ul id="content_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                   href="http://localhost:8081/supplier/findsome">查看合作供应商</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/contract/page">查看长协交易</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/apply/applypage">电厂申请审核</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/annual/annualpage">年度评价</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                   data-target="#utilities_drp">
+                                    <span class="feather-icon"><i data-feather="users"></i></span>
+                                    <span class="nav-link-text">账户管理</span>
+                                </a>
+                                <ul id="utilities_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/user/viewUserByCookie">个人信息</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/user/tofiliale">企业维护</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="http://localhost:8081/user/findAllUser">用户管理</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- /Vertical Nav -->
+
+
+    </div>
+    <!-- /HK Wrapper -->
+
+    <!-- Main Content -->
+    <div class="hk-pg-wrapper">
+
+        <!-- Container -->
+        <div class="container mt-xl-50 mt-sm-30 mt-15">
+            <!-- Title -->
+            <div class="hk-pg-header">
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="book"></i></span></span>公告信息</h4>
+            </div>
+            <!-- /Title -->
+
+            <!-- Row -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+                        <h5 th:text="${announcement.announceTitle}" class="hk-sec-title"></h5>
+                        <p th:text="${announcement.announceTime}"></p>
+
+                        <p th:text="${announcement.announceContent}"></p>
+
+                        <p></p>
+                    </section>
+                </div>
+            </div>
+            <!-- /Row -->
+        </div>
+        <!-- /Container -->
+
+        <!-- Footer -->
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Pampered by<a href="http://www.bootstrapmb.com" class="text-dark" target="_blank">yifan</a> ©
+                            2020</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- /Footer -->
+
+    </div>
+    <!-- /Main Content -->
+
+
+    <!-- /HK Wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendors/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendors/popper.js/dist/umd/popper.min.js"></script>
+    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Slimscroll JavaScript -->
+    <script src="dist/js/jquery.slimscroll.js"></script>
+
+    <!-- Fancy Dropdown JS -->
+    <script src="dist/js/dropdown-bootstrap-extended.js"></script>
+
+    <!-- FeatherIcons JavaScript -->
+    <script src="dist/js/feather.min.js"></script>
+
+    <!-- Init JavaScript -->
+    <script src="dist/js/init.js"></script>
+</div>
+</body>
+
+
+</html>

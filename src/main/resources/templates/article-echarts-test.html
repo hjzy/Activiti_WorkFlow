@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
+
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+<!--<input type="hidden" th:value="${skirt}" id="skirt"/>-->
+<!--<input type="hidden" th:value="${nums}" id="nums"/>-->
+
+<div id="a">
+    <div th:each="chart:${charts}">
+        <input type="text"  name="type" th:value="${chart.getTypeName()}"/>
+        <input type="text" name="count" th:value="${chart.getCount()}"/>
+    </div>
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    const myChart = echarts.init(document.getElementById('main'));
+
+    const tempType = document.getElementsByName("type");
+    const tempCount = document.getElementsByName("count");
+    const data1=[];
+    const data2=[];
+    for (var i = 0, j = tempType.length; i < j; i++){
+        data1[i]=tempType[i].value; //获得值(els[i].id)，并存入数组;　　//获得ID　　
+    }
+    for (var i = 0, j = tempCount.length; i < j; i++){
+        data2[i]=tempCount[i].value; //获得值(els[i].id)，并存入数组;　　//获得ID　　
+    }
+   // var skirt="[[${skirt}]]";
+    //var nums="[[${nums}]]";
+    // 指定图表的配置项和数据(柱状图)
+    var option = {
+        title: {
+            text: 'Echarts-站内文章类型统计'
+        },
+        tooltip: {},
+        legend: {
+            data:['数量']
+        },
+        xAxis: {
+            data: data1
+        },
+        yAxis: {},
+        series: [{
+            name: '数量',
+            type: 'bar',
+            data: data2
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    document.getElementById("a").style.display="none";
+</script>
+</body>
+</html>
