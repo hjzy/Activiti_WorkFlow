@@ -206,7 +206,7 @@ export default {
     'Topic':'主题',
     'Configure Connector':'配置连接器',
     'Input Parameter':'输入参数',
-    'Assignee':'代理人',
+    'Assignee':'任务执行人',
     'Candidate Users':'候选用户',
     'Candidate Groups':'候选组',
     'Due Date':'到期时间',

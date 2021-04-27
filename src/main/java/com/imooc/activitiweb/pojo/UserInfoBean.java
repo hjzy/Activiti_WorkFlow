@@ -24,6 +24,8 @@ public class UserInfoBean implements UserDetails {
     private String username;
     private String password;
     private String roles;
+    private String email;
+    private Integer is_subscribe;
 
     /**
      * 从数据库中取出roles字符串后，进行分解，构成一个GrantedAuthority的List返回

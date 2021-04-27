@@ -1,5 +1,6 @@
 package com.imooc.activitiweb;
 
+import com.imooc.activitiweb.util.MailUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,14 +19,11 @@ import org.springframework.scheduling.annotation.Async;
 public class MailTest {
     @Autowired
     JavaMailSenderImpl javaMailSender;
+
+    @Autowired
+    MailUtil mailUtil;
     @Test
-    @Async
     public void main() {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setSubject("覃小姐");
-        mailMessage.setText("谢谢你");
-        mailMessage.setTo("361157542@qq.com");
-        mailMessage.setFrom("2540584259@qq.com");
-        javaMailSender.send(mailMessage);
+        mailUtil.SendMail("怡雪","谢谢你","1959243970@qq.com");
     }
 }

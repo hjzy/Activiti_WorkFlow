@@ -5,13 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.activitiweb.pojo.Article;
-import com.imooc.activitiweb.pojo.Count;
 import com.imooc.activitiweb.service.ArticleService;
+import com.imooc.activitiweb.service.impl.ArticleServiceImpl;
 import com.imooc.activitiweb.util.FileUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,32 +29,30 @@ import java.util.List;
 @RequestMapping("/article")
 public class ArticleController {
 
-
-    private final ArticleService articleService;
+    @Autowired
+    ArticleService articleService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleServiceImpl articleService) {
         this.articleService = articleService;
     }
 
 
-
-
     @RequestMapping("/index")
     // @ResponseBody
-    @ApiOperation(value = "首页初始化",notes = "")
+    @ApiOperation(value = "首页初始化", notes = "")
     public ModelAndView initIndex() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("article-index");
 
-        List<Article> articleList1 = articleService.getArticleByTypeLimitSize(1,6);
-        List<Article> articleList2 = articleService.getArticleByTypeLimitSize(2,6);
-        List<Article> articleList3 = articleService.getArticleByTypeLimitSize(3,6);
-        List<Article> articleList4 = articleService.getArticleByTypeLimitSize(4,6);
-        List<Article> articleList5 = articleService.getArticleByTypeLimitSize(5,6);
-        List<Article> articleList6 = articleService.getArticleByTypeLimitSize(6,6);
-        List<Article> articleList7 = articleService.getArticleByTypeLimitSize(7,6);
+        List<Article> articleList1 = articleService.getArticleByTypeLimitSize(1, 6);
+        List<Article> articleList2 = articleService.getArticleByTypeLimitSize(2, 6);
+        List<Article> articleList3 = articleService.getArticleByTypeLimitSize(3, 6);
+        List<Article> articleList4 = articleService.getArticleByTypeLimitSize(4, 6);
+        List<Article> articleList5 = articleService.getArticleByTypeLimitSize(5, 6);
+        List<Article> articleList6 = articleService.getArticleByTypeLimitSize(6, 6);
+        List<Article> articleList7 = articleService.getArticleByTypeLimitSize(7, 6);
 
 
         modelAndView.addObject("articleList1", articleList1);
@@ -76,18 +73,18 @@ public class ArticleController {
     @ResponseBody
     public String publishArticle(Article article) {
         boolean res = articleService.publishArticle(article);
-        if(res) {
+        if (res) {
             return "success";
         }
         return "false";
     }
 
-//    markdown图片上传控制器
+    //    markdown图片上传控制器
     @RequestMapping("/image/upload")
     @ResponseBody
     public JSONObject imageUpload(@RequestParam("editormd-image-file") MultipartFile image) {
         JSONObject jsonObject = new JSONObject();
-        if(image != null) {
+        if (image != null) {
             String path = FileUtils.uploadFile(image);
             System.out.println(path);
             jsonObject.put("url", path);
@@ -102,11 +99,11 @@ public class ArticleController {
 
     //获取文章并直接显示
     @RequestMapping("/get/{id}")
-    public ModelAndView getArticleById(@PathVariable(name = "id")int id) {
+    public ModelAndView getArticleById(@PathVariable(name = "id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         Article article = articleService.getArticleById(id);
         modelAndView.setViewName("article");
-        if(article == null) {
+        if (article == null) {
             modelAndView.addObject("article", new Article());
         }
         modelAndView.addObject("article", article);
@@ -115,16 +112,15 @@ public class ArticleController {
 
     //在视图中显示图文内容
     @RequestMapping("/view/{id}")
-    public ModelAndView viewArticle(@PathVariable(name = "id")int id ,HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView viewArticle(@PathVariable(name = "id") int id, HttpServletRequest request, HttpServletResponse response) {
         //String announceNum = request.getParameter("num");
         ModelAndView modelAndView = new ModelAndView();
 
         Article article = articleService.getArticleById(id);
-        if(article == null) {
+        if (article == null) {
             //modelAndView.addObject("article", new Article());
             modelAndView.setViewName("404");
-        }
-        else {
+        } else {
             modelAndView.setViewName("article-view");
             modelAndView.addObject("article", article);
         }
@@ -134,7 +130,7 @@ public class ArticleController {
     //在视图中显示所有文章，并进行分页
     @RequestMapping("/page")
     public ModelAndView page(Model model, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                       @RequestParam(defaultValue = "5") Integer pageSize) {
+                             @RequestParam(defaultValue = "5") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("article-admin");
 
@@ -169,8 +165,8 @@ public class ArticleController {
 
     //搜索
     @RequestMapping("/search")
-    public ModelAndView search(HttpServletRequest request,Model model, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(defaultValue = "5") Integer pageSize) {
+    public ModelAndView search(HttpServletRequest request, Model model, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                               @RequestParam(defaultValue = "5") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("article-admin");
         String titleStr = request.getParameter("titleStr");
@@ -201,11 +197,12 @@ public class ArticleController {
 
         return modelAndView;
     }
+
     //删除
     @RequestMapping("/delete/{id}")
     //  @ResponseBody
-    public String deleteArticleById(@PathVariable(name = "id")int id) {
-       // ModelAndView modelAndView = new ModelAndView();
+    public String deleteArticleById(@PathVariable(name = "id") int id) {
+        // ModelAndView modelAndView = new ModelAndView();
         boolean res = articleService.deleteArticleById(id);
 //        if(res) {
 //            return "success";
@@ -215,7 +212,7 @@ public class ArticleController {
     }
 
     @RequestMapping("/toEdit/{id}")
-    public ModelAndView toEditArticle(@PathVariable(name = "id")int id ,HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView toEditArticle(@PathVariable(name = "id") int id, HttpServletRequest request, HttpServletResponse response) {
         //String announceNum = request.getParameter("num");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("article-edit");
@@ -236,8 +233,8 @@ public class ArticleController {
 
     @RequestMapping("/viewByType")
     // @ResponseBody
-    public ModelAndView viewByType(@RequestParam(value = "type", defaultValue = "1") Integer type,@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(defaultValue = "5") Integer pageSize) {
+    public ModelAndView viewByType(@RequestParam(value = "type", defaultValue = "1") Integer type, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                   @RequestParam(defaultValue = "5") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView();
         String typeName = null;
         modelAndView.setViewName("article-view-by-type");
@@ -256,7 +253,7 @@ public class ArticleController {
         //model.addAttribute("pageInfo", pageInfo);
         modelAndView.addObject("pageInfo", pageInfo);
         //model.addAttribute("addUrl", "http://localhost:8081/markdown/toedit");
-       // modelAndView.addObject("addUrl", "/markdown/toedit");
+        // modelAndView.addObject("addUrl", "/markdown/toedit");
         //获取当前页
         modelAndView.addObject("pageNum", pageNum);
         //获取一页显示的条
@@ -269,35 +266,34 @@ public class ArticleController {
         modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
 
         modelAndView.addObject("type", type);
-        switch (type)
-        {
+        switch (type) {
             case 1:
-                typeName="壮学研究";
+                typeName = "壮学研究";
                 break;
             case 2:
-                typeName="壮乡见闻";
+                typeName = "壮乡见闻";
                 break;
             case 3:
-                typeName="文化艺术";
+                typeName = "文化艺术";
                 break;
             case 4:
-                typeName="历史印记";
+                typeName = "历史印记";
                 break;
             case 5:
-                typeName="民风民俗";
+                typeName = "民风民俗";
                 break;
             case 6:
-                typeName="壮学文档";
+                typeName = "壮学文档";
                 break;
             case 7:
-                typeName="民族政策";
+                typeName = "民族政策";
                 break;
 
         }
 
         modelAndView.addObject("typeName", typeName);
         return modelAndView;
-       // return "redirect:/article/page";
+        // return "redirect:/article/page";
     }
 
 
