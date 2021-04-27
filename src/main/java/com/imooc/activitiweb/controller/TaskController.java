@@ -147,23 +147,24 @@ public class TaskController {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");
             }
+            //拿到对应的task
             Task task = taskRuntime.task(taskID);
 
 //-----------------------构建表单控件历史数据字典------------------------------------------------
             //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
             HashMap<String, String> controlListMap = new HashMap<>();
+
             //根据流程实例ID查出本实例所有保存的表单数据
             List<HashMap<String, Object>> tempControlList = mapper.selectFormData(task.getProcessInstanceId());
 
             for (HashMap ls : tempControlList) {
-                //String Control_ID = ls.get("Control_ID_").toString();
-                //String Control_VALUE = ls.get("Control_VALUE_").toString();
-                controlListMap.put(ls.get("Control_ID_").toString(), ls.get("Control_VALUE_").toString());
+                String Control_ID = ls.get("Control_ID_").toString();//拿到控件id
+                String Control_VALUE = ls.get("Control_VALUE_").toString();//拿到控件值
+                controlListMap.put(Control_ID, Control_VALUE);
             }
             //String controlistMapValue = controlistMap.get("控件ID");
             //controlistMap.containsKey()
 
-            //
 
 /*  ------------------------------------------------------------------------------
             FormProperty_0ueitp2-_!类型-_!名称-_!默认值-_!是否参数
@@ -174,24 +175,34 @@ public class TaskController {
             默认值：无、字符常量、FormProperty_开头定义过的控件ID
             是否参数：f为不是参数，s是字符，t是时间(不需要int，因为这里int等价于string)
             注：类型是可以获取到的，但是为了统一配置原则，都配置到
-            */
+ */
 
             //注意!!!!!!!!:表单Key必须要和任务编号一模一样，因为参数需要任务key，但是无法获取，只能获取表单key“task.getFormKey()”当做任务key
+
+            //根据传入的taskId拿到所有的UserTask信息
             UserTask userTask = (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
                     .getFlowElement(task.getFormKey());
-
+            //如果userTask为空，告知用户无表单
             if (userTask == null) {
                 return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                         GlobalConfig.ResponseCode.SUCCESS.getDesc(), "无表单");
             }
+            //拿到表单信息
             List<FormProperty> formProperties = userTask.getFormProperties();
+
+            //返回给前端的list
             List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+
+            //根据"-_!"分隔符拿到所需各项信息
             for (FormProperty fp : formProperties) {
                 String[] splitFP = fp.getId().split("-_!");
 
                 HashMap<String, Object> hashMap = new HashMap<>();
+                //控件id，FormProperty_1iu6onu
                 hashMap.put("id", splitFP[0]);
+                //控件类型，String，Int等
                 hashMap.put("controlType", splitFP[1]);
+                //控件标签，年龄，姓名等
                 hashMap.put("controlLable", splitFP[2]);
 
                 //使得可以读取上一个环节填入的参数值
@@ -213,7 +224,7 @@ public class TaskController {
                 }
 
 
-                hashMap.put("controlIsParam", splitFP[4]);
+                hashMap.put("controlIsParam", splitFP[4]);//参数类型，如Sting，文件等
                 listMap.add(hashMap);
             }
 
@@ -258,6 +269,7 @@ public class TaskController {
                 hashMap.put("FORM_KEY_", task.getFormKey());//表单key
                 hashMap.put("Control_ID_", formDataItem[0]);//控件id
                 hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
+                hashMap.put("Control_Is_Param_",formDataItem[2]);//控件类型
                 listMap.add(hashMap);
 
                 //构建参数集合
@@ -278,6 +290,9 @@ public class TaskController {
                         variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
                         hasVariables = true;
                         break;
+                    case "e"://文件
+                        variables.put(formDataItem[0], formDataItem[1]);
+                        hasVariables = true;
                     default:
                         System.out.println("控件参数类型配置错误：" + formDataItem[0] + "的参数类型不存在，" + formDataItem[2]);
                 }
