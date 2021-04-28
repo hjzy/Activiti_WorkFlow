@@ -302,9 +302,10 @@ public class     ProcessDefinitionController {
         response.setContentType("multipart/form-data"); //二进制传输数据
         //设置响应头
         response.setHeader("Content-Disposition",
-                "attachment;fileName="+ URLEncoder.encode(fileName, "UTF-8"));
+                "attachment;fileName="+ URLEncoder.encode(fileNewName, "UTF-8"));
 
         File file = new File(filePath,fileName);
+
 
         //2、 读取文件--输入流
         InputStream input=new FileInputStream(file);

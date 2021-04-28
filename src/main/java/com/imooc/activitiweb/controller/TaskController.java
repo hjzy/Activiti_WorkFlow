@@ -281,38 +281,43 @@ public class TaskController {
                 String[] formDataItem = controlItem.split("-_!");
 
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());//流程定义id
-                hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());//流程实例id
-                hashMap.put("FORM_KEY_", task.getFormKey());//表单key
-                hashMap.put("Control_ID_", formDataItem[0]);//控件id
-                hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
-                hashMap.put("Control_Is_Param_",formDataItem[2]);//控件类型
-                listMap.add(hashMap);
+                if(!formDataItem[1].equals(""))
+                {
 
-                //构建参数集合
-                switch (formDataItem[2]) {
-                    case "f"://非参数
-                        System.out.println("控件值不作为参数");
-                        break;
-                    case "s"://字符
-                        variables.put(formDataItem[0], formDataItem[1]);
-                        hasVariables = true;
-                        break;
-                    case "t"://时间
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        variables.put(formDataItem[0], timeFormat.parse(formDataItem[2]));
-                        hasVariables = true;
-                        break;
-                    case "b"://布尔型
-                        variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
-                        hasVariables = true;
-                        break;
-                    case "e"://文件
-                        variables.put(formDataItem[0], formDataItem[1]);
-                        hasVariables = true;
-                    default:
-                        System.out.println("控件参数类型配置错误：" + formDataItem[0] + "的参数类型不存在，" + formDataItem[2]);
+                    hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());//流程定义id
+                    hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());//流程实例id
+                    hashMap.put("FORM_KEY_", task.getFormKey());//表单key
+                    hashMap.put("Control_ID_", formDataItem[0]);//控件id
+                    hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
+                    hashMap.put("Control_Is_Param_",formDataItem[2]);//控件类型
+                    listMap.add(hashMap);
+
+                    //构建参数集合
+                    switch (formDataItem[2]) {
+                        case "f"://非参数
+                            System.out.println("控件值不作为参数");
+                            break;
+                        case "s"://字符
+                            variables.put(formDataItem[0], formDataItem[1]);
+                            hasVariables = true;
+                            break;
+                        case "t"://时间
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            variables.put(formDataItem[0], timeFormat.parse(formDataItem[2]));
+                            hasVariables = true;
+                            break;
+                        case "b"://布尔型
+                            variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
+                            hasVariables = true;
+                            break;
+                        case "e"://文件
+                            variables.put(formDataItem[0], formDataItem[1]);
+                            hasVariables = true;
+                        default:
+                            System.out.println("控件参数类型配置错误：" + formDataItem[0] + "的参数类型不存在，" + formDataItem[2]);
+                    }
                 }
+
             }//for结束
 
             if (hasVariables) {
@@ -326,7 +331,10 @@ public class TaskController {
             }
 
             //写入数据库
-            int result = mapper.insertFormData(listMap);
+            if(listMap.size() != 0){
+                int result = mapper.insertFormData(listMap);
+            }
+
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
         } catch (Exception e) {
