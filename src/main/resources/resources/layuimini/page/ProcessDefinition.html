@@ -110,9 +110,9 @@
         /*渲染列表*/
         var limitcount = 10;
         var curnum = 1;
-        var insTb = table.render({
+        var insTb = table.render({ //执行一个 table 实例
             elem: '#ProcessDeploymentsTableId',
-            toolbar: '#toolbarDemo',
+            toolbar: '#toolbarDemo',//开启工具栏
             defaultToolbar: [],
             url: ''+publicurl+'processDefinition/getDefinitions',
             parseData: function(res){ //res 即为原始返回的数据
@@ -123,7 +123,7 @@
                     "data": res.obj //解析数据列表
                 };
             },
-            cols: [[
+            cols: [[//表头
                 {type: "checkbox", width:'5%',align:"center"},
                 {field: 'processDefinitionID', width:'12%', title: '流程定义ID', sort: true,align:"center"},
                 {field: 'deploymentID', width:'10%', title: '部署ID', sort: true,align:"center"},

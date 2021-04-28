@@ -26,12 +26,12 @@ public class Part6_UEL {
     public void initProcessInstanceWithArgs() {
         //流程变量赋值，形式${}
         Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put("ZhiXingRen", "wukong");
+        variables.put("user_uel", "bajie");
         //variables.put("ZhiXingRen2", "aaa");
         //variables.put("ZhiXingRen3", "wukbbbong");
         ProcessInstance processInstance = runtimeService
                 .startProcessInstanceByKey(
-                        "myProcess_UEL_V2"
+                        "Process_1_UEL_Test"
                         , "bKeyUELV2"
                         , variables);
         System.out.println("流程实例ID：" + processInstance.getProcessDefinitionId());

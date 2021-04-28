@@ -14,14 +14,19 @@ import org.activiti.api.task.runtime.TaskRuntime;
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 
 @RestController
@@ -169,8 +174,11 @@ public class TaskController {
 /*  ------------------------------------------------------------------------------
             FormProperty_0ueitp2-_!类型-_!名称-_!默认值-_!是否参数
             例子：
+            FormProperty_0137fhi-_!file-_!文件-_!无-_!f
             FormProperty_0lovri0-_!string-_!姓名-_!请输入姓名-_!f
             FormProperty_1iu6onu-_!int-_!年龄-_!请输入年龄-_!s
+            FormProperty_227uamu-_!cUser-_!经办用户-_!张三-_!s
+            FormProperty_0e84poa-_!cUser-_!经办用户-_!FormProperty_227uamu-_!s
 
             默认值：无、字符常量、FormProperty_开头定义过的控件ID
             是否参数：f为不是参数，s是字符，t是时间(不需要int，因为这里int等价于string)
@@ -207,6 +215,15 @@ public class TaskController {
 
                 //使得可以读取上一个环节填入的参数值
                 //默认值如果是表单控件ID
+                /*
+                 * 如何在流程流转中使用前面动态表单中填写的值为后面动态表单中的值赋值？
+                 * 例如，前面八戒填写了请假日期，在后面的审批环节中，排他网关需要用到八戒填写的值
+                 * 在设定变量的时候，将变量的类型设为s（如FormProperty_1iu6onu-_!long-_!天数-_!请输入请假天数-_!s）
+                 * 在后续需要用到该变量的地方，如排他网关中，需要用到八戒的请假天数，则可以使用${FormProperty_1iu6onu}<3
+                 * 来表示八戒的请假天数小于3天
+                 * 如果后续审批的时候需要用到该变量，则将变量的默认值设置为八戒的请假天数的id即可（如FormProperty_0ueitp2-_!long-_!天数-_!FormProperty_1iu6onu-_!s）
+                 *
+                 **/
                 if (splitFP[3].startsWith("FormProperty_")) {
                     /*
                     如果默认值是“FormProperty_开头定义过的控件ID”这种形式，说明我们想读取之前的这个控件填入的数据，就可以根据控件id得到该值
@@ -318,5 +335,8 @@ public class TaskController {
                     "失败", e.toString());
         }
     }
+
+
+
 
 }
