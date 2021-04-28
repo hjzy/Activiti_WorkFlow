@@ -125,7 +125,7 @@
                         if(fileName===""){
                              val = $(this).val();
                         }else {
-                             val = fileName+$(this).val();
+                             val = fileName+"-_+!"+$(this).val();
                         }
 
 
@@ -169,6 +169,7 @@
                 for(var i = 0 ; i < res.length ; i++) {
                     var formItem;
                     var input;
+                    console.log(res[i].controlDefValue);
                     switch(res[i].controlType){
                         case 'long':
                             if(res[i].controlDefValue === '无'){
@@ -192,7 +193,10 @@
                                 input =' <input id="fileName" placeholder=""  isParm="'+res[i].controlIsParam+'" name="' + res[i].id + '"  className="layui-input DialogInput" lay-verType="tips"  class="layui-input js_val" disabled/>' +
                                 '<input className="layui-upload-file" type="file" accept="" name="processFile" id="uploadFile">';
                             }else {
-                                //input =  '<input lay-verify="required" type="text" isParm="'+res[i].controlIsParam+'" name="' + res[i].id + '" value="' + res[i].controlDefValue + '" placeholder="" class="layui-input js_val">' ;
+                                var fileDownloadUrl=res[i].controlDefValue.split("-_+!")[0];
+                                console.log(fileDownloadUrl);
+                                var fileDownloadName=res[i].controlDefValue.split("-_+!")[1];
+                                input = '<a href="/processDefinition/download?fileName=' +fileDownloadUrl +'&fileNewName='+fileDownloadName+ '">点击下载：'+fileDownloadName+'</a>';
                             }
                             break;
                     }

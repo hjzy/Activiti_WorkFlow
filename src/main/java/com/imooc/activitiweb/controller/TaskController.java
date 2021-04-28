@@ -327,7 +327,6 @@ public class TaskController {
 
             //写入数据库
             int result = mapper.insertFormData(listMap);
-
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
         } catch (Exception e) {
