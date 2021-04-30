@@ -67,9 +67,39 @@ public class ActivitiHistoryController {
 
             //--------------------------------------------另一种写法-------------------------
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
-                    .orderByHistoricTaskInstanceEndTime().asc()
+                    .orderByHistoricTaskInstanceEndTime().desc()
                     .processInstanceId(piID)
                     .list();
+
+
+
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), historicTaskInstances);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取历史任务失败", e.toString());
+        }
+
+    }
+/**
+ * Description //根据任务id查询历史任务
+ * @Date 2021/4/30 21:43
+ * @param taskID
+ * @return com.imooc.activitiweb.util.AjaxResponse
+ **/
+    @GetMapping(value = "/getInstancesByTaskID")
+    public AjaxResponse getInstancesByTaskID(@RequestParam("taskID") String taskID) {
+        try {
+
+            //--------------------------------------------另一种写法-------------------------
+            List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .orderByHistoricTaskInstanceEndTime().desc()
+                    .taskId(taskID)
+                    .list();
+
+
+
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), historicTaskInstances);
@@ -209,6 +239,8 @@ public class ActivitiHistoryController {
                     "渲染历史流程失败", e.toString());
         }
     }
+
+
 
 
 }

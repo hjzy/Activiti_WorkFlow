@@ -25,13 +25,15 @@
         </div>
 
         <script type="text/html" id="currentTableBar">
-              {{#  if(d.status == 'RUNNING'){ }}
-                <a class="layui-btn layui-btn-normal layui-btn-xs data-count-hangUp" lay-event="hangUp">挂起</a>
-              {{#  }else{ }}
-                <a class="layui-btn layui-btn-success layui-btn-xs data-count-active" lay-event="active">激活</a>
-              {{#  } }}
-              <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">历史</a>
-              <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            {{#  if(d.status == 'RUNNING'){ }}
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-hangUp" lay-event="hangUp">挂起</a>
+            {{#  }else{ }}
+            <a class="layui-btn layui-btn-success layui-btn-xs data-count-active" lay-event="active">激活</a>
+            {{#  } }}
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">进度</a>
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-lookHistoryData"
+               lay-event="lookHistoryData">历史</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -50,12 +52,12 @@
             elem: '#ProcessDefinitionTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [''],
-            url: ''+publicurl+'processInstance/getInstances',
-            parseData: function(res){ //res 即为原始返回的数据
+            url: '' + publicurl + 'processInstance/getInstances',
+            parseData: function (res) { //res 即为原始返回的数据
                 // console.log(res.obj.length,"数据长度")
                 //处理时间
-                for(var i = 0 ; i< res.obj.length ; i++){
-                    for(k in res.obj[i]) {
+                for (var i = 0; i < res.obj.length; i++) {
+                    for (k in res.obj[i]) {
                         res.obj[i]["startDate"] = renderTime(res.obj[i].startDate)
                     }
                 }
@@ -67,28 +69,28 @@
                 };
             },
             cols: [[
-                {type: "checkbox", width:'5%',align:"center"},
-                {field: 'id', width:'10%', title: 'ID',align:"center"},
-                {field: 'name', width:'18%', title: '实例名称',align:"center"},
-                {field: 'startDate', title: '实例创建时间', width:'15%',align:"center"},
-                {field: 'processDefinitionId', title: '流程定义编号', width:'18%',align:"center"},
-                {field: 'processDefinitionKey', width:'12%', title: '流程定义KEY',align:"center"},
-                {field: 'processDefinitionVersion', width:'5%', title: '版本',align:"center"},
-                {title: '操作', width:'16%', toolbar: '#currentTableBar', align: "center"}
+                {type: "checkbox", width: '5%', align: "center"},
+                {field: 'id', width: '10%', title: 'ID', align: "center"},
+                {field: 'name', width: '18%', title: '实例名称', align: "center"},
+                {field: 'startDate', title: '实例创建时间', width: '15%', align: "center"},
+                {field: 'processDefinitionId', title: '流程定义编号', width: '18%', align: "center"},
+                {field: 'processDefinitionKey', width: '12%', title: '流程定义KEY', align: "center"},
+                {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
+                {title: '操作', width: '16%', toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
             page: false,
             skin: 'line',
             // id:'ProcessDefinitionTableId',
-            done:function (res, curr, count) {
-                if(res.code==1){
-                    layer.alert(res.msg+'<br>'+res.data, {
+            done: function (res, curr, count) {
+                if (res.code == 1) {
+                    layer.alert(res.msg + '<br>' + res.data, {
                         icon: 2,
-                        title:"提示"
+                        title: "提示"
                     });
                 }
-                if(count>0){
+                if (count > 0) {
                     goPage(1);
                 }
             }
@@ -99,14 +101,50 @@
          */
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
+            var piID=obj.data.id;
+            console.log(obj.data);
             if (obj.event === 'hangUp') {  // 监听挂起操作
                 doHangUp(obj);
-            } else if (obj.event === 'active'){// 监听激活操作
+            } else if (obj.event === 'active') {// 监听激活操作
                 doActive(obj);
-            }else if (obj.event === 'delete') {  // 监听删除操作
+            } else if (obj.event === 'delete') {  // 监听删除操作
                 doDel(obj);
-            }else if(obj.event === 'look'){
-                window.open(''+publicurl+'bpmnjs/dist/index.html?type=lookBpmn&instanceId='+data.id+'&deploymentFileUUID='+data.deploymentId+'&deploymentName='+ encodeURI(data.resourceName)+'');
+            } else if (obj.event === 'look') {
+                window.open('' + publicurl + 'bpmnjs/dist/index.html?type=lookBpmn&instanceId=' + data.id + '&deploymentFileUUID=' + data.deploymentId + '&deploymentName=' + encodeURI(data.resourceName) + '');
+            } else if (obj.event === 'lookHistoryData') {
+                $.ajax({
+                    cache: true,
+                    type: "get",
+                    url: '' + publicurl + 'activitiHistory/getInstancesByPiID',
+                    data: {'piID':piID},
+                    success: function (res) {
+                        var index = layer.open({
+                            title: '历史进度',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin:true,
+                            shadeClose: true,
+                            area: ['100%', '100%'],
+                            content: '../page/table/DetailListDataShow.html',
+                            success: function (layero, index) {
+                                var iframe = window['layui-layer-iframe' + index];
+                                iframe.child(JSON.stringify(res.obj))
+                            },
+                            end:function(){
+                            }
+                        });
+                        $(window).on("resize", function () {
+                            layer.full(index);
+                        });
+                    },
+                    error: function (res) {
+                        //                 layer.close(dIndex);
+                        layer.alert(res.msg + '<br>' + res.obj, {
+                            icon: 2,
+                            title: "提示"
+                        });
+                    }
+                });
             }
         });
 
@@ -114,20 +152,22 @@
             var dateee = new Date(date).toJSON();
             return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
         }
+
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
+
         /* 挂起流程定义 */
         function doHangUp(obj) {
-            console.log(obj,"单条数据");
+            console.log(obj, "单条数据");
             layer.confirm('确定要挂起该流程吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.get( ''+publicurl+'processInstance/suspendInstance', {
+                $.get('' + publicurl + 'processInstance/suspendInstance', {
                     instanceID: obj.data ? obj.data.id : '',
                 }, function (res) {
                     layer.close(loadIndex);
@@ -135,11 +175,12 @@
                         layer.msg(res.msg, {icon: 1});
                         insTb.reload();
                     } else {
-                        layer.alert(res.msg+'<br>'+res.obj, {icon: 2});
+                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
                     }
                 }, 'json');
             });
         };
+
         /* 激活流程定义 */
         function doActive(obj) {
             layer.confirm('确定要激活该流程吗？', {
@@ -148,7 +189,7 @@
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.get( ''+publicurl+'processInstance/resumeInstance', {
+                $.get('' + publicurl + 'processInstance/resumeInstance', {
                     instanceID: obj.data ? obj.data.id : '',
                 }, function (res) {
                     layer.close(loadIndex);
@@ -156,11 +197,12 @@
                         layer.msg(res.msg, {icon: 1});
                         insTb.reload();
                     } else {
-                        layer.alert(res.msg+'<br>'+res.obj, {icon: 2});
+                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
                     }
                 }, 'json');
             });
         };
+
         /* 删除流程定义 */
         function doDel(obj) {
             layer.confirm('确定要删除该流程吗？', {
@@ -169,17 +211,17 @@
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.get( ''+publicurl+'processInstance/deleteInstance', {
+                $.get('' + publicurl + 'processInstance/deleteInstance', {
                     instanceID: obj.data ? obj.data.id : '',
                 }, function (res) {
                     layer.close(loadIndex);
                     if (res.status === 0) {
                         layer.msg(res.msg, {icon: 1});
                         obj.del();
-                        console.log(obj,"删除数据");
+                        console.log(obj, "删除数据");
                         insTb.reload();
                     } else {
-                        layer.alert(res.msg+'<br>'+res.obj, {icon: 2});
+                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
                     }
                 }, 'json');
             });
