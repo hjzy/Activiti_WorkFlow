@@ -115,7 +115,7 @@
                 $.ajax({
                     cache: true,
                     type: "get",
-                    url: '' + publicurl + 'activitiHistory/getInstancesByPiID',
+                    url: '' + publicurl + 'activitiHistory/getHistoryFormData',
                     data: {'piID':piID},
                     success: function (res) {
                         var index = layer.open({

@@ -7,7 +7,7 @@
     <bpmn2:userTask id="Activity_1gy62b6" name="八戒上传" activiti:formKey="Activity_1gy62b6" activiti:assignee="bajie">
       <bpmn2:extensionElements>
         <activiti:formProperty id="FormProperty_3l19gc2-_!string-_!姓名-_!请输入姓名-_!f" type="string" />
-        <activiti:formProperty id="FormProperty_371g76v_!long-_!年龄-_!请输入年龄-_!s" type="string" />
+        <activiti:formProperty id="FormProperty_371g76v-_!long-_!年龄-_!请输入年龄-_!s" type="string" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>Flow_0pws4fg</bpmn2:incoming>
       <bpmn2:outgoing>Flow_0gqrzea</bpmn2:outgoing>

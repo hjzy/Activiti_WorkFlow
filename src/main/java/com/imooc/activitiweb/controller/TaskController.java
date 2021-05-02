@@ -176,7 +176,7 @@ public class TaskController {
             例子：
             FormProperty_0137fhi-_!file-_!文件-_!无-_!f
             FormProperty_0lovri0-_!string-_!姓名-_!请输入姓名-_!f
-            FormProperty_1iu6onu-_!int-_!年龄-_!请输入年龄-_!s
+            FormProperty_1iu6onu-_!long-_!年龄-_!请输入年龄-_!s
             FormProperty_227uamu-_!cUser-_!经办用户-_!张三-_!s
             FormProperty_0e84poa-_!cUser-_!经办用户-_!FormProperty_227uamu-_!s
 
@@ -290,8 +290,10 @@ public class TaskController {
                     hashMap.put("Control_ID_", formDataItem[0]);//控件id
                     hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
                     hashMap.put("Control_Is_Param_",formDataItem[2]);//控件类型
+                    hashMap.put("Control_Label",formDataItem[3]);
+                    hashMap.put("Control_Type",formDataItem[4]);
                     listMap.add(hashMap);
-
+                    System.out.println(formDataItem[3]);
                     //构建参数集合
                     switch (formDataItem[2]) {
                         case "f"://非参数

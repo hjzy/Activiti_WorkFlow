@@ -3,7 +3,7 @@ package com.imooc.activitiweb.service.impl;
 
 import com.imooc.activitiweb.mapper.FormMapper;
 import com.imooc.activitiweb.pojo.FormData;
-import com.imooc.activitiweb.service.HistoryService;
+import com.imooc.activitiweb.service.HistoryFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,17 @@ import java.util.List;
  * @email yifan@yifansun.cn
  */
 @Service
-public class HistoryServiceImpl implements HistoryService {
+public class HistoryFormServiceImpl implements HistoryFormService {
 
     @Autowired
     FormMapper formMapper;
     @Override
     public List<FormData> getFormDataList(String pro_ins_id) {
         return formMapper.getFormDataList(pro_ins_id);
+    }
+
+    @Override
+    public List<FormData> getFormDataList(String pro_ins_id, String task_definition_key) {
+        return formMapper.getFormDataByProcessInstanceIdAndTaskDefinitionKey(pro_ins_id,task_definition_key);
     }
 }

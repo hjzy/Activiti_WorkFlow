@@ -1,7 +1,9 @@
 package com.imooc.activitiweb.controller;
 
 import com.imooc.activitiweb.SecurityUtil;
+import com.imooc.activitiweb.pojo.FormData;
 import com.imooc.activitiweb.pojo.UserInfoBean;
+import com.imooc.activitiweb.service.HistoryFormService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.activiti.bpmn.model.Process;
@@ -32,6 +34,9 @@ public class ActivitiHistoryController {
 
     @Autowired
     private HistoryService historyService;
+    @Autowired
+    HistoryFormService historyFormService;
+
 
     //根据用户名查询任务
     @GetMapping(value = "/getInstancesByUserName")
@@ -53,12 +58,11 @@ public class ActivitiHistoryController {
     }
 
 
-
     /**
-     * @Description //TODO 
-     * @Date 2021/4/19 5:53
-     * @param piID 
+     * @param piID
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Description //TODO
+     * @Date 2021/4/19 5:53
      **/
     //根据流程实例id查询任务
     @GetMapping(value = "/getInstancesByPiID")
@@ -72,35 +76,6 @@ public class ActivitiHistoryController {
                     .list();
 
 
-
-
-            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), historicTaskInstances);
-        } catch (Exception e) {
-            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
-                    "获取历史任务失败", e.toString());
-        }
-
-    }
-/**
- * Description //根据任务id查询历史任务
- * @Date 2021/4/30 21:43
- * @param taskID
- * @return com.imooc.activitiweb.util.AjaxResponse
- **/
-    @GetMapping(value = "/getInstancesByTaskID")
-    public AjaxResponse getInstancesByTaskID(@RequestParam("taskID") String taskID) {
-        try {
-
-            //--------------------------------------------另一种写法-------------------------
-            List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
-                    .orderByHistoricTaskInstanceEndTime().desc()
-                    .taskId(taskID)
-                    .list();
-
-
-
-
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), historicTaskInstances);
         } catch (Exception e) {
@@ -111,11 +86,90 @@ public class ActivitiHistoryController {
     }
 
     /**
-     * @Description //流程图高亮
-     * @Date 2021/4/21 2:05
+     * Description //根据任务id查询历史任务
+     *
+     * @param taskID
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/4/30 21:43
+     **/
+    @GetMapping(value = "/getInstancesByTaskID")
+    public AjaxResponse getInstancesByTaskID(@RequestParam("taskID") String taskID) {
+        try {
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+            //--------------------------------------------另一种写法-------------------------
+            List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .orderByHistoricTaskInstanceEndTime().desc()
+                    .taskId(taskID)
+                    .list();
+
+            for (HistoricTaskInstance historicTaskInstance : historicTaskInstances) {
+                List<FormData> formDataList = historyFormService.getFormDataList(historicTaskInstance.getProcessInstanceId(), historicTaskInstance.getTaskDefinitionKey());
+                if (formDataList.isEmpty()) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("startTime", historicTaskInstance.getStartTime());
+                    hashMap.put("endTime", historicTaskInstance.getEndTime());
+                    hashMap.put("name", historicTaskInstance.getName());
+                    hashMap.put("assignee", historicTaskInstance.getAssignee());
+                    hashMap.put("isFormKey",0);
+                    Iterator<String> it = hashMap.keySet().iterator();
+                    while(it.hasNext()) {
+                        String ii = (String) it.next();
+                        Object value= hashMap.get(ii);
+                        if(value == null){
+                            hashMap.replace(ii,"未知");
+                        }
+
+                    }
+
+                    listMap.add(hashMap);
+                } else {
+                    for (FormData formData : formDataList) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("startTime", historicTaskInstance.getStartTime());
+                        hashMap.put("endTime", historicTaskInstance.getEndTime());
+                        hashMap.put("name", historicTaskInstance.getName());
+                        hashMap.put("assignee", historicTaskInstance.getAssignee());
+                        hashMap.put("controlLabel", formData.getControl_Label());
+                        hashMap.put("controlValue", formData.getControl_VALUE_());
+                        hashMap.put("controlType", formData.getControl_Type());
+                        hashMap.put("controlIsParam", formData.getControl_Is_Param_());
+                        hashMap.put("processInstanceId", formData.getPROC_INST_ID_());
+                        hashMap.put("taskKey", formData.getFORM_KEY_());
+                        hashMap.put("isFormKey",1);
+
+                        Iterator<String> it = hashMap.keySet().iterator();
+                        while(it.hasNext()) {
+                            String ii = (String) it.next();
+                            Object value= hashMap.get(ii);
+                            if(value == null){
+                                hashMap.replace(ii,"未知");
+                            }
+
+                        }
+
+                        listMap.add(hashMap);
+                    }
+                }
+
+
+            }
+            System.out.println(listMap);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取历史任务失败", e.toString());
+        }
+
+    }
+
+    /**
+     * Description //流程图高亮
+     *
      * @param instanceId
      * @param UserInfoBean
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/4/21 2:05
      **/
     @GetMapping("/gethighLine")
     public AjaxResponse gethighLine(@RequestParam("instanceId") String instanceId, @AuthenticationPrincipal UserInfoBean UserInfoBean) {
@@ -240,7 +294,83 @@ public class ActivitiHistoryController {
         }
     }
 
+    /**
+     * Description //以流程实例id为key拿到历史记录及表单内容
+     *
+     * @param piID
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/2 20:05
+     **/
+    @GetMapping(value = "/getHistoryFormData")
+    public AjaxResponse getHistoryFormData(@RequestParam("piID") String piID) {
+        try {
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+            List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .orderByHistoricTaskInstanceEndTime().desc()
+                    .processInstanceId(piID)
+                    .list();
 
+
+            for (HistoricTaskInstance historicTaskInstance : historicTaskInstances) {
+                List<FormData> formDataList = historyFormService.getFormDataList(historicTaskInstance.getProcessInstanceId(), historicTaskInstance.getTaskDefinitionKey());
+                if (formDataList.isEmpty()) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("startTime", historicTaskInstance.getStartTime());
+                    hashMap.put("endTime", historicTaskInstance.getEndTime());
+                    hashMap.put("name", historicTaskInstance.getName());
+                    hashMap.put("assignee", historicTaskInstance.getAssignee());
+                    hashMap.put("isFormKey",0);
+                    Iterator<String> it = hashMap.keySet().iterator();
+                    while(it.hasNext()) {
+                        String ii = (String) it.next();
+                        Object value= hashMap.get(ii);
+                        if(value == null){
+                            hashMap.replace(ii,"未知");
+                        }
+
+                    }
+
+                    listMap.add(hashMap);
+                } else {
+                    for (FormData formData : formDataList) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("startTime", historicTaskInstance.getStartTime());
+                        hashMap.put("endTime", historicTaskInstance.getEndTime());
+                        hashMap.put("name", historicTaskInstance.getName());
+                        hashMap.put("assignee", historicTaskInstance.getAssignee());
+                        hashMap.put("controlLabel", formData.getControl_Label());
+                        hashMap.put("controlValue", formData.getControl_VALUE_());
+                        hashMap.put("controlType", formData.getControl_Type());
+                        hashMap.put("controlIsParam", formData.getControl_Is_Param_());
+                        hashMap.put("processInstanceId", formData.getPROC_INST_ID_());
+                        hashMap.put("taskKey", formData.getFORM_KEY_());
+                        hashMap.put("isFormKey",1);
+
+                        Iterator<String> it = hashMap.keySet().iterator();
+                        while(it.hasNext()) {
+                            String ii = (String) it.next();
+                            Object value= hashMap.get(ii);
+                            if(value == null){
+                                hashMap.replace(ii,"未知");
+                            }
+
+                        }
+
+                        listMap.add(hashMap);
+                    }
+                }
+
+
+            }
+            System.out.println(listMap);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取历史任务失败", e.toString());
+        }
+
+    }
 
 
 }

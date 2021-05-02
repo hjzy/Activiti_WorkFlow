@@ -20,11 +20,11 @@ public interface ActivitiMapper {
 
 
     //写入表单
-    @Insert("<script> insert into formdata (PROC_DEF_ID_,PROC_INST_ID_,FORM_KEY_,Control_ID_,Control_VALUE_)" +
+    @Insert("<script> insert into formdata (PROC_DEF_ID_,PROC_INST_ID_,FORM_KEY_,Control_ID_,Control_VALUE_,Control_Is_Param_,Control_Label)" +
             "    values" +
             "    <foreach collection=\"maps\" item=\"formData\" index=\"index\" separator=\",\">" +
             "      (#{formData.PROC_DEF_ID_,jdbcType=VARCHAR},#{formData.PROC_INST_ID_,jdbcType=VARCHAR}," +
-            "      #{formData.FORM_KEY_,jdbcType=VARCHAR}, #{formData.Control_ID_,jdbcType=VARCHAR},#{formData.Control_VALUE_,jdbcType=VARCHAR})" +
+            "      #{formData.FORM_KEY_,jdbcType=VARCHAR}, #{formData.Control_ID_,jdbcType=VARCHAR},#{formData.Control_VALUE_,jdbcType=VARCHAR},#{formData.Control_Is_Param_,jdbcType=VARCHAR},#{formData.Control_Label,jdbcType=VARCHAR})" +
             "    </foreach>  </script>")
     int insertFormData(@Param("maps") List<HashMap<String, Object>> maps);
 

@@ -41,55 +41,97 @@
 </head>
 <body>
 <div class="layui-form layuimini-form" id="defineForm">
-    <ul class="layui-timeline" id="timeLineDetail" >
+    <ul class="layui-timeline" id="timeLineDetail">
     </ul>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 <script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery.cookie.js"></script>
+<script src="../../js/ManualPaging.js"></script>
 <script>
     var ids;
 
     function child(obj) {
         var dataObj = JSON.parse(obj);
-
+        var taskKey="";
 
 
         layui.use(['form'], function (data) {
             var form = layui.form,
                 layer = layui.layer,
                 table = layui.table,
-                $ = layui.$;
+                $ = layui.jquery;
             let timeLineDetail = $("#timeLineDetail");
 
             for (let i = 0; i < dataObj.length; i++) {
-                timeLineDetail.append(
+                var formHead =
                     '<li class="layui-timeline-item">\n' +
                     '<i class="layui-icon layui-timeline-axis">&#xe63f;</i>\n' +
-                    '<div class="layui-timeline-content layui-text">\n' +
+                    '<div class="layui-timeline-content layui-text">\n';
+                var formContent =
                     '<h3 class="layui-timeline-title">' + time(dataObj[i].endTime) + '</h3>\n' +
                     '<ul>\n' +
                     '<li>' + '<b>任务名称：</b>' + dataObj[i].name + '</li>\n' +
                     '<li>' + '<b>经办人：</b>' + dataObj[i].assignee + '</li>\n' +
-                    '<li>' + '<b>开始时间：</b>' + '</li>\n' +
-                    '<li>' + '<b>结束时间：</b>' + '</li>\n' +
-                    // '<li>'+'<b></b>'+'</li>\n'+
-                    // '<li>'+'<b></b>'+'</li>\n'+
-                    // '<li>'+'<b></b>'+'</li>\n'+
-                    '</ul>\n' +
+                    '<li>' + '<b>开始时间：</b>' + time(dataObj[i].startTime) + '</li>\n' +
+                    '<li>' + '<b>结束时间：</b>' + time(dataObj[i].endTime) + '</li>\n';
+                var formList = ""
+                var formFoot = '</ul>\n' +
                     '</div>\n' +
-                    '</li>\n'
+                    '</li>\n';
+                taskKey=dataObj[i].taskKey;
+
+
+                if (dataObj[i].isFormKey === 0) {
+
+                    formList = '<li>' + '<b>表单：</b>' + '无' + '</li>\n';
+
+                } else {
+                    formList='<div style="width: 370px; margin: 0;">\n' +
+                        '  <button type="button" class="layui-btn layui-btn-fluid"' +' id="'+dataObj[i].taskKey+'"'+ ' lay-submit lay-filter="saveBtn">点击查看表单或已上传的文件</button>\n' +
+                        '</div>'
+                    // formList = '<li>' + '<b>表单字段：</b>' + dataObj[i].controlLabel + '</li>\n' +
+                    //     '<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n' +
+                    //     '<li>' + '<b>表单类型：</b>' + dataObj[i].controlType + '</li>\n' +
+                    //     '<li>' + '<b>表单参数：</b>' + dataObj[i].controlIsParam + '</li>\n' +
+                    //     '<li>' + '<b>表单key：</b>' + dataObj[i].taskKey + '</li>\n';
+                }
+
+
+                timeLineDetail.append(
+                    formHead+formContent+formList+formFoot
                 );
             }
 
-
+              $("button").click(function (e) {
+                  var taskKey1= $(this).attr("taskKey");
+                  var taskKey2=e.target.id;
+                var index = layer.open({
+                    title: '表单',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../table/DetailFormDataShow.html',
+                    success: function (layero,index) {
+                        var iframe = window['layui-layer-iframe' + index];
+                        iframe.child(JSON.stringify(dataObj),taskKey2);
+                    },
+                    end:function(){
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            });
 
             function time(date) {
                 var dateee = new Date(date).toJSON();
-                if (dateee===null)
-                {
+                if (dateee === null) {
                     return '任务未完成'
-                }else{
+                } else {
                     return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
                 }
 
