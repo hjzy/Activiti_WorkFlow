@@ -26,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Api
@@ -78,6 +80,10 @@ public class ArticleController {
     @RequestMapping("/publish")
     @ResponseBody
     public String publishArticle(Article article) {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        String ft=formatter.format(date);
+        article.setDate(ft);
         boolean res = articleService.publishArticle(article);
         if (res) {
             return "success";
@@ -226,16 +232,18 @@ public class ArticleController {
     }
 
     //删除
-    @RequestMapping("/delete/{id}")
-    //  @ResponseBody
-    public String deleteArticleById(@PathVariable(name = "id") int id) {
-        // ModelAndView modelAndView = new ModelAndView();
-        boolean res = articleService.deleteArticleById(id);
-//        if(res) {
-//            return "success";
-//        }
-//        return "false";
-        return "redirect:/article/page";
+    @RequestMapping("/delete")
+    @ResponseBody
+    public AjaxResponse deleteArticleById(int id) {
+
+        try {
+            boolean res = articleService.deleteArticleById(id);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(),"完成");
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "error", e.toString());
+        }
     }
 
     @RequestMapping("/toEdit/{id}")

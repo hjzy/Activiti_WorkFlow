@@ -2,6 +2,8 @@ package com.imooc.activitiweb.pojo;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class Article {
 
@@ -15,6 +17,7 @@ public class Article {
 
     private int type;
 
+    private String date;
 
     public int getId() {
         return id;

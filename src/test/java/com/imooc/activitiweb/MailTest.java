@@ -9,6 +9,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author yifansun
  * @version 1.0
@@ -35,5 +38,12 @@ public class MailTest {
     public void userOut(){
         securityUtil.logInAs("bajie");
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+    @Test
+    public void Time(){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        String ft=formatter.format(date);
+        System.out.println(ft);
     }
 }

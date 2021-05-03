@@ -22,11 +22,11 @@
 
         <div id="layout">
             <header>
-                <h1 text="${article.title}"></h1>
-                <h2 text="${article.author}"></h2>
+                <h1 id="title"></h1>
+                <h2 id="author"></h2>
             </header>
             <div id="test-editormd">
-                <textarea style="display:none;" text="${article.content}"></textarea>
+                <textarea  style="display:none;" id="content"></textarea>
             </div>
 
         </div>
@@ -36,8 +36,10 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script src="../js/ManualPaging.js"></script>
-<script src="../js/editormd.min.js"></script>
 <script src="../js/examples/jquery.min.js"></script>
+<script src="../js/editormd.min.js"></script>
+
+<!--<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>-->
 <script src="../lib/marked.min.js"></script>
 <script src="../lib/prettify.min.js"></script>
 <script src="../lib/raphael.min.js"></script>
@@ -50,16 +52,25 @@
 
     var testEditor;
 
-    $(function () {
-        testEditor = editormd.markdownToHTML("test-editormd", {
-            width: "90%",
-            height: 700,
-            path: "../lib/",
-            preview: true,
-            watch: true,
-            editor: false,
+
+    function child(obj){
+        $("#title").text(obj.title);
+        $("#author").text(obj.author);
+        $("#content").text(obj.content);
+        console.log(obj.content);
+
+        $(function () {
+            testEditor = editormd.markdownToHTML("test-editormd", {
+                width: "90%",
+                height: 700,
+                path: "../lib/",
+                preview: true,
+                watch: true,
+                editor: false,
+            })
         })
-    })
+    }
+
 
 </script>
 

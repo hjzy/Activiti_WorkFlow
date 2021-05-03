@@ -41,14 +41,15 @@
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-
+        var objData;
         var insTb = table.render({
             elem: '#ProcessDefinitionTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [''],
             url: '' + publicurl + 'article/announcementIndex',
             parseData: function (res) { //res 即为原始返回的数据
-                console.log(res.obj.count,"数据长度")
+                console.log(res.obj.count, "数据长度");
+                objData = res.obj.data;
                 //处理时间
                 // for (var i = 0; i < res.obj.length; i++) {
                 //     for (k in res.obj[i]) {
@@ -67,7 +68,7 @@
                 {field: 'id', width: '10%', title: 'ID', align: "center"},
                 {field: 'title', width: '18%', title: '标题', align: "center"},
                 {field: 'author', title: '作者', width: '15%', align: "center"},
-                // {field: 'processDefinitionId', title: '流程定义编号', width: '18%', align: "center"},
+                {field: 'time', title: '时间', width: '18%', align: "center"},
                 // {field: 'processDefinitionKey', width: '12%', title: '流程定义KEY', align: "center"},
                 // {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
                 {title: '操作', width: '16%', toolbar: '#currentTableBar', align: "center"}
@@ -97,47 +98,72 @@
          */
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            var piID=obj.data.id;
+            var piID = obj.data.id;
             console.log(obj.data);
-            if (obj.event === 'hangUp') {  // 监听挂起操作
-                doHangUp(obj);
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                doDel(obj);
-            } else if (obj.event === 'look') {
-                window.open('' + publicurl + 'bpmnjs/dist/index.html?type=lookBpmn&instanceId=' + data.id + '&deploymentFileUUID=' + data.deploymentId + '&deploymentName=' + encodeURI(data.resourceName) + '');
-            } else if (obj.event === 'lookHistoryData') {
-                $.ajax({
-                    cache: true,
-                    type: "get",
-                    url: '' + publicurl + 'activitiHistory/getHistoryFormData',
-                    data: {'piID':piID},
-                    success: function (res) {
-                        var index = layer.open({
-                            title: '历史进度',
-                            type: 2,
-                            shade: 0.2,
-                            maxmin:true,
-                            shadeClose: true,
-                            area: ['100%', '100%'],
-                            content: '../page/table/DetailListDataShow.html',
-                            success: function (layero, index) {
-                                var iframe = window['layui-layer-iframe' + index];
-                                iframe.child(JSON.stringify(res.obj))
-                            },
-                            end:function(){
-                            }
-                        });
-                        $(window).on("resize", function () {
-                            layer.full(index);
-                        });
+            if (obj.event === 'add') {  // 监听添加操作
+                var index1 = layer.open({
+                    title: '添加公告',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../page/AnnouncementEdit.html',
+                    success: function (layero, index) {
                     },
-                    error: function (res) {
-                        //                 layer.close(dIndex);
-                        layer.alert(res.msg + '<br>' + res.obj, {
-                            icon: 2,
-                            title: "提示"
-                        });
+                    end: function () {
                     }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index1);
+                });
+            } else if (obj.event === 'look') {
+
+                var index2 = layer.open({
+                    title: '查看公告',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../page/AnnouncementView.html',
+                    success: function (layero, index) {
+
+
+                        var iframe = window['layui-layer-iframe' + index];
+                        iframe.child(obj.data);
+                        console.log(obj.data);
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index2);
+
+                });
+
+            } else if (obj.event === 'delete') {
+                console.log(obj.data.id);
+                layer.confirm('您确定要删除当前公告吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        cache : true,
+                        type : "get",
+                        url :  ''+publicurl+'article/delete',
+                        async : false,
+                        data : {id:obj.data.id},
+                        success : function(res) {
+                            layer.msg(res.msg, {icon: 1});
+                            insTb.reload();
+                        },
+                        error : function(res) {
+                            layer.alert(res.msg+'<br>'+res.obj, {
+                                icon: 2,
+                                title:"提示"
+                            });
+                        }
+                    });
+                }, function(){
+
                 });
             }
         });
@@ -151,9 +177,6 @@
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
-
-
-
 
 
     });
