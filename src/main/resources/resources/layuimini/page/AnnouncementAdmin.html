@@ -14,7 +14,7 @@
     <div class="layuimini-main">
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;流程实例列表</span>
+                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;公告列表</span>
             </div>
         </script>
 
@@ -43,42 +43,43 @@
             table = layui.table;
 
         var insTb = table.render({
-            elem: '#AnnouncementTableId',
+            elem: '#ProcessDefinitionTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [''],
-            url: '' + publicurl + 'processInstance/getInstances',
+            url: '' + publicurl + 'article/announcementIndex',
             parseData: function (res) { //res 即为原始返回的数据
-                // console.log(res.obj.length,"数据长度")
+                console.log(res.obj.count,"数据长度")
                 //处理时间
-                for (var i = 0; i < res.obj.length; i++) {
-                    for (k in res.obj[i]) {
-                        res.obj[i]["startDate"] = renderTime(res.obj[i].startDate)
-                    }
-                }
+                // for (var i = 0; i < res.obj.length; i++) {
+                //     for (k in res.obj[i]) {
+                //         res.obj[i]["startDate"] = renderTime(res.obj[i].startDate)
+                //     }
+                // }
                 return {
                     "code": res.status, //解析接口状态,默认成功是0
                     "msg": res.msg, //解析提示文本
-                    "count": res.obj.length, //解析数据长度
-                    "data": res.obj //解析数据列表
+                    "count": res.obj.count, //解析数据长度
+                    "data": res.obj.data //解析数据列表
                 };
             },
             cols: [[
                 {type: "checkbox", width: '5%', align: "center"},
                 {field: 'id', width: '10%', title: 'ID', align: "center"},
-                {field: 'name', width: '18%', title: '实例名称', align: "center"},
-                {field: 'startDate', title: '实例创建时间', width: '15%', align: "center"},
-                {field: 'processDefinitionId', title: '流程定义编号', width: '18%', align: "center"},
-                {field: 'processDefinitionKey', width: '12%', title: '流程定义KEY', align: "center"},
-                {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
+                {field: 'title', width: '18%', title: '标题', align: "center"},
+                {field: 'author', title: '作者', width: '15%', align: "center"},
+                // {field: 'processDefinitionId', title: '流程定义编号', width: '18%', align: "center"},
+                // {field: 'processDefinitionKey', width: '12%', title: '流程定义KEY', align: "center"},
+                // {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
                 {title: '操作', width: '16%', toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
-            page: false,
+            page: true,
             skin: 'line',
             // id:'ProcessDefinitionTableId',
             done: function (res, curr, count) {
-                if (res.code == 1) {
+                console.log(res.code);
+                if (res.code === 1) {
                     layer.alert(res.msg + '<br>' + res.data, {
                         icon: 2,
                         title: "提示"
@@ -90,6 +91,7 @@
             }
         });
         insTb.reload();
+
         /**
          * toolbar监听事件
          */

@@ -5,11 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.activitiweb.pojo.Article;
+import com.imooc.activitiweb.pojo.PageHelperInfo;
 import com.imooc.activitiweb.service.ArticleService;
 import com.imooc.activitiweb.service.impl.ArticleServiceImpl;
+import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.FileUtils;
+import com.imooc.activitiweb.util.GlobalConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +40,8 @@ public class ArticleController {
     public ArticleController(ArticleServiceImpl articleService) {
         this.articleService = articleService;
     }
+
+
 
 
     @RequestMapping("/index")
@@ -162,6 +168,27 @@ public class ArticleController {
 
         return modelAndView;
     }
+
+    //在视图中显示所有文章，并进行分页
+    @ResponseBody
+    @RequestMapping("/announcementIndex")
+    public AjaxResponse announcementIndex(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit) {
+
+        try {
+            PageHelper.startPage(page, limit);
+            List<Article> articleList = articleService.getAllArticle();
+            PageInfo pageInfo = new PageInfo(articleList);
+            Integer count = Math.toIntExact(pageInfo.getTotal());
+
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(),PageHelperInfo.ReturnInfo(pageInfo.getList(),count) );
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "error", e.toString());
+        }
+    }
+
 
     //搜索
     @RequestMapping("/search")

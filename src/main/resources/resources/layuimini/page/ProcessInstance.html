@@ -84,7 +84,7 @@
             skin: 'line',
             // id:'ProcessDefinitionTableId',
             done: function (res, curr, count) {
-                if (res.code == 1) {
+                if (res.code === 1) {
                     layer.alert(res.msg + '<br>' + res.data, {
                         icon: 2,
                         title: "提示"
