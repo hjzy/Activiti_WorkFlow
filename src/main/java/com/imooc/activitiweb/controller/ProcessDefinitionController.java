@@ -29,7 +29,7 @@ import java.util.zip.ZipInputStream;
 
 @RestController
 @RequestMapping("/processDefinition")
-public class     ProcessDefinitionController {
+public class ProcessDefinitionController {
 
     @Autowired
     private RepositoryService repositoryService;
@@ -260,12 +260,13 @@ public class     ProcessDefinitionController {
 
 
     //删除流程定义
+
     /**
+     * @param depID 流程部署id
+     * @param pdID  流程定义id
+     * @return com.imooc.activitiweb.util.AjaxResponse
      * @Description //TODO
      * @Date 2021/4/19 18:26
-     * @param depID 流程部署id
-     * @param pdID 流程定义id
-     * @return com.imooc.activitiweb.util.AjaxResponse
      **/
     @GetMapping(value = "/delDefinition")
     public AjaxResponse delDefinition(@RequestParam("depID") String depID, @RequestParam("pdID") String pdID) {
@@ -285,8 +286,8 @@ public class     ProcessDefinitionController {
         }
     }
 
-    @RequestMapping(value="/download")
-    public String downloads(HttpServletResponse response ,HttpServletRequest request,String fileName,String fileNewName) throws Exception{
+    @RequestMapping(value = "/download")
+    public String downloads(HttpServletResponse response, HttpServletRequest request, String fileName, String fileNewName) throws Exception {
         //要下载的图片地址
 
         String filePath = GlobalConfig.BPMN_PathMapping; // 上传后的路径
@@ -302,22 +303,22 @@ public class     ProcessDefinitionController {
         response.setContentType("multipart/form-data"); //二进制传输数据
         //设置响应头
         response.setHeader("Content-Disposition",
-                "attachment;fileName="+ URLEncoder.encode(fileNewName, "UTF-8"));
+                "attachment;fileName=" + URLEncoder.encode(fileNewName, "UTF-8"));
 
-        File file = new File(filePath,fileName);
+        File file = new File(filePath, fileName);
 
 
         //2、 读取文件--输入流
-        InputStream input=new FileInputStream(file);
+        InputStream input = new FileInputStream(file);
 
 
         //3、 写出文件--输出流
         OutputStream out = response.getOutputStream();
 
-        byte[] buff =new byte[1024];
-        int index=0;
+        byte[] buff = new byte[1024];
+        int index = 0;
         //4、执行 写出操作
-        while((index= input.read(buff))!= -1){
+        while ((index = input.read(buff)) != -1) {
             out.write(buff, 0, index);
             out.flush();
         }

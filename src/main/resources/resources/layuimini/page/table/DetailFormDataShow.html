@@ -103,9 +103,17 @@
                         var formFoot = '</ul>\n' +
                             '</div>\n' +
                             '</li>\n';
-
+                        var input="";
+                        if(dataObj[i].controlType==="file"){
+                            var fileDownloadUrl = dataObj[i].controlValue.split("-_+!")[0];
+                            console.log(fileDownloadUrl);
+                            var fileDownloadName = dataObj[i].controlValue.split("-_+!")[1];
+                             input = '<a  isParm="' + dataObj[i].controlIsParam + '" name="' + dataObj[i].taskKey + '"  value="' + dataObj[i].controlValue + '" controlType="'+dataObj[i].controlType+'"  formLable="' + dataObj[i].controlLable + '"  class="layui-a js_val"   href="/processDefinition/download?fileName=' + fileDownloadUrl + '&fileNewName=' + fileDownloadName + '">点击下载：' + fileDownloadName + '</a>';
+                        }else{
+                            input='<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n'
+                        }
                         formList = '<li>' + '<b>表单字段：</b>' + dataObj[i].controlLabel + '</li>\n' +
-                            '<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n' +
+                            input +
                             '<li>' + '<b>表单类型：</b>' + dataObj[i].controlType + '</li>\n' +
                             '<li>' + '<b>表单参数：</b>' + dataObj[i].controlIsParam + '</li>\n' +
                             '<li>' + '<b>表单key：</b>' + dataObj[i].taskKey + '</li>\n';

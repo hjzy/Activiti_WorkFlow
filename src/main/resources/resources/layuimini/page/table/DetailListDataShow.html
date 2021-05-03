@@ -40,9 +40,15 @@
     </style>
 </head>
 <body>
-<div class="layui-form layuimini-form" id="defineForm">
-    <ul class="layui-timeline" id="timeLineDetail">
-    </ul>
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-form layuimini-form" id="defineForm">
+
+            <ul class="layui-timeline" id="timeLineDetail">
+            </ul>
+        </div>
+    </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
@@ -88,7 +94,7 @@
                     formList = '<li>' + '<b>表单：</b>' + '无' + '</li>\n';
 
                 } else {
-                    formList='<div style="width: 370px; margin: 0;">\n' +
+                    formList='<div style="width: 20%; margin: 0;">\n' +
                         '  <button type="button" class="layui-btn layui-btn-fluid"' +' id="'+dataObj[i].taskKey+'"'+ ' lay-submit lay-filter="saveBtn">点击查看表单或已上传的文件</button>\n' +
                         '</div>'
                     // formList = '<li>' + '<b>表单字段：</b>' + dataObj[i].controlLabel + '</li>\n' +
