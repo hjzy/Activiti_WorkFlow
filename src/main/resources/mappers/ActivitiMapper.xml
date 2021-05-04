@@ -18,6 +18,8 @@
                  RIGHT JOIN ACT_RE_PROCDEF AS p on e.PROC_DEF_ID_ = p.ID_
         WHERE p.NAME_ IS NOT NULL
         GROUP BY p.NAME_
+        ORDER BY PiNUM
+        LIMIT 0,5
     </select>
     <select id="getHistoricProcessInstance" resultType="java.lang.Integer">
         select count(*)
@@ -35,9 +37,11 @@
     </select>
     <select id="getCountListTask" resultType="java.util.HashMap">
         -- 	获取每天产生的任务数
-        SELECT DATE_FORMAT(START_TIME_, '%Y.%m.%d') days, COUNT(ID_)
+        SELECT DATE_FORMAT(START_TIME_,'%Y.%m.%d') days,COUNT(START_TIME_) start,COUNT(END_TIME_) end
         FROM act_hi_taskinst
         GROUP BY days
+        ORDER BY days
+        LIMIT 0,7
     </select>
     <select id="getCountTodayTasks" resultType="java.lang.Integer">
         --  获取今天产生的任务数

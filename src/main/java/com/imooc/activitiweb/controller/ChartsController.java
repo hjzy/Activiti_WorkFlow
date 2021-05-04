@@ -12,9 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Description
  * @author yifansun
  * @version 1.0
- * @Description
+ *
+ *
  * @date 2021/5/4 23:06
  * @email yifan@yifansun.cn
  */
@@ -84,7 +86,7 @@ public class ChartsController {
 
             List<HashMap<String,Object>> hashMapListTask=activitiService.getCountListTask();
 
-            List<List<HashMap<String, Object>>> list=new ArrayList<List<HashMap<String, Object>>>();
+            List<List<HashMap<String, Object>>> list= new ArrayList<>();
             list.add(listMap);
             list.add(hashMapListProcessDefinition);
             list.add(hashMapListTask);

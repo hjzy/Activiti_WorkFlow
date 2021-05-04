@@ -15,16 +15,19 @@
             border-radius: 5px;
             text-align: center;
         }
-        .top-panel > .layui-card-body{
+
+        .top-panel > .layui-card-body {
             height: 60px;
         }
-        .top-panel-number{
-            line-height:60px;
+
+        .top-panel-number {
+            line-height: 60px;
             font-size: 30px;
-            border-right:1px solid #eceff9;
+            border-right: 1px solid #eceff9;
         }
-        .top-panel-tips{
-            line-height:60px;
+
+        .top-panel-tips {
+            line-height: 60px;
             font-size: 12px
         }
     </style>
@@ -41,10 +44,10 @@
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number">
-                            23
+                            <a id="countPD">23</a>
                         </div>
                         <div class="layui-col-xs4 layui-col-md4 top-panel-tips">
-                            <a style="color: #1aa094">今日新增3</a><br>
+                            <a style="color: #1aa094" id="countTPD">今日新增3</a><br>
                         </div>
                     </div>
                 </div>
@@ -54,14 +57,14 @@
         <div class="layui-col-xs12 layui-col-md3">
 
             <div class="layui-card top-panel">
-                <div class="layui-card-header">流程实例数</div>
+                <div class="layui-card-header" >流程实例数</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number">
-                           45
+                            <a id="countPI">45</a>
                         </div>
                         <div class="layui-col-xs4 layui-col-md4 top-panel-tips">
-                            <a style="color: #1aa094">今日新增2</a><br>
+                            <a style="color: #1aa094" id="countTPI">今日新增2</a><br>
                         </div>
                     </div>
                 </div>
@@ -75,10 +78,10 @@
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number">
-                            54
+                            <a id="countT">55</a>
                         </div>
                         <div class="layui-col-xs4 layui-col-md4 top-panel-tips">
-                            <a style="color: #1aa094">今日新增5</a><br>
+                            <a style="color: #1aa094" id="countTT">今日新增5</a><br>
                         </div>
                     </div>
                 </div>
@@ -89,10 +92,10 @@
 
             <div class="layui-card top-panel">
                 <div class="layui-card-header">用户数</div>
-                <div class="layui-card-body">
+                <div class="layui-card-body" >
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number">
-                            6
+                            <a id="countU">6</a>
                         </div>
                         <div class="layui-col-xs4 layui-col-md4 top-panel-tips">
                             <a style="color: #1aa094">今日新增1</a><br>
@@ -134,6 +137,190 @@
             layer = layui.layer,
             echarts = layui.echarts;
 
+
+        var singleData;
+        var countProcessDefinition;
+        var countUsers;
+        var countRunningProcessInstance;
+        var countRunningTask;
+        var historicProcessInstance;
+        var countTodayProcessDefinitionDeployment;
+        var countTodayProcessInstances;
+        var countTodayTasks;
+        var a = [];
+        var b = [];
+        var c = [];
+        var d = [];
+        var e = [];
+        $.ajax({
+            cache: true,
+            type: "get",
+            url: '' + publicurl + 'charts/getCount',
+            async: true,
+            data: null,
+            success: function (res) {
+
+                parseData(res.obj);
+                //console.log(a);
+                // layer.msg(res.msg, {icon: 1});
+            },
+            error: function (res) {
+                layer.alert(res.msg + '<br>' + res.obj, {
+                    icon: 2,
+                    title: "提示"
+                });
+            }
+        });
+
+        function parseData(obj) {
+            singleData = obj[0];
+            //console.log(singleData);
+            countProcessDefinition = singleData[0].countProcessDefinition;
+            //console.log(countProcessDefinition);
+            countUsers = singleData[1].countUsers;
+            countRunningProcessInstance = singleData[2].countRunningProcessInstance;
+            countRunningTask = singleData[3].countRunningTask;
+            historicProcessInstance = singleData[4].historicProcessInstance;
+            countTodayProcessDefinitionDeployment = singleData[5].countTodayProcessDefinitionDeployment;
+            countTodayProcessInstances = singleData[6].countTodayProcessInstances;
+            countTodayTasks = singleData[7].countTodayTasks;
+
+            var hashMapListProcessDefinition = obj[1];
+            //console.log(hashMapListProcessDefinition);
+            var jsonArray=[];
+
+            for (var i = 0; i < hashMapListProcessDefinition.length; i++) {
+                a.push({"value":hashMapListProcessDefinition[i].PiNUM});
+                a.push({"name":hashMapListProcessDefinition[i].NAME_});
+                console.log(a);
+                b[i] = hashMapListProcessDefinition[i].NAME_;
+            }
+            //console.log(a);
+
+            var hashMapListTask = obj[2];
+
+            for (var j = 0; j < hashMapListTask.length; j++) {
+                c[j] = hashMapListTask[j].start;
+                d[j] = hashMapListTask[j].days;
+                e[j]=hashMapListTask[j].end;
+            }
+
+            $("#countPD").text(countProcessDefinition);
+            $("#countTPD").text("今日新增"+countTodayProcessDefinitionDeployment);
+            $("#countT").text(countRunningTask);
+            $("#countTT").text("今日新增"+countTodayTasks);
+            $("#countPI").text(countRunningProcessInstance);
+            $("#countTPI").text("今日新增"+countTodayProcessInstances);
+            $("#countU").text(countUsers);
+
+
+
+
+            var echartsline = echarts.init(document.getElementById('echarts-map'), 'walden');
+            var option = {
+                title: {
+                    text: '过去7天任务创建数和完成数统计'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['任务创建数', '任务完成数'],
+                    top: 30
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: d
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '任务创建数',
+                        type: 'line',
+                        stack: '总量',
+                        data: c
+                    },
+                    {
+                        name: '任务完成数',
+                        type: 'line',
+                        data: e
+                    },
+
+                ]
+            };
+
+            echartsline.setOption(option);
+
+            /**
+             * 玫瑰图表
+             */
+            var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+            var optionPies = {
+                title: {
+                    text: '排名前五流程部署产生实例数',
+                    // left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    // orient: 'vertical',
+                    x: 'center',
+                    data: b,
+                    bottom: 10
+                },
+                series: [
+                    {
+                        name: '实例数据',
+                        type: 'pie',
+                        radius: '46%',
+                        center: ['50%', '45%'],
+                        roseType: 'radius',
+                        labelLine: {
+                            length: 5,
+                            length2: 3
+                        },
+                        data:a,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            echartsPies.setOption(optionPies);
+
+
+        }
+
         /**
          * 报表功能
          */
@@ -154,7 +341,7 @@
             },
             legend: {
                 data: ['请假流程', '报销流程', '出差申请流程', '采购申请流程', '业务审批流程'],
-                top:30
+                top: 30
             },
             toolbox: {
                 feature: {
@@ -242,7 +429,7 @@
                 // orient: 'vertical',
                 x: 'center',
                 data: ['请假流程', '报销流程', '出差申请流程', '采购申请流程', '业务审批流程'],
-                bottom:10
+                bottom: 10
             },
             series: [
                 {
@@ -251,9 +438,9 @@
                     radius: '46%',
                     center: ['50%', '45%'],
                     roseType: 'radius',
-                    labelLine:{
-                        length:5,
-                        length2:3
+                    labelLine: {
+                        length: 5,
+                        length2: 3
                     },
                     data: [
                         {value: 2, name: '请假流程'},
@@ -282,8 +469,8 @@
 
         var optionDataset = {
             legend: {
-                data:["任务创建数","任务完成数"],
-                top:20
+                data: ["任务创建数", "任务完成数"],
+                top: 20
             },
             tooltip: {},
             grid: {
@@ -315,66 +502,11 @@
         /**
          * 过去7天任务创建和任务统计折线图
          */
-        var echartsline = echarts.init(document.getElementById('echarts-map'), 'walden');
 
 
-        var option = {
-            title: {
-                text: '过去7天任务创建数和完成数统计'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow',
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
-                }
-            },
-            legend: {
-                data: ['任务创建数', '任务完成数'],
-                top:30
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['06-26', '06-27', '06-28', '06-29', '06-30', '07-01', '07-02']
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '任务创建数',
-                    type: 'line',
-                    stack: '总量',
-                    data: [12, 13, 10, 13, 9, 23, 21]
-                },
-                {
-                    name: '任务完成数',
-                    type: 'line',
-                    data: [22, 18, 19, 23, 29, 33, 31]
-                },
-
-            ]
-        };
-
-        echartsline.setOption(option);
+        console.log(c);
+        console.log(d);
+        console.log(e);
 
 
         // echarts 窗口缩放自适应
