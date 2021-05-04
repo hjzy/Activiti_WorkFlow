@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.activitiweb.mapper.ActivitiMapper">
+
+
+    <select id="getCountProcessDefinition" resultType="java.lang.Integer">
+        SELECT COUNT(ID_)
+        from ACT_RE_PROCDEF
+    </select>
+
+    <select id="getCountRunningProcessInstance" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT PROC_INST_ID_)
+        from act_ru_execution
+    </select>
+    <select id="getCountProcessDefinitionCreateProcessInstance" resultType="java.util.HashMap">
+        SELECT p.NAME_, COUNT(DISTINCT e.PROC_INST_ID_) as PiNUM
+        from act_ru_execution AS e
+                 RIGHT JOIN ACT_RE_PROCDEF AS p on e.PROC_DEF_ID_ = p.ID_
+        WHERE p.NAME_ IS NOT NULL
+        GROUP BY p.NAME_
+    </select>
+    <select id="getHistoricProcessInstance" resultType="java.lang.Integer">
+        select count(*)
+        from ACT_HI_PROCINST
+        where END_TIME_ is not null
+    </select>
+    <select id="getCountRunningTask" resultType="java.lang.Integer">
+        select count(*)
+        from ACT_HI_TASKINST
+        where END_TIME_ is not NULL
+    </select>
+    <select id="getCountUsers" resultType="java.lang.Integer">
+        select count(*)
+        from user;
+    </select>
+    <select id="getCountListTask" resultType="java.util.HashMap">
+        -- 	获取每天产生的任务数
+        SELECT DATE_FORMAT(START_TIME_, '%Y.%m.%d') days, COUNT(ID_)
+        FROM act_hi_taskinst
+        GROUP BY days
+    </select>
+    <select id="getCountTodayTasks" resultType="java.lang.Integer">
+        --  获取今天产生的任务数
+        SELECT Count(*)
+        FROM act_hi_actinst
+        WHERE DAY(START_TIME_) = TO_DAYS(NOW());
+    </select>
+    <select id="getCountTodayProcessInstances" resultType="java.lang.Integer">
+        -- 	获取今天产生的流程实例数
+        SELECT Count(*)
+        FROM ACT_HI_PROCINST
+        WHERE DAY(START_TIME_) = TO_DAYS(NOW());
+    </select>
+    <select id="getCountTodayProcessDefinitionDeployment" resultType="java.lang.Integer">
+        -- 	获取今天部署的流程定义数
+        SELECT Count(*)
+        FROM act_re_deployment
+        WHERE DAY(DEPLOY_TIME_) = TO_DAYS(NOW());
+    </select>
+
+</mapper>

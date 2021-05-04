@@ -41,15 +41,33 @@ public interface ActivitiMapper {
     List<Act_ru_task> selectName();
 
     //流程定义数
-    //SELECT COUNT(ID_) from ACT_RE_PROCDEF
+    Integer getCountProcessDefinition();
 
     //进行中的流程实例
-    //SELECT COUNT(DISTINCT PROC_INST_ID_) from act_ru_execution
+    Integer getCountRunningProcessInstance();
 
     //查询流程定义产生的流程实例数e
-/*    SELECT p.NAME_,COUNT(DISTINCT e.PROC_INST_ID_) as PiNUM from act_ru_execution AS e
-    RIGHT JOIN ACT_RE_PROCDEF AS p on e.PROC_DEF_ID_ = p.ID_
-    WHERE p.NAME_ IS NOT NULL GROUP BY p.NAME_*/
+    List<HashMap<String,Object>> getCountProcessDefinitionCreateProcessInstance();
 
+    //已完成的流程实例数
+    Integer getHistoricProcessInstance();
+
+    //查询正在运行的任务
+    Integer getCountRunningTask();
+
+    //查询用户数
+    Integer getCountUsers();
+
+    //获取过去七天内创建的任务和完成的任务
+    List<HashMap<String,Object>> getCountListTask();
+
+    //获取今天产生的任务数
+    Integer getCountTodayTasks();
+
+    //获取今天产生的流程实例数
+    Integer getCountTodayProcessInstances();
+
+    //获取今天部署的流程定义数
+    Integer getCountTodayProcessDefinitionDeployment();
 
 }

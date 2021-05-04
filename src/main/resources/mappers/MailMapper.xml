@@ -6,7 +6,5 @@
         select * from user where is_subscribe=1;
     </select>
 
-    <select id="getAllFormData" resultType="com.imooc.activitiweb.pojo.FormData">
 
-    </select>
 </mapper>

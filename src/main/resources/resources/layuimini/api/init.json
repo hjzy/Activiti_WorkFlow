@@ -44,6 +44,12 @@
           "href": "page/HistoryTasks.html",
           "icon": "fa fa-snowflake-o",
           "target": "_self"
+        },
+        {
+          "title": "公告管理",
+          "href": "page/AnnouncementAdmin.html",
+          "icon": "fa fa-snowflake-o",
+          "target": "_self"
         }
       ]
     }

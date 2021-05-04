@@ -1,5 +1,7 @@
 package com.imooc.activitiweb;
 
+import com.imooc.activitiweb.mapper.ActivitiMapper;
+import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.util.MailUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author yifansun
@@ -30,6 +34,11 @@ public class MailTest {
     @Autowired
     SecurityUtil securityUtil;
 
+    @Autowired
+    ActivitiService activitiService;
+
+    @Autowired
+    ActivitiMapper activitiMapper;
     @Test
     public void main() {
         mailUtil.SendMail("怡雪","谢谢你","1959243970@qq.com");
@@ -45,5 +54,14 @@ public class MailTest {
         Date date = new Date(System.currentTimeMillis());
         String ft=formatter.format(date);
         System.out.println(ft);
+    }
+
+    @Test
+    public  void count() {
+        System.out.println(activitiMapper.getCountUsers());
+        List<HashMap<String,Object>> listMapCount1 =activitiService.getCountProcessDefinitionCreateProcessInstance();
+        System.out.println(listMapCount1);
+        int i=activitiMapper.getCountRunningTask();
+        System.out.println(i);
     }
 }
