@@ -1,6 +1,9 @@
 package com.imooc.activitiweb.controller;
 
 import com.imooc.activitiweb.mapper.ActivitiMapper;
+import com.imooc.activitiweb.pojo.UserInfoBean;
+import com.imooc.activitiweb.service.ActivitiService;
+import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +19,21 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    ActivitiMapper mapper;
+    ActivitiService activitiService;
+
+    @Autowired
+    UserService userService;
 
     //获取用户
     @GetMapping(value = "/getUsers")
     public AjaxResponse getUsers() {
         try {
-            List<HashMap<String, Object>> userList = mapper.selectUser();
+            List<HashMap<String,Object>> mapList = userService.getAllUser();
+
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), userList);
-
-
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), mapList);
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "获取用户列表失败", e.toString());

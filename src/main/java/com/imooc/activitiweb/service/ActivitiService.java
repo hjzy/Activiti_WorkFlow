@@ -40,4 +40,5 @@ public interface ActivitiService {    //流程定义数
     //获取今天部署的流程定义数
     Integer getCountTodayProcessDefinitionDeployment();
 
+
 }

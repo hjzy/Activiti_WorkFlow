@@ -50,6 +50,12 @@
           "href": "page/AnnouncementAdmin.html",
           "icon": "fa fa-snowflake-o",
           "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "page/UserAdmin.html",
+          "icon": "fa fa-snowflake-o",
+          "target": "_self"
         }
       ]
     }

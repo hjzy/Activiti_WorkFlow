@@ -34,7 +34,7 @@ public class UserInfoBean implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(roles.split(",")).map(e -> new SimpleGrantedAuthority(e)).collect(Collectors.toSet());
+        return Arrays.stream(roles.split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.imooc.activitiweb.mapper;
 
 
 import com.imooc.activitiweb.pojo.Act_ru_task;
+import com.imooc.activitiweb.pojo.UserInfoBean;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +34,8 @@ public interface ActivitiMapper {
     int DeleteFormData(@Param("PROC_DEF_ID") String PROC_DEF_ID);
 
     //获取用户名
-    @Select("SELECT name,username from user")
-    List<HashMap<String,Object>> selectUser();
+    @Select("SELECT * from user")
+    List<UserInfoBean> selectUser();
 
     //测试
     @Select("select NAME_,TASK_DEF_KEY_ from act_ru_task")
