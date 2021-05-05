@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -18,8 +19,11 @@ public interface UserInfoBeanMapper {
      * @param username
      * @return
      */
-    @Select("select * from user where username = #{username}")
+
     UserInfoBean selectByUsername(@Param("username") String username);
 
     List<HashMap<String,Object>> getAllUsers();
+    int deleteUser(Integer id);
+    List<HashMap<String,Object>> getUserPartInfoByUsername(String username);
+    int updateUserInfo(Map map);
 }

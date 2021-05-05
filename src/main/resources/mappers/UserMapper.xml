@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.UserInfoBeanMapper">
+    <update id="updateUserInfo" parameterType="java.util.HashMap">
+        update moocactiviti.user
+        set name=#{name},
+            email=#{email},
+            username=#{username},
+            is_subscribe=#{isEmail},
+            roles=#{access}
+        where username = #{username}
+    </update>
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete
+        from moocactiviti.user
+        where id = #{id}
+    </delete>
 
 
     <select id="getAllUsers" resultType="java.util.HashMap">
-        select name, username, roles, email, is_subscribe
+        select id, name, username, roles, email, is_subscribe
         from moocactiviti.user
+    </select>
+    <select id="selectByUsername" resultType="com.imooc.activitiweb.pojo.UserInfoBean"
+            parameterType="java.lang.String">
+        select *
+        from user
+        where username = #{username}
+    </select>
+    <select id="getUserPartInfoByUsername" resultType="java.util.HashMap"
+            parameterType="java.lang.String">
+        select *
+        from user
+        where username = #{username}
     </select>
 
 </mapper>

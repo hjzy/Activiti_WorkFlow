@@ -1,5 +1,6 @@
 package com.imooc.activitiweb.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.ActivitiService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -37,6 +39,63 @@ public class UserController {
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "获取用户列表失败", e.toString());
+        }
+    }
+    @RequestMapping("delete")
+    public AjaxResponse deleteUser(Integer id) {
+        try {
+            int result=userService.deleteUser(id);
+
+
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), result);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "删除用户失败", e.toString());
+        }
+    }
+    @RequestMapping("getUserByUsername")
+    public AjaxResponse getUserByUsername(String username) {
+        try {
+
+            List<HashMap<String,Object>> mapList = userService.getUserInfoByUsername(username);
+
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), mapList);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取用户信息失败", e.toString());
+        }
+    }
+    @RequestMapping("updateUser")
+    public AjaxResponse updateUser(String userInfo) {
+        try {
+            System.out.println(userInfo);
+            Map<String,Object> userMap = (Map<String, Object>) JSONObject.parse(userInfo);
+            //List<HashMap<String,Object>> mapList = userService.getUserInfoByUsername(username);
+            Object access = userMap.get("access");
+            if ("教师".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_USER");
+            } else if ("专家".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_EXPERT");
+            } else if ("管理员".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
+            }
+            Object isEmail=userMap.get("isEmail");
+            if("是".equals(isEmail)){
+                userMap.replace("isEmail",1);
+            }else{
+                userMap.replace("isEmail",0);
+            }
+            userService.updateUser(userMap);
+            System.out.println(userMap);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), userMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取用户信息失败", e.toString());
         }
     }
 

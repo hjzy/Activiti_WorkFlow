@@ -4,6 +4,7 @@ import com.imooc.activitiweb.pojo.UserInfoBean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yifansun
@@ -14,4 +15,7 @@ import java.util.List;
  */
 public interface UserService {
     List<HashMap<String,Object>> getAllUser();
+    int deleteUser(Integer id);
+    List<HashMap<String,Object>> getUserInfoByUsername(String username);
+    int updateUser(Map userInfo);
 }

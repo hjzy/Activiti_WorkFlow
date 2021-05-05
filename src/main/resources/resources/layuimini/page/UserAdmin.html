@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        #barcon{text-align: center}
+    </style>
 </head>
 <body>
 <div class="layuimini-container">
@@ -90,12 +93,12 @@
             },
             cols: [[
                 {type: "checkbox", width: '5%', align: "center"},
+                {field: 'id', width: '5%', title: '序号', align: "center"},
                 {field: 'roles', width: '10%', title: '角色', align: "center"},
                 {field: 'name', width: '18%', title: '姓名', align: "center"},
                 {field: 'is_subscribe', title: '订阅', width: '5%', align: "center"},
                 {field: 'email', title: '邮件', width: '18%', align: "center"},
                 {field: 'username', width: '12%', title: '用户名', align: "center"},
-                // {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
                 {title: '操作', width: '16%', toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -167,13 +170,13 @@
 
             } else if (obj.event === 'delete') {
                 console.log(obj.data.id);
-                layer.confirm('您确定要删除当前公告吗？', {
+                layer.confirm('您确定要删除该用户吗？', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.ajax({
                         cache: true,
                         type: "get",
-                        url: '' + publicurl + 'article/delete',
+                        url: '' + publicurl + 'user/delete',
                         async: false,
                         data: {id: obj.data.id},
                         success: function (res) {
