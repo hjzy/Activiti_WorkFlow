@@ -25,7 +25,7 @@
                 <label class="layui-form-label required">教工号</label>
                 <div class="layui-input-block">
                     <input type="text" name="username" lay-verify="required" placeholder="教工号" value=""
-                           class="layui-input" disabled/>
+                           class="layui-input"/>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -52,9 +52,9 @@
             <div class="layui-form-item" pane="">
                 <label class="layui-form-label">权限</label>
                 <div class="layui-input-block">
-                    <input type="radio" id="expert1"  name="access" value="专家" title="专家"  disabled>
-                    <input type="radio" id="teacher1" name="access" value="教师" title="教师" checked disabled>
-                    <input type="radio" id="admin1" name="access" value="管理员" title="管理员"  disabled>
+                    <input type="radio" id="expert"  name="access" value="专家" title="专家" >
+                    <input type="radio" id="teacher" name="access" value="教师" title="教师" checked >
+                    <input type="radio" id="admin" name="access" value="管理员" title="管理员"  disabled>
                     <!--                    <input type="radio" name="sex" value="禁" title="禁用" disabled="">-->
                 </div>
             </div>
@@ -86,102 +86,105 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['jquery', 'form', 'miniTab'], function () {
-        var $ = layui.jquery,
-            form = layui.form,
-            layer = layui.layer,
-            miniTab = layui.miniTab;
-        $("input[name='username']").val(userName);
-        $.ajax({
-            cache: true,
-            type: "get",
-            url: '' + publicurl + 'user/getUserByUsername',
-            async: false,
-            data: {"username": userName},
-            success: function (res) {
+    function child(obj){
+        layui.use(['jquery', 'form', 'miniTab'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                layer = layui.layer,
+                miniTab = layui.miniTab;
+            $("input[name='username']").val(obj.username);
+            $.ajax({
+                cache: true,
+                type: "get",
+                url: '' + publicurl + 'user/getUserByUsername',
+                async: false,
+                data: {"username": obj.username},
+                success: function (res) {
 
-                $("input[name='name']").val(res.obj[0].name);
-                $("input[name='email']").val(res.obj[0].email);
+                    $("input[name='name']").val(res.obj[0].name);
+                    $("input[name='email']").val(res.obj[0].email);
 
-                //$("input[name='username']").val(userName);
-                console.log(res.obj[0].is_subscribe);
-                switch (res.obj[0].is_subscribe) {
-                    case 1:
-                        console.log("yes");
-                        $("#yes1").prop("checked", true);
-                        $("#no1").prop("checked", false);
-                        break;
-                    case 0:
-                        console.log("no");
-                        $("#no1").prop("checked", true);
-                        $("#yes1").prop("checked", false);
-                        break;
-                }
-                console.log(res.obj[0].roles.split(",")[0]);
-
-                switch (res.obj[0].roles.split(",")[0]) {
-                    case "ROLE_ACTIVITI_ADMIN":
-                        $("#admin").prop("checked",true);
-                        $("#teacher").prop("checked", false);
-                        $("#expert").prop("checked", false);
-                        break;
-                    case 'ROLE_ACTIVITI_USER':
-                        $("#teacher").prop("checked", true);
-                        $("#admin").prop("checked",false);
-                        $("#expert").prop("checked", false);
-                        break;
-                    case 'ROLE_ACTIVITI_EXPERT':
-                        $("#expert").prop("checked", true);
-                        $("#admin").prop("checked",false);
-                        $("#teacher").prop("checked", false);
-                        break;
-                    default:
-                        break;
-                }
-
-                layer.msg(res.msg, {icon: 1});
-                form.render();
-            },
-            error: function (res) {
-                layer.alert(res.msg + '<br>' + res.obj, {
-                    icon: 2,
-                    title: "提示"
-                });
-            }
-        });
-
-        //监听提交
-        form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-
-            }, function () {
-                var result=JSON.stringify(data.field)
-                $.ajax({
-                    cache : true,
-                    type : "get",
-                    url :  ''+publicurl+'user/updateUser',
-                    async : false,
-                    data : {userInfo:result},
-                    success : function(res) {
-                        layer.msg(res.msg, {icon: 1});
-
-                    },
-                    error : function(res) {
-                        layer.alert(res.msg+'<br>'+res.obj, {
-                            icon: 2,
-                            title:"提示"
-                        });
+                    //$("input[name='username']").val(userName);
+                    console.log(res.obj[0].is_subscribe);
+                    switch (res.obj[0].is_subscribe) {
+                        case 1:
+                            console.log("yes");
+                            $("#yes1").prop("checked", true);
+                            $("#no1").prop("checked", false);
+                            break;
+                        case 0:
+                            console.log("no");
+                            $("#no1").prop("checked", true);
+                            $("#yes1").prop("checked", false);
+                            break;
                     }
-                });
+                    console.log(res.obj[0].roles.split(",")[0]);
 
-                layer.close(index);
-                miniTab.deleteCurrentByIframe();
+                    switch (res.obj[0].roles.split(",")[0]) {
+                        case "ROLE_ACTIVITI_ADMIN":
+                            $("#admin").prop("checked",true);
+                            $("#teacher").prop("checked", false);
+                            $("#expert").prop("checked", false);
+                            break;
+                        case 'ROLE_ACTIVITI_USER':
+                            $("#teacher").prop("checked", true);
+                            $("#admin").prop("checked",false);
+                            $("#expert").prop("checked", false);
+                            break;
+                        case 'ROLE_ACTIVITI_EXPERT':
+                            $("#expert").prop("checked", true);
+                            $("#admin").prop("checked",false);
+                            $("#teacher").prop("checked", false);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    layer.msg(res.msg, {icon: 1});
+                    form.render();
+                },
+                error: function (res) {
+                    layer.alert(res.msg + '<br>' + res.obj, {
+                        icon: 2,
+                        title: "提示"
+                    });
+                }
             });
-            return false;
-        });
 
-    });
+            //监听提交
+            form.on('submit(saveBtn)', function (data) {
+                var index = layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+
+                }, function () {
+                    var result=JSON.stringify(data.field)
+                    $.ajax({
+                        cache : true,
+                        type : "get",
+                        url :  ''+publicurl+'user/updateUser',
+                        async : false,
+                        data : {userInfo:result},
+                        success : function(res) {
+                            layer.msg(res.msg, {icon: 1});
+
+                        },
+                        error : function(res) {
+                            layer.alert(res.msg+'<br>'+res.obj, {
+                                icon: 2,
+                                title:"提示"
+                            });
+                        }
+                    });
+
+                    layer.close(index);
+                    miniTab.deleteCurrentByIframe();
+                });
+                return false;
+            });
+
+        });
+    }
+
 </script>
 </body>
 </html>

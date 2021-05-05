@@ -52,9 +52,9 @@
                 <div class="layui-form-item" pane="">
                     <label class="layui-form-label">权限</label>
                     <div class="layui-input-block">
-                        <input type="radio" id="expert1"  name="access" value="专家" title="专家"  disabled>
-                        <input type="radio" id="teacher1" name="access" value="教师" title="教师" checked disabled>
-                        <input type="radio" id="admin1" name="access" value="管理员" title="管理员"  disabled>
+                        <input type="radio" id="expert"  name="access" value="专家" title="专家"  disabled>
+                        <input type="radio" id="teacher" name="access" value="教师" title="教师" checked disabled>
+                        <input type="radio" id="admin" name="access" value="管理员" title="管理员"  disabled>
                         <!--                    <input type="radio" name="sex" value="禁" title="禁用" disabled="">-->
                     </div>
                 </div>
@@ -86,6 +86,7 @@
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
+
     layui.use(['jquery', 'form', 'miniTab'], function () {
         var $ = layui.jquery,
             form = layui.form,
