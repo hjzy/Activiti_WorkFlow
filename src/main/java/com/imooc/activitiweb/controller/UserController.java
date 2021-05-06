@@ -8,6 +8,9 @@ import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,12 +29,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     //获取用户
     @GetMapping(value = "/getUsers")
     public AjaxResponse getUsers() {
         try {
-            List<HashMap<String,Object>> mapList = userService.getAllUser();
-
+            List<HashMap<String, Object>> mapList = userService.getAllUser();
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -41,11 +46,11 @@ public class UserController {
                     "获取用户列表失败", e.toString());
         }
     }
-    @RequestMapping("delete")
+
+    @RequestMapping("/delete")
     public AjaxResponse deleteUser(Integer id) {
         try {
-            int result=userService.deleteUser(id);
-
+            int result = userService.deleteUser(id);
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -55,11 +60,12 @@ public class UserController {
                     "删除用户失败", e.toString());
         }
     }
-    @RequestMapping("getUserByUsername")
+
+    @RequestMapping("/getUserByUsername")
     public AjaxResponse getUserByUsername(String username) {
         try {
 
-            List<HashMap<String,Object>> mapList = userService.getUserInfoByUsername(username);
+            List<HashMap<String, Object>> mapList = userService.getUserInfoByUsername(username);
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -69,11 +75,12 @@ public class UserController {
                     "获取用户信息失败", e.toString());
         }
     }
-    @RequestMapping("updateUser")
+
+    @RequestMapping("/updateUser")
     public AjaxResponse updateUser(String userInfo) {
         try {
             System.out.println(userInfo);
-            Map<String,Object> userMap = (Map<String, Object>) JSONObject.parse(userInfo);
+            Map<String, Object> userMap = (Map<String, Object>) JSONObject.parse(userInfo);
             //List<HashMap<String,Object>> mapList = userService.getUserInfoByUsername(username);
             Object access = userMap.get("access");
             if ("教师".equals(access)) {
@@ -83,11 +90,11 @@ public class UserController {
             } else if ("管理员".equals(access)) {
                 userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
             }
-            Object isEmail=userMap.get("isEmail");
-            if("是".equals(isEmail)){
-                userMap.replace("isEmail",1);
-            }else{
-                userMap.replace("isEmail",0);
+            Object isEmail = userMap.get("isEmail");
+            if ("是".equals(isEmail)) {
+                userMap.replace("isEmail", 1);
+            } else {
+                userMap.replace("isEmail", 0);
             }
             userService.updateUser(userMap);
             System.out.println(userMap);
@@ -99,4 +106,38 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/addUser")
+    public AjaxResponse addUser(String userInfo) {
+        try {
+
+            System.out.println(userInfo);
+            Map<String, Object> userMap = (Map<String, java.lang.Object>)JSONObject.parse(userInfo);
+            Object access = userMap.get("access");
+            if ("教师".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_USER");
+            } else if ("专家".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_EXPERT");
+            } else if ("管理员".equals(access)) {
+                userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
+            }
+            Object isEmail = userMap.get("isEmail");
+            if ("是".equals(isEmail)) {
+                userMap.replace("isEmail", 1);
+            } else {
+                userMap.replace("isEmail", 0);
+            }
+            String temp =(String) userMap.get("username");
+            String tempPassword= temp.substring(4);
+            String password = passwordEncoder.encode(tempPassword);
+            userMap.put("password",password);
+            int result= userService.addUser(userMap);
+            System.out.println(userMap);
+            System.out.println(result);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), result);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "添加用户失败", e.toString());
+        }
+    }
 }

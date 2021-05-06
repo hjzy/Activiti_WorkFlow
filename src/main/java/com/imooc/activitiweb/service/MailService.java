@@ -9,6 +9,7 @@ package com.imooc.activitiweb.service;
  */
 public interface MailService {
     public String SendMailByIsSubscribe();
+
     public String SendMail(String subject, String text, String to);
 
     String SendMailToSubscribedUser(String deploymentName);

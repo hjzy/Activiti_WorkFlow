@@ -14,8 +14,13 @@ import java.util.Map;
  * @email yifan@yifansun.cn
  */
 public interface UserService {
-    List<HashMap<String,Object>> getAllUser();
+    List<HashMap<String, Object>> getAllUser();
+
     int deleteUser(Integer id);
-    List<HashMap<String,Object>> getUserInfoByUsername(String username);
+
+    List<HashMap<String, Object>> getUserInfoByUsername(String username);
+
     int updateUser(Map userInfo);
+
+    int addUser(Map<String, Object> map);
 }

@@ -9,7 +9,7 @@ public class ServiceTaskListener2 implements JavaDelegate {
     public void execute(DelegateExecution execution) {
 
         execution.getVariable("aa");
-System.out.println(execution.getVariable("aa"));
+        System.out.println(execution.getVariable("aa"));
 
     }
 }

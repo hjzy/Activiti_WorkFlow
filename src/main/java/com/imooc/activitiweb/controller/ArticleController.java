@@ -44,8 +44,6 @@ public class ArticleController {
     }
 
 
-
-
     @RequestMapping("/index")
     // @ResponseBody
     @ApiOperation(value = "首页初始化", notes = "")
@@ -80,9 +78,9 @@ public class ArticleController {
     @RequestMapping("/publish")
     @ResponseBody
     public String publishArticle(Article article) {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
-        String ft=formatter.format(date);
+        String ft = formatter.format(date);
         article.setDate(ft);
         boolean res = articleService.publishArticle(article);
         if (res) {
@@ -139,41 +137,6 @@ public class ArticleController {
         return modelAndView;
     }
 
-    //在视图中显示所有文章，并进行分页
-    @RequestMapping("/page")
-    public ModelAndView page(Model model, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(defaultValue = "5") Integer pageSize) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("article-admin");
-
-        System.out.println("Page Number>>>>>>>>>>>>" + pageNum);
-        //引入分页查询，在查询之前获取当前页记录
-        PageHelper.startPage(pageNum, pageSize);
-
-        //分页查询
-        List<Article> articleList = articleService.getAllArticle();
-
-        //包装查询结果
-        PageInfo pageInfo = new PageInfo(articleList, 1);
-        pageInfo.setList(articleList);
-        //model.addAttribute("sdj1",sdj1);
-        //model.addAttribute("pageInfo", pageInfo);
-        modelAndView.addObject("pageInfo", pageInfo);
-        //model.addAttribute("addUrl", "http://localhost:8081/markdown/toedit");
-        modelAndView.addObject("addUrl", "/markdown/toedit");
-        //获取当前页
-        modelAndView.addObject("pageNum", pageNum);
-        //获取一页显示的条
-        modelAndView.addObject("pageSize", pageSize);
-        //是否为第一页
-        modelAndView.addObject("isFirstPage", pageInfo.isIsFirstPage());
-        //获得总页数
-        modelAndView.addObject("totalPages", pageInfo.getPages());
-        //是否为最后一页
-        modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
-
-        return modelAndView;
-    }
 
     //在视图中显示所有文章，并进行分页
     @ResponseBody
@@ -188,7 +151,7 @@ public class ArticleController {
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(),PageHelperInfo.ReturnInfo(pageInfo.getList(),count) );
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), PageHelperInfo.ReturnInfo(pageInfo.getList(), count));
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "error", e.toString());
@@ -239,7 +202,7 @@ public class ArticleController {
         try {
             boolean res = articleService.deleteArticleById(id);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(),"完成");
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "error", e.toString());
@@ -265,104 +228,5 @@ public class ArticleController {
         return "redirect:/article/page";
     }
 
-
-    @RequestMapping("/viewByType")
-    // @ResponseBody
-    public ModelAndView viewByType(@RequestParam(value = "type", defaultValue = "1") Integer type, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                   @RequestParam(defaultValue = "5") Integer pageSize) {
-        ModelAndView modelAndView = new ModelAndView();
-        String typeName = null;
-        modelAndView.setViewName("article-view-by-type");
-
-        System.out.println("Page Number>>>>>>>>>>>>" + pageNum);
-        //引入分页查询，在查询之前获取当前页记录
-        PageHelper.startPage(pageNum, pageSize);
-
-        //分页查询
-        List<Article> articleList = articleService.getArticleByType(type);
-
-        //包装查询结果
-        PageInfo pageInfo = new PageInfo(articleList, 1);
-        pageInfo.setList(articleList);
-        //model.addAttribute("sdj1",sdj1);
-        //model.addAttribute("pageInfo", pageInfo);
-        modelAndView.addObject("pageInfo", pageInfo);
-        //model.addAttribute("addUrl", "http://localhost:8081/markdown/toedit");
-        // modelAndView.addObject("addUrl", "/markdown/toedit");
-        //获取当前页
-        modelAndView.addObject("pageNum", pageNum);
-        //获取一页显示的条
-        modelAndView.addObject("pageSize", pageSize);
-        //是否为第一页
-        modelAndView.addObject("isFirstPage", pageInfo.isIsFirstPage());
-        //获得总页数
-        modelAndView.addObject("totalPages", pageInfo.getPages());
-        //是否为最后一页
-        modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
-
-        modelAndView.addObject("type", type);
-        switch (type) {
-            case 1:
-                typeName = "壮学研究";
-                break;
-            case 2:
-                typeName = "壮乡见闻";
-                break;
-            case 3:
-                typeName = "文化艺术";
-                break;
-            case 4:
-                typeName = "历史印记";
-                break;
-            case 5:
-                typeName = "民风民俗";
-                break;
-            case 6:
-                typeName = "壮学文档";
-                break;
-            case 7:
-                typeName = "民族政策";
-                break;
-
-        }
-
-        modelAndView.addObject("typeName", typeName);
-        return modelAndView;
-        // return "redirect:/article/page";
-    }
-
-
-//    @RequestMapping("getEchartsPie")
-//    public ModelAndView getEchartsPieJson(){
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("article-charts");
-//        List<Count> charts=articleService.getArticleCountMapForEcharts();
-//        JSONArray jsonArray = new JSONArray();
-//
-//        for(Count c:charts){
-//            JSONObject json=new JSONObject();
-//            json.put("name",c.getTypeName());
-//            json.put("value",c.getCount());
-//            jsonArray.put(json);
-//        }
-//        modelAndView.addObject("json", jsonArray);
-//        return modelAndView;
-//    }
-
-//    //测试echarts用
-//    @RequestMapping("echarts")
-//    public ModelAndView getEcharts(Model model){
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("article-echarts-test");
-//        String skirt = "裙子";
-//        int nums = 30;
-//      //  List<Count> charts=articleService.getCountForEcharts();
-//        List<Count> charts=articleService.getArticleCountMapForEcharts();
-//      //  System.out.println(charts);
-//
-//        modelAndView.addObject("charts", charts);
-//        modelAndView.addObject("nums", nums);
-//        return modelAndView;
-//    }
 
 }

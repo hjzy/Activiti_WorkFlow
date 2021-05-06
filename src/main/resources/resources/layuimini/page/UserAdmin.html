@@ -17,11 +17,14 @@
     <div class="layuimini-main">
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;公告列表</span>
+                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;用户列表</span>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn floatR" lay-event="addUser">添加用户</button>
             </div>
+
         </script>
 
         <table class="layui-hide" id="ProcessDefinitionTableId" lay-filter="currentTableFilter"></table>
+
         <!--分页-->
         <div class="layui-table-page layui-border-box">
             <div id="barcon" class="page_div" name="barcon"></div>
@@ -129,22 +132,7 @@
             var piID = obj.data.id;
             console.log(obj.data);
             if (obj.event === 'add') {  // 监听添加操作
-                var index1 = layer.open({
-                    title: '添加公告',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../page/AnnouncementEdit.html',
-                    success: function (layero, index) {
-                    },
-                    end: function () {
-                    }
-                });
-                $(window).on("resize", function () {
-                    layer.full(index1);
-                });
+
             } else if (obj.event === 'look') {
 
                 var index2 = layer.open({
@@ -195,7 +183,24 @@
                 });
             }
         });
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'addUser') {
+                var index = layer.open({
+                    title: '添加用户',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../page/UserAdd.html',
+                    success: function (layero, index) {
+                        var iframe = window['layui-layer-iframe' + index];
+                    }
+                });
+            }// 监听添加操作
 
+
+        });
         function renderTime(date) {
             var dateee = new Date(date).toJSON();
             return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')

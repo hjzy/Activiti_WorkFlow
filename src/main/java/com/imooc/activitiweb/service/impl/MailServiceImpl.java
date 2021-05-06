@@ -44,13 +44,13 @@ public class MailServiceImpl implements MailService {
     public String SendMailToSubscribedUser(String deploymentName) {
         List<UserInfoBean> userInfoBeanList = mailMapper.getSubscribeUser();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String time= df.format(new Date());// new Date()为获取当前系统时间
+        String time = df.format(new Date());// new Date()为获取当前系统时间
         for (UserInfoBean bean : userInfoBeanList) {
             String to = bean.getEmail();
             String subject = "【通知】管理员发布了新的项目！";
-            String context ="新项目名称："+deploymentName+"\n"
-                           +"发布时间："+time;
-            mailUtil.SendMail(subject,context,to);
+            String context = "新项目名称：" + deploymentName + "\n"
+                    + "发布时间：" + time;
+            mailUtil.SendMail(subject, context, to);
         }
         return null;
     }

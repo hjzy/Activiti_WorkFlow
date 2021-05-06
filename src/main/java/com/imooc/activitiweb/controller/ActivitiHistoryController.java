@@ -110,13 +110,11 @@ public class ActivitiHistoryController {
                     hashMap.put("endTime", historicTaskInstance.getEndTime());
                     hashMap.put("name", historicTaskInstance.getName());
                     hashMap.put("assignee", historicTaskInstance.getAssignee());
-                    hashMap.put("isFormKey",0);
-                    Iterator<String> it = hashMap.keySet().iterator();
-                    while(it.hasNext()) {
-                        String ii = (String) it.next();
-                        Object value= hashMap.get(ii);
-                        if(value == null){
-                            hashMap.replace(ii,"未知");
+                    hashMap.put("isFormKey", 0);
+                    for (String ii : hashMap.keySet()) {
+                        Object value = hashMap.get(ii);
+                        if (value == null) {
+                            hashMap.replace(ii, "未知");
                         }
 
                     }
@@ -135,14 +133,12 @@ public class ActivitiHistoryController {
                         hashMap.put("controlIsParam", formData.getControl_Is_Param_());
                         hashMap.put("processInstanceId", formData.getPROC_INST_ID_());
                         hashMap.put("taskKey", formData.getFORM_KEY_());
-                        hashMap.put("isFormKey",1);
+                        hashMap.put("isFormKey", 1);
 
-                        Iterator<String> it = hashMap.keySet().iterator();
-                        while(it.hasNext()) {
-                            String ii = (String) it.next();
-                            Object value= hashMap.get(ii);
-                            if(value == null){
-                                hashMap.replace(ii,"未知");
+                        for (String ii : hashMap.keySet()) {
+                            Object value = hashMap.get(ii);
+                            if (value == null) {
+                                hashMap.replace(ii, "未知");
                             }
 
                         }
@@ -319,13 +315,13 @@ public class ActivitiHistoryController {
                     hashMap.put("endTime", historicTaskInstance.getEndTime());
                     hashMap.put("name", historicTaskInstance.getName());
                     hashMap.put("assignee", historicTaskInstance.getAssignee());
-                    hashMap.put("isFormKey",0);
+                    hashMap.put("isFormKey", 0);
                     Iterator<String> it = hashMap.keySet().iterator();
-                    while(it.hasNext()) {
+                    while (it.hasNext()) {
                         String ii = (String) it.next();
-                        Object value= hashMap.get(ii);
-                        if(value == null){
-                            hashMap.replace(ii,"未知");
+                        Object value = hashMap.get(ii);
+                        if (value == null) {
+                            hashMap.replace(ii, "未知");
                         }
 
                     }
@@ -344,14 +340,14 @@ public class ActivitiHistoryController {
                         hashMap.put("controlIsParam", formData.getControl_Is_Param_());
                         hashMap.put("processInstanceId", formData.getPROC_INST_ID_());
                         hashMap.put("taskKey", formData.getFORM_KEY_());
-                        hashMap.put("isFormKey",1);
+                        hashMap.put("isFormKey", 1);
 
                         Iterator<String> it = hashMap.keySet().iterator();
-                        while(it.hasNext()) {
+                        while (it.hasNext()) {
                             String ii = (String) it.next();
-                            Object value= hashMap.get(ii);
-                            if(value == null){
-                                hashMap.replace(ii,"未知");
+                            Object value = hashMap.get(ii);
+                            if (value == null) {
+                                hashMap.replace(ii, "未知");
                             }
 
                         }

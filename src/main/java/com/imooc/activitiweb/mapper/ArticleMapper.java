@@ -22,9 +22,9 @@ public interface ArticleMapper {
 
     public int updateArticle(Article article);
 
-    public  List<Article> getArticleByType(int type);
+    public List<Article> getArticleByType(int type);
 
-    public  List<Article> getArticleByTypeLimitSize(int type,int size);
+    public List<Article> getArticleByTypeLimitSize(int type, int size);
 
 //    public List<Count> getArticleNumForEcharts();
 //

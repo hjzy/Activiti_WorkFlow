@@ -1,4 +1,5 @@
 package com.imooc.activitiweb.util;
+
 /*
  * @Description 枚举与静态常量
  * @Date 2021/4/19 17:44

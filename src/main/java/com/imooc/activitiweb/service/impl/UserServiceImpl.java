@@ -18,11 +18,12 @@ import java.util.Map;
  * @email yifan@yifansun.cn
  */
 @Service
-public class UserServiceImpl implements UserService {
+public  class UserServiceImpl implements UserService {
     @Autowired
     UserInfoBeanMapper userInfoBeanMapper;
+
     @Override
-    public List<HashMap<String,Object>> getAllUser() {
+    public List<HashMap<String, Object>> getAllUser() {
         return userInfoBeanMapper.getAllUsers();
     }
 
@@ -39,5 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUser(Map userInfo) {
         return userInfoBeanMapper.updateUserInfo(userInfo);
+    }
+
+    @Override
+    public int addUser(Map<String, Object> map) {
+        return userInfoBeanMapper.addUser(map);
     }
 }

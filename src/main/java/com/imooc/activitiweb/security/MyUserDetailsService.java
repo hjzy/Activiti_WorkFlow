@@ -36,7 +36,6 @@ public class MyUserDetailsService implements UserDetailsService {
         throw new UsernameNotFoundException("username: " + username + " notfound");*/
 
 
-
 //------------------------根据code写死用户登录------------------------------
 
         /*
@@ -58,7 +57,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         return userInfoBean;
     }
-
 
 
     @Bean

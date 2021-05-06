@@ -1,5 +1,6 @@
 package com.imooc.activitiweb;
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.util.MailUtil;
@@ -10,11 +11,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yifansun
@@ -39,6 +42,8 @@ public class MailTest {
 
     @Autowired
     ActivitiMapper activitiMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Test
     public void main() {
         mailUtil.SendMail("怡雪","谢谢你","1959243970@qq.com");
@@ -64,5 +69,34 @@ public class MailTest {
         int i=activitiMapper.getCountRunningTask();
         System.out.println(i);
     }
+    @Test
+    public void  encode(){
 
+        String userInfo="{\"username\":\"1700301127\",\"name\":\"孙轶凡\",\"email\":\"yifan.hjzy@gmail.com\",\"isEmail\":\"是\",\"access\":\"教师\"}";
+        System.out.println(userInfo);
+        Map<String, Object> userMap = (Map<String, Object>) JSONObject.parse(userInfo);
+        Object access = userMap.get("access");
+        if ("教师".equals(access)) {
+            userMap.replace("access", "ROLE_ACTIVITI_USER");
+        } else if ("专家".equals(access)) {
+            userMap.replace("access", "ROLE_ACTIVITI_EXPERT");
+        } else if ("管理员".equals(access)) {
+            userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
+        }
+        Object isEmail = userMap.get("isEmail");
+        if ("是".equals(isEmail)) {
+            userMap.replace("isEmail", 1);
+        } else {
+            userMap.replace("isEmail", 0);
+        }
+        String temp =(String) userMap.get("username");
+        String tempPassword= temp.substring(4);
+        String password = passwordEncoder.encode(tempPassword);
+        userMap.put("password",password);
+        // int result= userService.addUser(userMap);
+        System.out.println(userMap);
+
+
+
+    }
 }

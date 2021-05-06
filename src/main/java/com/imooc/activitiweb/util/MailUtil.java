@@ -29,7 +29,7 @@ public class MailUtil {
             mailMessage.setTo(to);
             mailMessage.setFrom("2540584259@qq.com");
             javaMailSender.send(mailMessage);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

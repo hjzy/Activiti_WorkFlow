@@ -1,7 +1,6 @@
 package com.imooc.activitiweb.mapper;
 
 
-
 import com.imooc.activitiweb.pojo.Act_ru_task;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import org.apache.ibatis.annotations.*;
@@ -17,7 +16,7 @@ public interface ActivitiMapper {
 
     //读取表单
     @Select("SELECT Control_ID_,Control_VALUE_ from formdata where PROC_INST_ID_ = #{PROC_INST_ID}")
-    List<HashMap<String,Object>> selectFormData(@Param("PROC_INST_ID") String PROC_INST_ID);
+    List<HashMap<String, Object>> selectFormData(@Param("PROC_INST_ID") String PROC_INST_ID);
 
 
     //写入表单
@@ -48,7 +47,7 @@ public interface ActivitiMapper {
     Integer getCountRunningProcessInstance();
 
     //查询流程定义产生的流程实例数e
-    List<HashMap<String,Object>> getCountProcessDefinitionCreateProcessInstance();
+    List<HashMap<String, Object>> getCountProcessDefinitionCreateProcessInstance();
 
     //已完成的流程实例数
     Integer getHistoricProcessInstance();
@@ -60,7 +59,7 @@ public interface ActivitiMapper {
     Integer getCountUsers();
 
     //获取过去七天内创建的任务和完成的任务
-    List<HashMap<String,Object>> getCountListTask();
+    List<HashMap<String, Object>> getCountListTask();
 
     //获取今天产生的任务数
     Integer getCountTodayTasks();

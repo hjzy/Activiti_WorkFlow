@@ -122,20 +122,6 @@ public class TaskController {
                 securityUtil.logInAs("wukong");
             }
 
-
-/*            @RequestMapping("/approval_msg")
-            @ResponseBody
-            public JsonResponse approvalPass(String id,String msg){
-                JsonResponse jsonResponse = new JsonResponse();
-
-                if(StringUtil.isNotEmpty(msg)){
-                    String str= msg.replace("\"", "");
-                    taskService.setVariable(id,"msg",str);
-                }
-                taskService.complete(id);
-                return jsonResponse;
-            }*/
-
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
         } catch (Exception e) {
@@ -281,17 +267,16 @@ public class TaskController {
                 String[] formDataItem = controlItem.split("-_!");
 
                 HashMap<String, Object> hashMap = new HashMap<>();
-                if(!formDataItem[1].equals(""))
-                {
+                if (!formDataItem[1].equals("")) {
 
                     hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());//流程定义id
                     hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());//流程实例id
                     hashMap.put("FORM_KEY_", task.getFormKey());//表单key
                     hashMap.put("Control_ID_", formDataItem[0]);//控件id
                     hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
-                    hashMap.put("Control_Is_Param_",formDataItem[2]);//控件类型
-                    hashMap.put("Control_Label",formDataItem[3]);
-                    hashMap.put("Control_Type",formDataItem[4]);
+                    hashMap.put("Control_Is_Param_", formDataItem[2]);//控件类型
+                    hashMap.put("Control_Label", formDataItem[3]);
+                    hashMap.put("Control_Type", formDataItem[4]);
                     listMap.add(hashMap);
                     System.out.println(formDataItem[3]);
                     //构建参数集合
@@ -333,7 +318,7 @@ public class TaskController {
             }
 
             //写入数据库
-            if(listMap.size() != 0){
+            if (listMap.size() != 0) {
                 int result = mapper.insertFormData(listMap);
             }
 
@@ -344,8 +329,6 @@ public class TaskController {
                     "失败", e.toString());
         }
     }
-
-
 
 
 }

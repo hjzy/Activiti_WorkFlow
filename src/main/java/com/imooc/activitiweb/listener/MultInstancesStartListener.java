@@ -16,7 +16,7 @@ public class MultInstancesStartListener implements ExecutionListener {
         assigneeList.add("wukong");
         assigneeList.add("salaboy");
 
-        execution.setVariable("assigneeList",assigneeList);
+        execution.setVariable("assigneeList", assigneeList);
 
         //execution.setVariable("isPass",0);
 

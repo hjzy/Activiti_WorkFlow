@@ -17,7 +17,7 @@ public interface ActivitiService {    //流程定义数
     Integer getCountRunningProcessInstance();
 
     //查询流程定义产生的流程实例数e
-    List<HashMap<String,Object>> getCountProcessDefinitionCreateProcessInstance();
+    List<HashMap<String, Object>> getCountProcessDefinitionCreateProcessInstance();
 
     //已完成的流程实例数
     Integer getHistoricProcessInstance();
@@ -29,7 +29,7 @@ public interface ActivitiService {    //流程定义数
     Integer getCountUsers();
 
     //获取过去七天内创建的任务和完成的任务
-    List<HashMap<String,Object>> getCountListTask();
+    List<HashMap<String, Object>> getCountListTask();
 
     //获取今天产生的任务数
     Integer getCountTodayTasks();

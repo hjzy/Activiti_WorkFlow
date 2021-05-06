@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component("loginFailureHandler")
-public class LoginFailureHandler implements AuthenticationFailureHandler{
+public class LoginFailureHandler implements AuthenticationFailureHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -30,11 +30,10 @@ public class LoginFailureHandler implements AuthenticationFailureHandler{
         httpServletResponse.setContentType("application/json;charset=UTF-8");
 
 
-
         httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
                 AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
-                GlobalConfig.ResponseCode.ERROR.getDesc(),
-                        "登录失败："+e.getMessage()
+                        GlobalConfig.ResponseCode.ERROR.getDesc(),
+                        "登录失败：" + e.getMessage()
                 )));
     }
 }

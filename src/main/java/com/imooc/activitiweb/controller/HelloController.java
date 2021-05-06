@@ -46,7 +46,6 @@ public class HelloController {
     private ProcessRuntime processRuntime;
 
 
-
     @ResponseBody
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String say() {
@@ -60,7 +59,7 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/me2", method = RequestMethod.GET)
-    public Object user(@AuthenticationPrincipal UserInfoBean UuserInfoBean){
+    public Object user(@AuthenticationPrincipal UserInfoBean UuserInfoBean) {
 
         return UuserInfoBean.name;
     }
@@ -68,7 +67,7 @@ public class HelloController {
     @ResponseBody
     @RequestMapping(value = "/task", method = RequestMethod.GET)
     public Object gettask() {
-        String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         securityUtil.logInAs(userName);
         try {
             Page<Task> tasks = taskRuntime.tasks(Pageable.of(0, 10));
@@ -98,7 +97,7 @@ public class HelloController {
         try {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");
-            }else{
+            } else {
                 securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());
             }
 
@@ -111,7 +110,7 @@ public class HelloController {
                     .withBusinessKey("自定义BusinessKey")
                     .build());
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), processInstance.getName()+"；"+processInstance.getId());
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), processInstance.getName() + "；" + processInstance.getId());
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "创建流程实例失败", e.toString());
@@ -139,7 +138,6 @@ public class HelloController {
                     "完成失败", e.toString());
         }
     }
-
 
 
 }

@@ -22,6 +22,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         logger.info("登录成功1");
@@ -34,7 +35,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
                 AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+                        GlobalConfig.ResponseCode.SUCCESS.getDesc(),
                         authentication.getName()
                 )));
     }
