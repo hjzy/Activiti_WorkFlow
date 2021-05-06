@@ -34,4 +34,6 @@ public interface UserInfoBeanMapper {
     int addUser(Map<String, Object> map);
 
     int resetPassword(Map<String, Object> map);
+
+
 }

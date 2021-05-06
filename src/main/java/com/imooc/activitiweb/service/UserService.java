@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.service;
 
 import com.imooc.activitiweb.pojo.UserInfoBean;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.Map;
  * @email yifan@yifansun.cn
  */
 public interface UserService {
+
+    UserInfoBean selectByUsername(@Param("username") String username);
     List<HashMap<String, Object>> getAllUser();
 
     int deleteUser(Integer id);

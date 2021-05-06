@@ -23,6 +23,11 @@ public  class UserServiceImpl implements UserService {
     UserInfoBeanMapper userInfoBeanMapper;
 
     @Override
+    public UserInfoBean selectByUsername(String username) {
+        return userInfoBeanMapper.selectByUsername(username);
+    }
+
+    @Override
     public List<HashMap<String, Object>> getAllUser() {
         return userInfoBeanMapper.getAllUsers();
     }

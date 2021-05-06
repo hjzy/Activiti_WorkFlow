@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.ActivitiService;
@@ -31,6 +32,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    SecurityUtil securityUtil;
 
     //获取用户
     @GetMapping(value = "/getUsers")
@@ -157,6 +161,28 @@ public class UserController {
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "重置密码失败", e.toString());
+        }
+    }
+
+    @RequestMapping("/updatePassword")
+    public AjaxResponse updatePassword(String passwordInfo){
+        try {
+            Map<String, Object> passwordMap = (Map<String, java.lang.Object>)JSONObject.parse(passwordInfo);
+            System.out.println(passwordMap);
+            UserInfoBean user=userService.selectByUsername((String) passwordMap.get("username"));
+            if(user.getPassword().equals((String)passwordMap.get("old_password"))){
+                passwordMap.put("password",passwordMap.get("new_password"));
+                userService.resetPassword(passwordMap);
+                return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                        GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
+            }else{
+                return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                       "您输入的密码不正确，请重新输入！", null);
+            }
+
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "更改密码失败", e.toString());
         }
     }
 }
