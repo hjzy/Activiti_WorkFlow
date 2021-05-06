@@ -7,12 +7,19 @@
     </insert>
 
     <update id="updateUserInfo" parameterType="java.util.Map">
+        #更新用户信息
         update moocactiviti.user
         set name=#{name},
             email=#{email},
             username=#{username},
             is_subscribe=#{isEmail},
             roles=#{access}
+        where username = #{username}
+    </update>
+    <update id="resetPassword" parameterType="java.util.Map">
+        -- 重置密码
+        update moocactiviti.user
+        set password=#{password}
         where username = #{username}
     </update>
     <delete id="deleteUser" parameterType="java.lang.String">

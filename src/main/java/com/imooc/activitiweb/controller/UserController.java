@@ -140,4 +140,23 @@ public class UserController {
                     "添加用户失败", e.toString());
         }
     }
+
+    @RequestMapping("/resetPassword")
+    public AjaxResponse resetPassword(String userInfo){
+
+        try {
+            Map<String, Object> userMap = (Map<String, java.lang.Object>)JSONObject.parse(userInfo);
+            String temp =(String) userMap.get("username");
+            String tempPassword= temp.substring(4);
+            String password = passwordEncoder.encode(tempPassword);
+            userMap.put("password",password);
+            System.out.println(userMap);
+            int result=userService.resetPassword(userMap);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "重置密码失败", e.toString());
+        }
+    }
 }

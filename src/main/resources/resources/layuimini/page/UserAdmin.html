@@ -34,6 +34,7 @@
             <!--      <a class="layui-btn layui-btn-normal layui-btn-xs data-count-add" lay-event="add">添加</a>-->
             <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-reset" lay-event="reset">重置密码</a>
         </script>
 
     </div>
@@ -54,9 +55,7 @@
             defaultToolbar: [''],
             url: '' + publicurl + 'user/getUsers',
             parseData: function (res) { //res 即为原始返回的数据
-                console.log(res.obj.length, "数据长度");
                 objData = res.obj;
-                console.log(objData);
                 //处理时间
                 for (var i = 0; i < res.obj.length; i++) {
                     switch (res.obj[i].roles.split(",")[0]) {
@@ -73,7 +72,6 @@
                             break;
                     }
 
-                    console.log(res.obj[i].roles.split(",")[0]);
                     //res.obj[i]["startDate"] = renderTime(res.obj[i].startDate)
 
                 }
@@ -110,7 +108,6 @@
             skin: 'line',
             // id:'ProcessDefinitionTableId',
             done: function (res, curr, count) {
-                console.log(res.code);
                 if (res.code === 1) {
                     layer.alert(res.msg + '<br>' + res.data, {
                         icon: 2,
@@ -131,8 +128,23 @@
             var data = obj.data;
             var piID = obj.data.id;
             console.log(obj.data);
-            if (obj.event === 'add') {  // 监听添加操作
-
+            if (obj.event === 'reset') {  // 监听添加操作
+                $.ajax({
+                    cache: true,
+                    type: "get",
+                    url: '' + publicurl + 'user/resetPassword',
+                    async: false,
+                    data: {userInfo: JSON.stringify(obj.data)},
+                    success: function (res) {
+                        layer.msg(res.msg, {icon: 1});
+                    },
+                    error: function (res) {
+                        layer.alert(res.msg + '<br>' + res.obj, {
+                            icon: 2,
+                            title: "提示"
+                        });
+                    }
+                });
             } else if (obj.event === 'look') {
 
                 var index2 = layer.open({
@@ -144,11 +156,8 @@
                     area: ['100%', '100%'],
                     content: '../page/User-Setting-For-Admin.html',
                     success: function (layero, index) {
-
-
                         var iframe = window['layui-layer-iframe' + index];
                         iframe.child(obj.data);
-                        console.log(obj.data);
                     }
                 });
                 $(window).on("resize", function () {
@@ -157,7 +166,6 @@
                 });
 
             } else if (obj.event === 'delete') {
-                console.log(obj.data.id);
                 layer.confirm('您确定要删除该用户吗？', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {

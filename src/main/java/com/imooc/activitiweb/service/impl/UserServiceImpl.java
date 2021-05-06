@@ -46,4 +46,9 @@ public  class UserServiceImpl implements UserService {
     public int addUser(Map<String, Object> map) {
         return userInfoBeanMapper.addUser(map);
     }
+
+    @Override
+    public int resetPassword(Map<String, Object> map) {
+        return userInfoBeanMapper.resetPassword(map);
+    }
 }

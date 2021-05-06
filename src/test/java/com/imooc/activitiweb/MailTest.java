@@ -73,27 +73,14 @@ public class MailTest {
     public void  encode(){
 
         String userInfo="{\"username\":\"1700301127\",\"name\":\"孙轶凡\",\"email\":\"yifan.hjzy@gmail.com\",\"isEmail\":\"是\",\"access\":\"教师\"}";
-        System.out.println(userInfo);
-        Map<String, Object> userMap = (Map<String, Object>) JSONObject.parse(userInfo);
-        Object access = userMap.get("access");
-        if ("教师".equals(access)) {
-            userMap.replace("access", "ROLE_ACTIVITI_USER");
-        } else if ("专家".equals(access)) {
-            userMap.replace("access", "ROLE_ACTIVITI_EXPERT");
-        } else if ("管理员".equals(access)) {
-            userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
-        }
-        Object isEmail = userMap.get("isEmail");
-        if ("是".equals(isEmail)) {
-            userMap.replace("isEmail", 1);
-        } else {
-            userMap.replace("isEmail", 0);
-        }
+        Map<String, Object> userMap = (Map<String, java.lang.Object>)JSONObject.parse(userInfo);
+
         String temp =(String) userMap.get("username");
         String tempPassword= temp.substring(4);
         String password = passwordEncoder.encode(tempPassword);
         userMap.put("password",password);
-        // int result= userService.addUser(userMap);
+        System.out.println(userMap);
+        //int result= userService.addUser(userMap);
         System.out.println(userMap);
 
 
