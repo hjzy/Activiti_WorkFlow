@@ -22,6 +22,15 @@ public class PageHelperInfo {
      */
     private Integer count;
 
+    public PageHelperInfo(Object data, Integer count) {
+        this.data = data;
+        this.count = count;
+    }
+
+    public static PageHelperInfo ReturnInfo(Object data, Integer count) {
+        return new PageHelperInfo(data, count);
+    }
+
     public Object getData() {
         return data;
     }
@@ -34,17 +43,7 @@ public class PageHelperInfo {
         return count;
     }
 
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public PageHelperInfo(Object data, Integer count) {
-        this.data = data;
-        this.count = count;
-    }
-
-    public static PageHelperInfo ReturnInfo(Object data, Integer count) {
-        return new PageHelperInfo(data, count);
     }
 }

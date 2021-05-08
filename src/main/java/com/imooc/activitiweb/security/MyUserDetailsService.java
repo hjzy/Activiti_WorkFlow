@@ -17,10 +17,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyUserDetailsService implements UserDetailsService {
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     UserInfoBeanMapper userInfoBeanMapper;
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

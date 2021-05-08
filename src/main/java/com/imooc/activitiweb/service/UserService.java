@@ -17,6 +17,7 @@ import java.util.Map;
 public interface UserService {
 
     UserInfoBean selectByUsername(@Param("username") String username);
+
     List<HashMap<String, Object>> getAllUser();
 
     int deleteUser(Integer id);

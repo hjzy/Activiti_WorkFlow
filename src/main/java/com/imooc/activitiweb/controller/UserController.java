@@ -115,7 +115,7 @@ public class UserController {
         try {
 
             System.out.println(userInfo);
-            Map<String, Object> userMap = (Map<String, java.lang.Object>)JSONObject.parse(userInfo);
+            Map<String, Object> userMap = (Map<String, java.lang.Object>) JSONObject.parse(userInfo);
             Object access = userMap.get("access");
             if ("教师".equals(access)) {
                 userMap.replace("access", "ROLE_ACTIVITI_USER");
@@ -130,11 +130,11 @@ public class UserController {
             } else {
                 userMap.replace("isEmail", 0);
             }
-            String temp =(String) userMap.get("username");
-            String tempPassword= temp.substring(4);
+            String temp = (String) userMap.get("username");
+            String tempPassword = temp.substring(4);
             String password = passwordEncoder.encode(tempPassword);
-            userMap.put("password",password);
-            int result= userService.addUser(userMap);
+            userMap.put("password", password);
+            int result = userService.addUser(userMap);
             System.out.println(userMap);
             System.out.println(result);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -146,16 +146,16 @@ public class UserController {
     }
 
     @RequestMapping("/resetPassword")
-    public AjaxResponse resetPassword(String userInfo){
+    public AjaxResponse resetPassword(String userInfo) {
 
         try {
-            Map<String, Object> userMap = (Map<String, java.lang.Object>)JSONObject.parse(userInfo);
-            String temp =(String) userMap.get("username");
-            String tempPassword= temp.substring(4);
+            Map<String, Object> userMap = (Map<String, java.lang.Object>) JSONObject.parse(userInfo);
+            String temp = (String) userMap.get("username");
+            String tempPassword = temp.substring(4);
             String password = passwordEncoder.encode(tempPassword);
-            userMap.put("password",password);
+            userMap.put("password", password);
             System.out.println(userMap);
-            int result=userService.resetPassword(userMap);
+            int result = userService.resetPassword(userMap);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
         } catch (Exception e) {
@@ -165,19 +165,19 @@ public class UserController {
     }
 
     @RequestMapping("/updatePassword")
-    public AjaxResponse updatePassword(String passwordInfo){
+    public AjaxResponse updatePassword(String passwordInfo) {
         try {
-            Map<String, Object> passwordMap = (Map<String, java.lang.Object>)JSONObject.parse(passwordInfo);
+            Map<String, Object> passwordMap = (Map<String, java.lang.Object>) JSONObject.parse(passwordInfo);
             System.out.println(passwordMap);
-            UserInfoBean user=userService.selectByUsername((String) passwordMap.get("username"));
-            if(user.getPassword().equals((String)passwordMap.get("old_password"))){
-                passwordMap.put("password",passwordMap.get("new_password"));
+            UserInfoBean user = userService.selectByUsername((String) passwordMap.get("username"));
+            if (user.getPassword().equals((String) passwordMap.get("old_password"))) {
+                passwordMap.put("password", passwordMap.get("new_password"));
                 userService.resetPassword(passwordMap);
                 return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                         GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
-            }else{
+            } else {
                 return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                       "您输入的密码不正确，请重新输入！", null);
+                        "您输入的密码不正确，请重新输入！", null);
             }
 
         } catch (Exception e) {

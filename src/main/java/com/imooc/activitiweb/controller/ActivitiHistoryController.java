@@ -27,16 +27,13 @@ import java.util.*;
 public class ActivitiHistoryController {
 
     @Autowired
+    HistoryFormService historyFormService;
+    @Autowired
     private SecurityUtil securityUtil;
-
     @Autowired
     private RepositoryService repositoryService;
-
     @Autowired
     private HistoryService historyService;
-    @Autowired
-    HistoryFormService historyFormService;
-
 
     //根据用户名查询任务
     @GetMapping(value = "/getInstancesByUserName")

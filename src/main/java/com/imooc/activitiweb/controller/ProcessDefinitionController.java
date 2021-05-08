@@ -32,16 +32,13 @@ import java.util.zip.ZipInputStream;
 public class ProcessDefinitionController {
 
     @Autowired
+    ActivitiMapper mapper;
+    @Autowired
     private RepositoryService repositoryService;
-
     @Autowired
     private ProcessRuntime processRuntime;
-
     @Autowired
     private SecurityUtil securityUtil;
-
-    @Autowired
-    ActivitiMapper mapper;
 
     //添加流程定义->上传BPMN
     @PostMapping(value = "/uploadStreamAndDeployment")
@@ -181,7 +178,6 @@ public class ProcessDefinitionController {
     }*/
 
 
-    //import org.activiti.engine.RepositoryService;
     //获取流程定义信息
     @GetMapping(value = "/getDefinitions")
     public AjaxResponse getDefinitions() {

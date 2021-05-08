@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoBean implements UserDetails {
-    private Long id;
     public String name;
+    private Long id;
     private String address;
     private String username;
     private String password;

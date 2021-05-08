@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        #barcon{text-align: center}
+		#searchDiv{text-align: right;}
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;搜索结果</span>
+            </div>
+<!--			<div id="searchDiv">-->
+<!--				<div class="layui-input-inline">-->
+<!--				    <input type="text" id="titleString" name="titleString" lay-verify="required" placeholder="请输入标题关键字" autocomplete="off" class="layui-input">-->
+<!--				</div>-->
+<!--                <i class="fa fa-search" id="searchBtn"></i>-->
+<!--			</div>-->
+
+        </script>
+
+        <table class="layui-hide" id="ProcessDefinitionTableId" lay-filter="currentTableFilter"></table>
+        <!--分页-->
+        <div class="layui-table-page layui-border-box">
+            <div id="barcon" class="page_div" name="barcon"></div>
+        </div>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-add" lay-event="add">添加</a>
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/ManualPaging.js"></script>
+<script>
+
+    function child(str){
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+            var objData;
+            var insTb = table.render({
+                elem: '#ProcessDefinitionTableId',
+                toolbar: '#toolbarDemo',
+                defaultToolbar: [''],
+                url: '' + publicurl + 'article/announcementSearchIndex?titleStr='+str,
+                parseData: function (res) { //res 即为原始返回的数据
+                    console.log(res.obj.count, "数据长度");
+                    objData = res.obj.data;
+                    return {
+                        "code": res.status, //解析接口状态,默认成功是0
+                        "msg": res.msg, //解析提示文本
+                        "count": res.obj.count, //解析数据长度
+                        "data": res.obj.data //解析数据列表
+                    };
+                },
+                cols: [[
+                    {type: "checkbox", width: '5%', align: "center"},
+                    {field: 'id', width: '10%', title: 'ID', align: "center"},
+                    {field: 'title', width: '18%', title: '标题', align: "center"},
+                    {field: 'author', title: '作者', width: '15%', align: "center"},
+                    {field: 'time', title: '时间', width: '18%', align: "center"},
+                    // {field: 'processDefinitionKey', width: '12%', title: '流程定义KEY', align: "center"},
+                    // {field: 'processDefinitionVersion', width: '5%', title: '版本', align: "center"},
+                    {title: '操作', width: '16%', toolbar: '#currentTableBar', align: "center"}
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 10,
+                page: true,
+                skin: 'line',
+                // id:'ProcessDefinitionTableId',
+                done: function (res, curr, count) {
+                    console.log(res.code);
+                    if (res.code === 1) {
+                        layer.alert(res.msg + '<br>' + res.data, {
+                            icon: 2,
+                            title: "提示"
+                        });
+                    }
+                    if (count > 0) {
+                        goPage(1);
+                    }
+                }
+            });
+            insTb.reload();
+
+            /**
+             * toolbar监听事件
+             */
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                var piID = obj.data.id;
+                console.log(obj.data);
+                if (obj.event === 'add') {  // 监听添加操作
+                    var index1 = layer.open({
+                        title: '添加公告',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/AnnouncementEdit.html',
+                        success: function (layero, index) {
+                        },
+                        end: function () {
+                        }
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index1);
+                    });
+                } else if (obj.event === 'look') {
+
+                    var index2 = layer.open({
+                        title: '查看公告',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/AnnouncementView.html',
+                        success: function (layero, index) {
+
+
+                            var iframe = window['layui-layer-iframe' + index];
+                            iframe.child(obj.data);
+                            console.log(obj.data);
+                        }
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index2);
+
+                    });
+
+                } else if (obj.event === 'delete') {
+                    console.log(obj.data.id);
+                    layer.confirm('您确定要删除当前公告吗？', {
+                        btn: ['确定','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            cache : true,
+                            type : "get",
+                            url :  ''+publicurl+'article/delete',
+                            async : false,
+                            data : {id:obj.data.id},
+                            success : function(res) {
+                                layer.msg(res.msg, {icon: 1});
+                                insTb.reload();
+                            },
+                            error : function(res) {
+                                layer.alert(res.msg+'<br>'+res.obj, {
+                                    icon: 2,
+                                    title:"提示"
+                                });
+                            }
+                        });
+                    }, function(){
+
+                    });
+                }
+            });
+
+            function renderTime(date) {
+                var dateee = new Date(date).toJSON();
+                return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+            }
+
+            //监听表格复选框选择
+            table.on('checkbox(currentTableFilter)', function (obj) {
+                console.log(obj)
+            });
+
+        });
+    }
+
+</script>
+
+</body>
+</html>

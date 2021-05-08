@@ -7,9 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
     <style>
         #barcon{text-align: center}
+		#searchDiv{text-align: right;}
     </style>
 </head>
 <body>
@@ -19,6 +21,13 @@
             <div class="layui-btn-container">
                 <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;公告列表</span>
             </div>
+			<div id="searchDiv">
+				<div class="layui-input-inline">
+				    <input type="text" id="titleString" name="titleString" lay-verify="required" placeholder="请输入标题关键字" autocomplete="off" class="layui-input">
+				</div>
+                <i class="fa fa-search" id="searchBtn"></i>
+			</div>
+
         </script>
 
         <table class="layui-hide" id="ProcessDefinitionTableId" lay-filter="currentTableFilter"></table>
@@ -180,9 +189,46 @@
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
+        $("#searchBtn").click(function (){
+            let str= $("#titleString").val();
+            var index3 = layer.open({
+                title: '查看公告',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['100%', '100%'],
+                content: '../page/AnnouncementSearchAdmin.html',
+                success: function (layero, index) {
+                    var iframe = window['layui-layer-iframe' + index];
+                    iframe.child(str);
+                }
+            });
+            $(window).on("resize", function () {
+                layer.full(index3);
 
-
+            });
+            // $.ajax({
+            //     cache : true,
+            //     type : "get",
+            //     url :  ''+publicurl+'article/announcementSearchIndex',
+            //     async : false,
+            //     data : {titleStr:str},
+            //     success : function(res) {
+            //         layer.msg(res.msg, {icon: 1});
+            //
+            //     },
+            //     error : function(res) {
+            //         layer.alert(res.msg+'<br>'+res.obj, {
+            //             icon: 2,
+            //             title:"提示"
+            //         });
+            //     }
+            // });
+        })
     });
+
+
 </script>
 
 </body>

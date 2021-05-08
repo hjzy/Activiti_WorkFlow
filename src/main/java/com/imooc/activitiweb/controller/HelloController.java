@@ -35,13 +35,11 @@ import java.util.List;
 public class HelloController {
 
     @Autowired
+    ActivitiMapper mapper;
+    @Autowired
     private TaskRuntime taskRuntime;
     @Autowired
     private SecurityUtil securityUtil;
-
-    @Autowired
-    ActivitiMapper mapper;
-
     @Autowired
     private ProcessRuntime processRuntime;
 

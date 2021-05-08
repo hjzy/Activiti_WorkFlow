@@ -33,19 +33,15 @@ import java.util.zip.ZipInputStream;
 @RequestMapping("/task")
 public class TaskController {
     @Autowired
+    ActivitiMapper mapper;
+    @Autowired
     private TaskRuntime taskRuntime;
-
     @Autowired
     private SecurityUtil securityUtil;
-
     @Autowired
     private ProcessRuntime processRuntime;
-
     @Autowired
     private RepositoryService repositoryService;
-
-    @Autowired
-    ActivitiMapper mapper;
 
     //获取我的代办任务
     @GetMapping(value = "/getTasks")

@@ -18,7 +18,7 @@ import java.util.Map;
  * @email yifan@yifansun.cn
  */
 @Service
-public  class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     UserInfoBeanMapper userInfoBeanMapper;
 

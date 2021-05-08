@@ -11,6 +11,16 @@ public class AjaxResponse {
     private String msg;
     private Object obj;
 
+    private AjaxResponse(Integer status, String msg, Object obj) {
+        this.status = status;
+        this.msg = msg;
+        this.obj = obj;
+    }
+
+    public static AjaxResponse AjaxData(Integer status, String msg, Object obj) {
+        return new AjaxResponse(status, msg, obj);
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -33,15 +43,5 @@ public class AjaxResponse {
 
     public void setObj(Object obj) {
         this.obj = obj;
-    }
-
-    private AjaxResponse(Integer status, String msg, Object obj) {
-        this.status = status;
-        this.msg = msg;
-        this.obj = obj;
-    }
-
-    public static AjaxResponse AjaxData(Integer status, String msg, Object obj) {
-        return new AjaxResponse(status, msg, obj);
     }
 }

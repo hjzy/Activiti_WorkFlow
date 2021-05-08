@@ -44,36 +44,6 @@ public class ArticleController {
     }
 
 
-    @RequestMapping("/index")
-    // @ResponseBody
-    @ApiOperation(value = "首页初始化", notes = "")
-    public ModelAndView initIndex() {
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("article-index");
-
-        List<Article> articleList1 = articleService.getArticleByTypeLimitSize(1, 6);
-        List<Article> articleList2 = articleService.getArticleByTypeLimitSize(2, 6);
-        List<Article> articleList3 = articleService.getArticleByTypeLimitSize(3, 6);
-        List<Article> articleList4 = articleService.getArticleByTypeLimitSize(4, 6);
-        List<Article> articleList5 = articleService.getArticleByTypeLimitSize(5, 6);
-        List<Article> articleList6 = articleService.getArticleByTypeLimitSize(6, 6);
-        List<Article> articleList7 = articleService.getArticleByTypeLimitSize(7, 6);
-
-
-        modelAndView.addObject("articleList1", articleList1);
-        modelAndView.addObject("articleList2", articleList2);
-        modelAndView.addObject("articleList3", articleList3);
-        modelAndView.addObject("articleList4", articleList4);
-        modelAndView.addObject("articleList5", articleList5);
-        modelAndView.addObject("articleList6", articleList6);
-        modelAndView.addObject("articleList7", articleList7);
-
-
-        return modelAndView;
-    }
-
-
     //提交文章
     @RequestMapping("/publish")
     @ResponseBody
@@ -89,7 +59,7 @@ public class ArticleController {
         return "false";
     }
 
-    //    markdown图片上传控制器
+    //markdown图片上传控制器
     @RequestMapping("/image/upload")
     @ResponseBody
     public JSONObject imageUpload(@RequestParam("editormd-image-file") MultipartFile image) {
@@ -158,41 +128,26 @@ public class ArticleController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/announcementSearchIndex")
+    public AjaxResponse announcementSearchIndex(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit,String titleStr) {
 
-    //搜索
-    @RequestMapping("/search")
-    public ModelAndView search(HttpServletRequest request, Model model, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                               @RequestParam(defaultValue = "5") Integer pageSize) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("article-admin");
-        String titleStr = request.getParameter("titleStr");
-        System.out.println("Page Number>>>>>>>>>>>>" + pageNum);
-        //引入分页查询，在查询之前获取当前页记录
-        PageHelper.startPage(pageNum, pageSize);
-        //分页查询
-        List<Article> articleList = articleService.searchArticle(titleStr);
+        try {
+            PageHelper.startPage(page, limit);
+            //分页查询
+            List<Article> articleList = articleService.searchArticle(titleStr);
+            PageInfo<Article> pageInfo = new PageInfo(articleList);
+            Integer count = Math.toIntExact(pageInfo.getTotal());
 
-        //包装查询结果
-        PageInfo pageInfo = new PageInfo(articleList, 1);
-        pageInfo.setList(articleList);
-        //model.addAttribute("sdj1",sdj1);
-        //model.addAttribute("pageInfo", pageInfo);
-        modelAndView.addObject("pageInfo", pageInfo);
-        //model.addAttribute("addUrl", "http://localhost:8081/markdown/toedit");
-        modelAndView.addObject("addUrl", "/markdown/toedit");
-        //获取当前页
-        modelAndView.addObject("pageNum", pageNum);
-        //获取一页显示的条
-        modelAndView.addObject("pageSize", pageSize);
-        //是否为第一页
-        modelAndView.addObject("isFirstPage", pageInfo.isIsFirstPage());
-        //获得总页数
-        modelAndView.addObject("totalPages", pageInfo.getPages());
-        //是否为最后一页
-        modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
 
-        return modelAndView;
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), PageHelperInfo.ReturnInfo(pageInfo.getList(), count));
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "error", e.toString());
+        }
     }
+
 
     //删除
     @RequestMapping("/delete")
