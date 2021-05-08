@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -47,16 +48,15 @@ public class ArticleController {
     //提交文章
     @RequestMapping("/publish")
     @ResponseBody
-    public String publishArticle(Article article) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-        Date date = new Date(System.currentTimeMillis());
-        String ft = formatter.format(date);
-        article.setDate(ft);
-        boolean res = articleService.publishArticle(article);
-        if (res) {
-            return "success";
+    public AjaxResponse publishArticle(Article article) {
+        try {
+            boolean res = articleService.publishArticle(article);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "添加文章失败", e.toString());
         }
-        return "false";
     }
 
     //markdown图片上传控制器
@@ -75,36 +75,6 @@ public class ArticleController {
         jsonObject.put("success", 0);
         jsonObject.put("message", "upload error!");
         return jsonObject;
-    }
-
-    //获取文章并直接显示
-    @RequestMapping("/get/{id}")
-    public ModelAndView getArticleById(@PathVariable(name = "id") int id) {
-        ModelAndView modelAndView = new ModelAndView();
-        Article article = articleService.getArticleById(id);
-        modelAndView.setViewName("article");
-        if (article == null) {
-            modelAndView.addObject("article", new Article());
-        }
-        modelAndView.addObject("article", article);
-        return modelAndView;
-    }
-
-    //在视图中显示图文内容
-    @RequestMapping("/view/{id}")
-    public ModelAndView viewArticle(@PathVariable(name = "id") int id, HttpServletRequest request, HttpServletResponse response) {
-        //String announceNum = request.getParameter("num");
-        ModelAndView modelAndView = new ModelAndView();
-
-        Article article = articleService.getArticleById(id);
-        if (article == null) {
-            //modelAndView.addObject("article", new Article());
-            modelAndView.setViewName("404");
-        } else {
-            modelAndView.setViewName("article-view");
-            modelAndView.addObject("article", article);
-        }
-        return modelAndView;
     }
 
 
@@ -164,24 +134,7 @@ public class ArticleController {
         }
     }
 
-    @RequestMapping("/toEdit/{id}")
-    public ModelAndView toEditArticle(@PathVariable(name = "id") int id, HttpServletRequest request, HttpServletResponse response) {
-        //String announceNum = request.getParameter("num");
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("article-edit");
-        Article article = articleService.getArticleById(id);
-        if (article == null) {
-            modelAndView.addObject("article", new Article());
-        }
-        modelAndView.addObject("article", article);
-        return modelAndView;
-    }
 
-    @RequestMapping("/edit")
-    public String updateArticle(Article article) {
-        boolean res = articleService.updateArticleById(article);
-        return "redirect:/article/page";
-    }
 
 
 }

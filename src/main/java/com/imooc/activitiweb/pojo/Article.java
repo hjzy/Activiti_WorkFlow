@@ -17,7 +17,7 @@ public class Article {
 
     private int type;
 
-    private String date;
+    private Date date;
 
     public int getId() {
         return id;
@@ -51,5 +51,7 @@ public class Article {
         this.content = content;
     }
 
-
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

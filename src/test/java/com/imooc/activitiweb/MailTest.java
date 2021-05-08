@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,9 +56,14 @@ public class MailTest {
     }
     @Test
     public void Time(){
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
         String ft=formatter.format(date);
+        try {
+            Date date1=formatter.parse(ft);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         System.out.println(ft);
     }
 
@@ -82,8 +88,7 @@ public class MailTest {
         System.out.println(userMap);
         //int result= userService.addUser(userMap);
         System.out.println(userMap);
-
-
-
     }
+
+
 }
