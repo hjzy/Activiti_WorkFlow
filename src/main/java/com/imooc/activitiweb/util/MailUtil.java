@@ -34,4 +34,8 @@ public class MailUtil {
         }
     }
 
+    public  void sendComplexMail() {
+
+    }
+
 }

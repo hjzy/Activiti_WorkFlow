@@ -16,7 +16,7 @@ import java.util.List;
  * @email yifan@yifansun.cn
  */
 @Service
-public class ActivitiServiceImpl implements ActivitiService {
+public  class ActivitiServiceImpl implements ActivitiService {
 
     @Autowired
     ActivitiMapper activitiMapper;

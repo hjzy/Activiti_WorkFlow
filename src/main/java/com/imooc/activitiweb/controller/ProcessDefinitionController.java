@@ -151,32 +151,6 @@ public class ProcessDefinitionController {
         }
     }
 
-//缺失流程部署ID属性版本，import org.activiti.api.process.model.ProcessDefinition;
-    /*@GetMapping(value = "/getDefinitions")
-    public AjaxResponse getDefinitions() {
-
-        try {
-            if (GlobalConfig.Test) {
-                securityUtil.logInAs("wukong");
-            }
-            Page<ProcessDefinition> processDefinitions = processRuntime.processDefinitions(Pageable.of(0, 50));
-            System.out.println("流程定义数量： " + processDefinitions.getTotalItems());
-            for (ProcessDefinition pd : processDefinitions.getContent()) {
-                System.out.println("getId：" + pd.getId());
-                System.out.println("getName：" + pd.getName());
-                System.out.println("getStatus：" + pd.getKey());
-                System.out.println("getStatus：" + pd.getFormKey());
-            }
-
-
-            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), processDefinitions.getContent());
-        }catch (Exception e) {
-            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
-                    "获取流程定义失败", e.toString());
-        }
-    }*/
-
 
     //获取流程定义信息
     @GetMapping(value = "/getDefinitions")

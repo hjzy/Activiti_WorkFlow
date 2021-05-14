@@ -87,6 +87,7 @@ public class ProcessInstanceController {
 
 
     //启动流程实例
+    //启动前询问用户需要添加哪些变量，以达到复用流程部署的目的
     @GetMapping(value = "/startProcess")
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                      @RequestParam("instanceName") String instanceName,
@@ -102,7 +103,7 @@ public class ProcessInstanceController {
                     .withProcessDefinitionKey(processDefinitionKey)
                     .withName(instanceName)
                     //.withVariable("content", instanceVariable)
-                    .withVariable("user", "bajie")
+                    //.withVariable("user", "bajie")
                     //.withVariable("参数2", "参数2的值")
                     .withBusinessKey("自定义BusinessKey")
                     .build());

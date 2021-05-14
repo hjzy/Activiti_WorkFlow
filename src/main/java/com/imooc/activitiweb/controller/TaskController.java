@@ -172,6 +172,7 @@ public class TaskController {
             //根据传入的taskId拿到所有的UserTask信息
             UserTask userTask = (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
                     .getFlowElement(task.getFormKey());
+
             //如果userTask为空，告知用户无表单
             if (userTask == null) {
                 return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),

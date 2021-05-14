@@ -1,6 +1,16 @@
 package com.imooc.activitiweb;
 
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.persistence.entity.IdentityLinkEntity;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.DeploymentQuery;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +23,9 @@ class Part4_Task {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    RepositoryService repositoryService;
 
     //任务查询
     @Test
@@ -63,5 +76,13 @@ class Part4_Task {
     }
 
 
-
+    //任务查询
+    @Test
+    void getAllTaskByPid(){
+        List<Deployment> deployment= repositoryService.createDeploymentQuery().deploymentId("Process_1_UEL_Test1:1:faa6ce34-b006-11eb-9237-001a7dda7111").orderByDeploymentId().desc().list();
+        for (Deployment deployment1 : deployment) {
+            System.out.println(deployment1.getId());
+            System.out.println(deployment1.getName());
+        }
+    }
 }

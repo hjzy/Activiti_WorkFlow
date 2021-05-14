@@ -45,7 +45,6 @@ public class Part8_ProcessRuntime {
 
         }
 
-
     }
 
     //启动流程实例
@@ -101,7 +100,7 @@ public class Part8_ProcessRuntime {
         securityUtil.logInAs("bajie");
         List<VariableInstance> list = processRuntime.variables(ProcessPayloadBuilder
                 .variables()
-                .withProcessInstanceId("2b2d3990-d3ca-11ea-ae96-dcfb4875e032")
+                .withProcessInstanceId("44a91433-ad12-11eb-a4b8-001a7dda7111")
                 .build()
         );
         for(VariableInstance vi : list){
@@ -111,5 +110,9 @@ public class Part8_ProcessRuntime {
             System.out.println("getTaskId：" + vi.getTaskId());
             System.out.println("getProcessInstanceId：" + vi.getProcessInstanceId());
         }
+    }
+    @Test
+    public void getProcessInstanceTask(){
+
     }
 }

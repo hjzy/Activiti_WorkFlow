@@ -8,29 +8,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../css/examples/style.css" />
-    <link rel="stylesheet" href="../css/editormd.css" />
+    <link rel="stylesheet" href="../css/examples/style.css"/>
+    <link rel="stylesheet" href="../css/editormd.css"/>
 </head>
-<body>
+<body background="../images/background3.png">
 <div class="layuimini-container">
     <div class="layuimini-main">
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;流程实例列表</span>
+                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;公告</span>
             </div>
         </script>
+        <div style="margin: 0 auto;">
+            <div class="layui-col-xs6 layui-col-md6 layui-col-md-offset3" id="center-content">
+                <div class="layui-panel">
+                    <div id="layout">
+                        <header>
+                            <h1 id="title" style="text-align: center"></h1>
+                            <h3 id="author" style="text-align: center"></h3>
+                            <h3 id="date" style="text-align: center"></h3>
+                        </header>
+                        <div id="test-editormd">
+                            <textarea style="display:none;" id="content"></textarea>
+                        </div>
 
-        <div id="layout">
-            <header>
-                <h1 id="title"></h1>
-                <h2 id="author"></h2>
-            </header>
-            <div id="test-editormd">
-                <textarea  style="display:none;" id="content"></textarea>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 </div>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
@@ -53,12 +58,16 @@
     var testEditor;
 
 
-    function child(obj){
+    function child(obj) {
         $("#title").text(obj.title);
         $("#author").text(obj.author);
+        $("#date").text(renderTime(obj.date));
         $("#content").text(obj.content);
         console.log(obj.content);
-
+        function renderTime(date) {
+            var dateee = new Date(date).toJSON();
+            return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+        }
         $(function () {
             testEditor = editormd.markdownToHTML("test-editormd", {
                 width: "90%",
