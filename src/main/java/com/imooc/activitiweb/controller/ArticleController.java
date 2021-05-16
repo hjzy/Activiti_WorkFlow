@@ -4,9 +4,12 @@ package com.imooc.activitiweb.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.imooc.activitiweb.mapper.MailMapper;
 import com.imooc.activitiweb.pojo.Article;
 import com.imooc.activitiweb.pojo.PageHelperInfo;
 import com.imooc.activitiweb.service.ArticleService;
+import com.imooc.activitiweb.service.MailService;
+import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.service.impl.ArticleServiceImpl;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.FileUtils;
@@ -40,6 +43,12 @@ public class ArticleController {
     ArticleService articleService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
+    MailService mailService;
+
+    @Autowired
     public ArticleController(ArticleServiceImpl articleService) {
         this.articleService = articleService;
     }
@@ -51,6 +60,7 @@ public class ArticleController {
     public AjaxResponse publishArticle(Article article) {
         try {
             boolean res = articleService.publishArticle(article);
+            mailService.SendMailToSubscribedUser(article);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
         } catch (Exception e) {

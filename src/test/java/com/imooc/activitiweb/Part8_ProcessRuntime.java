@@ -1,6 +1,7 @@
 package com.imooc.activitiweb;
 
 import org.activiti.api.model.shared.model.VariableInstance;
+import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.model.ProcessInstance;
 import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
 import org.activiti.api.process.runtime.ProcessRuntime;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -45,6 +48,28 @@ public class Part8_ProcessRuntime {
 
         }
 
+    }
+    @Test
+    public void getProcessDefinitions(){
+        securityUtil.logInAs("bajie");
+        Page<ProcessDefinition> processDefinitionPage= processRuntime
+                .processDefinitions(Pageable.of(0,5));
+        List<ProcessDefinition> processDefinitionList =processDefinitionPage.getContent();
+        //实际返回的ListMap
+        List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+        for (ProcessDefinition pd : processDefinitionList) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            //System.out.println("流程定义ID："+pd.getId());
+            hashMap.put("processDefinitionID", pd.getId());//流程定义id
+            hashMap.put("name", pd.getName());//流程
+            hashMap.put("key", pd.getKey());//key
+            //hashMap.put("resourceName", pd.getResourceName());//部署文件名
+            //hashMap.put("deploymentID", pd.getDeploymentId());//流程部署id
+            hashMap.put("version", pd.getVersion());
+            listMap.add(hashMap);
+
+        }
+        System.out.println(listMap);
     }
 
     //启动流程实例

@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.service.impl;
 
 import com.imooc.activitiweb.mapper.MailMapper;
+import com.imooc.activitiweb.pojo.Article;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.MailService;
 import com.imooc.activitiweb.util.MailUtil;
@@ -41,14 +42,15 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public String SendMailToSubscribedUser(String deploymentName) {
+    public String SendMailToSubscribedUser(Article article) {
         List<UserInfoBean> userInfoBeanList = mailMapper.getSubscribeUser();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String time = df.format(new Date());// new Date()为获取当前系统时间
         for (UserInfoBean bean : userInfoBeanList) {
             String to = bean.getEmail();
-            String subject = "【通知】管理员发布了新的项目！";
-            String context = "新项目名称：" + deploymentName + "\n"
+            String subject = "【通知】管理员发布了新的通知！";
+            String context = "通知名：" + article.getTitle() + "\n"
+                    +"通知内容："+article.getContent()+"\n"
                     + "发布时间：" + time;
             mailUtil.SendMail(subject, context, to);
         }

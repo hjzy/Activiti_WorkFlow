@@ -1,5 +1,7 @@
 package com.imooc.activitiweb.service;
 
+import com.imooc.activitiweb.pojo.Article;
+
 /**
  * @author yifansun
  * @version 1.0
@@ -12,5 +14,5 @@ public interface MailService {
 
     public String SendMail(String subject, String text, String to);
 
-    String SendMailToSubscribedUser(String deploymentName);
+    String SendMailToSubscribedUser(Article article);
 }

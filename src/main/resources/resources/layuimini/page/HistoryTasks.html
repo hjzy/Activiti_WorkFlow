@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        #layui-table-page1{text-align: center;}
+    </style>
 </head>
 <body>
 <div class="layuimini-container">
@@ -19,10 +22,10 @@
         </script>
 
         <table class="layui-hide" id="HistoryTasksTableId" lay-filter="currentTableFilter"></table>
-        <!--分页-->
-        <div class="layui-table-page layui-border-box">
-            <div id="barcon" class="page_div" name="barcon"></div>
-        </div>
+<!--        &lt;!&ndash;分页&ndash;&gt;-->
+<!--        <div class="layui-table-page layui-border-box">-->
+<!--            <div id="barcon" class="page_div" name="barcon"></div>-->
+<!--        </div>-->
 
         <script type="text/html" id="currentTableBar">
 <!--            {{#  if(d.status == 'RUNNING'){ }}-->
@@ -78,7 +81,7 @@
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
-            page: false,
+            page: true,
             skin: 'line',
             // id:'HistoryTasksTableId',
             done:function (res, curr, count) {

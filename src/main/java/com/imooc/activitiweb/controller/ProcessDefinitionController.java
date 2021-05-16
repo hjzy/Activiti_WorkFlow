@@ -1,5 +1,6 @@
 package com.imooc.activitiweb.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.util.AjaxResponse;
@@ -154,7 +155,7 @@ public class ProcessDefinitionController {
 
     //获取流程定义信息
     @GetMapping(value = "/getDefinitions")
-    public AjaxResponse getDefinitions() {
+    public AjaxResponse getDefinitions(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit) {
 
         try {
             //实际返回的ListMap
