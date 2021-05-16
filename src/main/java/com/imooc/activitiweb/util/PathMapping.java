@@ -13,5 +13,16 @@ public class PathMapping implements WebMvcConfigurer {
         //String[] resourceLocation = new String[]{"file:D:\\WangJianIDEA_Test\\activiti-imooc\\src\\main\\resources\\resources\\bpmn\\","classpath:/resources/"};
         registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/");//默认也有这个路径映射
         registry.addResourceHandler("/bpmn/**").addResourceLocations(GlobalConfig.BPMN_PathMapping);
+
+
+        String path = System.getProperty("user.dir") + "\\src\\main\\resources\\resources\\upload\\";
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            registry.addResourceHandler("/upload/**").
+                    addResourceLocations("file:" + path);
+        } else {//linux和mac系统 可以根据逻辑再做处理
+            registry.addResourceHandler("/upload/**").
+                    addResourceLocations("file:" + path);
+        }
     }
 }
