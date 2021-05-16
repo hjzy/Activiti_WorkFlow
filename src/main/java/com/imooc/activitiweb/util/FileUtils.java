@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public class FileUtils {
 
-    private static final String prePath = System.getProperty("user.dir") + "/src/main/resources/static/upload/";
+    private static final String prePath = System.getProperty("user.dir") + "/src/main/resources/resources/upload/";
 
     /**
      * 上传文件

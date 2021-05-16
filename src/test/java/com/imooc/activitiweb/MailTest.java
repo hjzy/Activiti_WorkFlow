@@ -124,6 +124,7 @@ public class MailTest {
         System.out.println(userMap);
         //int result= userService.addUser(userMap);
         System.out.println(userMap);
+        System.out.println(System.getProperty("user.dir"));
     }
 
 

@@ -40,10 +40,11 @@
     </style>
 </head>
 <body>
-<div class="layui-form layuimini-form" id="defineForm">
-    <ul class="layui-timeline" id="timeLineDetail">
-
-    </ul>
+<div class="layui-col-xs6 layui-col-md6 layui-col-md-offset3" id="center-content">
+    <div class="layui-form layuimini-form" id="defineForm">
+        <ul class="layui-timeline" id="timeLineDetail">
+        </ul>
+    </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
@@ -53,7 +54,7 @@
 <script>
     var ids;
 
-    function child(obj,taskKey) {
+    function child(obj, taskKey) {
         var dataObj = JSON.parse(obj);
 
         layui.use(['form'], function (data) {
@@ -103,14 +104,14 @@
                         var formFoot = '</ul>\n' +
                             '</div>\n' +
                             '</li>\n';
-                        var input="";
-                        if(dataObj[i].controlType==="file"){
+                        var input = "";
+                        if (dataObj[i].controlType === "file") {
                             var fileDownloadUrl = dataObj[i].controlValue.split("-_+!")[0];
                             console.log(fileDownloadUrl);
                             var fileDownloadName = dataObj[i].controlValue.split("-_+!")[1];
-                             input = '<a  isParm="' + dataObj[i].controlIsParam + '" name="' + dataObj[i].taskKey + '"  value="' + dataObj[i].controlValue + '" controlType="'+dataObj[i].controlType+'"  formLable="' + dataObj[i].controlLable + '"  class="layui-a js_val"   href="/processDefinition/download?fileName=' + fileDownloadUrl + '&fileNewName=' + fileDownloadName + '">点击下载：' + fileDownloadName + '</a>';
-                        }else{
-                            input='<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n'
+                            input = '<a  isParm="' + dataObj[i].controlIsParam + '" name="' + dataObj[i].taskKey + '"  value="' + dataObj[i].controlValue + '" controlType="' + dataObj[i].controlType + '"  formLable="' + dataObj[i].controlLable + '"  class="layui-a js_val"   href="/processDefinition/download?fileName=' + fileDownloadUrl + '&fileNewName=' + fileDownloadName + '">点击下载：' + fileDownloadName + '</a>';
+                        } else {
+                            input = '<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n'
                         }
                         formList = '<li>' + '<b>表单字段：</b>' + dataObj[i].controlLabel + '</li>\n' +
                             input +

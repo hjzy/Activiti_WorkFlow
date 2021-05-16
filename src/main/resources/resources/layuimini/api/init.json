@@ -18,7 +18,7 @@
         {
           "title": "首页",
           "href": "page/welcome-2.html",
-          "icon": "fa fa-tachometer",
+          "icon": "fa fa-home",
           "target": "_self"
         },
         {
@@ -30,31 +30,31 @@
         {
           "title": "流程实例列表",
           "href": "page/ProcessInstance.html",
-          "icon": "fa fa-calendar",
+          "icon": "fa fa-bars",
           "target": "_self"
         },
         {
           "title": "待办任务",
           "href": "page/ToDoTasks.html",
-          "icon": "fa fa-snowflake-o",
+          "icon": "fa fa-check",
           "target": "_self"
         },
         {
           "title": "历史任务",
           "href": "page/HistoryTasks.html",
-          "icon": "fa fa-snowflake-o",
+          "icon": "fa fa-clock-o",
           "target": "_self"
         },
         {
           "title": "公告管理",
           "href": "page/AnnouncementAdmin.html",
-          "icon": "fa fa-snowflake-o",
+          "icon": "fa fa-book",
           "target": "_self"
         },
         {
           "title": "用户管理",
           "href": "page/UserAdmin.html",
-          "icon": "fa fa-snowflake-o",
+          "icon": "fa fa-user-o",
           "target": "_self"
         }
       ]
