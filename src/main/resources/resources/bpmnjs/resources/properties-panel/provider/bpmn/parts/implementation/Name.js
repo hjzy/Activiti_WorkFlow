@@ -13,21 +13,21 @@ var entryFactory = require('../../../../factory/EntryFactory');
  * @return {Array<Object>} return an array containing
  *                         the entry to modify the name
  */
-module.exports = function(element, options, translate) {
+module.exports = function (element, options, translate) {
 
-  options = options || {};
-  var id = options.id || 'name',
-      label = options.label || translate('Name'),
-      modelProperty = options.modelProperty || 'name';
+    options = options || {};
+    var id = options.id || 'name',
+        label = options.label || translate('Name'),
+        modelProperty = options.modelProperty || 'name';
 
-  var nameEntry = entryFactory.textBox({
-    id: id,
-    label: label,
-    modelProperty: modelProperty,
-    get: options.get,
-    set: options.set
-  });
+    var nameEntry = entryFactory.textBox({
+        id: id,
+        label: label,
+        modelProperty: modelProperty,
+        get: options.get,
+        set: options.set
+    });
 
-  return [ nameEntry ];
+    return [nameEntry];
 
 };

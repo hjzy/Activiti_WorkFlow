@@ -17,17 +17,17 @@ module.exports = FormHelper;
  * 此方法废弃
  *
  */
-FormHelper.getFormData = function(element) {
- /* var bo = getBusinessObject(element);
+FormHelper.getFormData = function (element) {
+    /* var bo = getBusinessObject(element);
 
-  var formFields = getExtensionElements(bo, 'activiti:FormProperty');
+     var formFields = getExtensionElements(bo, 'activiti:FormProperty');
 
-  var formData = {}
+     var formData = {}
 
-  if (typeof formData !== 'undefined') {
-    return formData[0];
-  }*/
- return {};
+     if (typeof formData !== 'undefined') {
+       return formData[0];
+     }*/
+    return {};
 };
 
 
@@ -39,14 +39,14 @@ FormHelper.getFormData = function(element) {
  *
  * @return {Array} a list of form field objects
  */
-FormHelper.getFormFields = function(element) {
+FormHelper.getFormFields = function (element) {
 
-  /**直接获取 ExtensionElements的 activiti:FormProperty元素*/
-  var bo = getBusinessObject(element);
+    /**直接获取 ExtensionElements的 activiti:FormProperty元素*/
+    var bo = getBusinessObject(element);
 
-  var formFields = getExtensionElements(bo, 'activiti:FormProperty');
+    var formFields = getExtensionElements(bo, 'activiti:FormProperty');
 
-  return formFields || [];
+    return formFields || [];
 };
 
 
@@ -58,11 +58,11 @@ FormHelper.getFormFields = function(element) {
  *
  * @return {ModdleElement} the form field
  */
-FormHelper.getFormField = function(element, idx) {
+FormHelper.getFormField = function (element, idx) {
 
-  var formFields = this.getFormFields(element);
+    var formFields = this.getFormFields(element);
 
-  return formFields[idx];
+    return formFields[idx];
 };
 
 
@@ -73,11 +73,11 @@ FormHelper.getFormField = function(element, idx) {
  *
  * @return {Array<ModdleElement>} a list of constraint objects
  */
-FormHelper.getConstraints = function(formField) {
-  if (formField && formField.validation && formField.validation.constraints) {
-    return formField.validation.constraints;
-  }
-  return [];
+FormHelper.getConstraints = function (formField) {
+    if (formField && formField.validation && formField.validation.constraints) {
+        return formField.validation.constraints;
+    }
+    return [];
 };
 
 
@@ -88,10 +88,10 @@ FormHelper.getConstraints = function(formField) {
  *
  * @return {Array<ModdleElement>} a list of activiti:value objects
  */
-FormHelper.getEnumValues = function(formField) {
-  if (formField && formField.values) {
-    return formField.values;
-  }
-  return [];
+FormHelper.getEnumValues = function (formField) {
+    if (formField && formField.values) {
+        return formField.values;
+    }
+    return [];
 };
 

@@ -2,28 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.ArticleMapper">
     <insert id="insertArticle" parameterType="com.imooc.activitiweb.pojo.Article">
-        insert into article (title, author, content,type,date) values(#{title}, #{author}, #{content},#{type},NOW());
+        insert into article (title, author, content, type, date)
+        values (#{title}, #{author}, #{content}, #{type}, NOW());
     </insert>
 
     <select id="getArticleById" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
-        select * from article where id = #{id};
+        select *
+        from article
+        where id = #{id};
     </select>
 
     <select id="getAllArticle" resultType="com.imooc.activitiweb.pojo.Article">
-        select * from article
+        select *
+        from article
     </select>
 
     <select id="searchArticle" resultType="com.imooc.activitiweb.pojo.Article">
-        select * from article  where title LIKE '%${titleStr}%'
+        select *
+        from article
+        where title LIKE '%${titleStr}%'
     </select>
 
     <delete id="deleteArticle" parameterType="int">
-        delete from article where id = #{id};
+        delete
+        from article
+        where id = #{id};
     </delete>
 
     <update id="updateArticle">
-       update article
-        <set >
+        update article
+        <set>
             <if test="title != null">
                 title = #{title},
             </if>
@@ -41,16 +49,21 @@
     </update>
 
     <select id="getArticleByType" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
-        select * from article where type = #{type}
+        select *
+        from article
+        where type = #{type}
     </select>
 
     <select id="getArticleByTypeLimitSize" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
-        select * from article where type = #{type} limit #{size}
+        select *
+        from article
+        where type = #{type}
+        limit #{size}
     </select>
 
 
     <select id="getArticleCountMapForEcharts" resultType="java.util.Map">
-        select type,COUNT(type) as count
+        select type, COUNT(type) as count
         from article
         group by type
     </select>

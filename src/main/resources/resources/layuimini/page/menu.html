@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>menu</title>
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
     <style>
         .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
             height: 34px;
@@ -18,25 +18,25 @@
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
             Layui的树形表格treeTable，支持异步加载(懒加载)、复选框联动、折叠状态记忆。<br>
-            <a href="https://gitee.com/whvse/treetable-lay" target="_blank" class="layui-btn layui-btn-danger">treetable-lay</a>
+            <a class="layui-btn layui-btn-danger" href="https://gitee.com/whvse/treetable-lay" target="_blank">treetable-lay</a>
         </blockquote>
         <div>
             <div class="layui-btn-group">
                 <button class="layui-btn" id="btn-expand">全部展开</button>
                 <button class="layui-btn layui-btn-normal" id="btn-fold">全部折叠</button>
             </div>
-            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+            <table class="layui-table" id="munu-table" lay-filter="munu-table"></table>
         </div>
     </div>
 </div>
 <!-- 操作列 -->
-<script type="text/html" id="auth-state">
+<script id="auth-state" type="text/html">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
 <script>
     layui.use(['table', 'treetable'], function () {
         var $ = layui.jquery;

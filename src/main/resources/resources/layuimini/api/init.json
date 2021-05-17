@@ -22,13 +22,13 @@
           "target": "_self"
         },
         {
-          "title": "流程部署列表",
+          "title": "流程部署",
           "href": "page/ProcessDefinition.html",
           "icon": "fa fa-calendar",
           "target": "_self"
         },
         {
-          "title": "流程实例列表",
+          "title": "流程实例",
           "href": "page/ProcessInstance.html",
           "icon": "fa fa-bars",
           "target": "_self"

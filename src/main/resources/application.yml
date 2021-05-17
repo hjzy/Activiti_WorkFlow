@@ -5,12 +5,12 @@ server:
     session:
       timeout: 9000
 
-#spring:
-#  datasource:
-#    username: yifan
-#    password: Snow124l
-#    url: jdbc:mysql:///moocactiviti?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&nullCatalogMeansCurrent=true
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+    #spring:
+    #  datasource:
+    #    username: yifan
+    #    password: Snow124l
+    #    url: jdbc:mysql:///moocactiviti?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&nullCatalogMeansCurrent=true
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
     #日志的相关配置
 logging:
   level:

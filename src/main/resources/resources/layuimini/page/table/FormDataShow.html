@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -43,9 +43,9 @@
 <div class="layui-form layuimini-form" id="defineForm">
 
 </div>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
 <script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-<script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script charset="utf-8" src="../../js/lay-config.js?v=1.0.4"></script>
 <script src="../../lib/jquery-3.4.1/jquery.cookie.js"></script>
 <script>
     var ids;
@@ -140,13 +140,13 @@
                         var id = $(this).attr("name");//名字
                         var label = $(this).attr("formLable");
                         var val = "";
-                        var type=$(this).attr("controlType");
+                        var type = $(this).attr("controlType");
                         if (fileName === "") {
                             val = $(this).val();
                         } else {
                             val = fileName + "-_+!" + $(this).val();
                         }
-                        var str = id + '-_!' + val + '-_!' + isParm + '-_!' + label+'-_!'+type;
+                        var str = id + '-_!' + val + '-_!' + isParm + '-_!' + label + '-_!' + type;
                         param += str + '!_!'
 
                         console.log(param + "单个参数");
@@ -189,30 +189,30 @@
                     switch (res[i].controlType) {
                         case 'long':
                             if (res[i].controlDefValue === '无') {
-                                input = '<input lay-verify="required|number"  type="text" controlType="'+res[i].controlType+'" formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" placeholder="" value="" class="layui-input yellowBg js_val" onkeyup="this.value=this.value.replace(/\\D|^0/g,\'\')" onafterpaste="this.value=this.value.replace(/\\D|^0/g,\'\')">';
+                                input = '<input lay-verify="required|number"  type="text" controlType="' + res[i].controlType + '" formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" placeholder="" value="" class="layui-input yellowBg js_val" onkeyup="this.value=this.value.replace(/\\D|^0/g,\'\')" onafterpaste="this.value=this.value.replace(/\\D|^0/g,\'\')">';
                             } else {
-                                input = '<input lay-verify="required|number" type="text"  controlType="'+res[i].controlType+'" formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '"  name="' + res[i].id + '" value="' + res[i].controlDefValue + '" class="layui-input yellowBg js_val" onkeyup="this.value=this.value.replace(/\\D|^0/g,\'\')" onafterpaste="this.value=this.value.replace(/\\D|^0/g,\'\')">';
+                                input = '<input lay-verify="required|number" type="text"  controlType="' + res[i].controlType + '" formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '"  name="' + res[i].id + '" value="' + res[i].controlDefValue + '" class="layui-input yellowBg js_val" onkeyup="this.value=this.value.replace(/\\D|^0/g,\'\')" onafterpaste="this.value=this.value.replace(/\\D|^0/g,\'\')">';
                             }
                             break;
                         case 'cUser':
-                            input = '<select name="' + res[i].id + '"  controlType="'+res[i].controlType+'"  isParm="' + res[i].controlIsParam + '" lay-filter="aihao" id="' + res[i].id + '" type="cUser" class="js_val js_select"></select>'
+                            input = '<select name="' + res[i].id + '"  controlType="' + res[i].controlType + '"  isParm="' + res[i].controlIsParam + '" lay-filter="aihao" id="' + res[i].id + '" type="cUser" class="js_val js_select"></select>'
                             break;
                         case 'string':
                             if (res[i].controlDefValue === '无') {
-                                input = '<input lay-verify="required"  controlType="'+res[i].controlType+'" type="text" formLable="' + res[i].controlLable + '"  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" placeholder="" value="" class="layui-input js_val">';
+                                input = '<input lay-verify="required"  controlType="' + res[i].controlType + '" type="text" formLable="' + res[i].controlLable + '"  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" placeholder="" value="" class="layui-input js_val">';
                             } else {
-                                input = '<input lay-verify="required"  controlType="'+res[i].controlType+'" type="text"  formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" value="' + res[i].controlDefValue + '" placeholder="" class="layui-input js_val">';
+                                input = '<input lay-verify="required"  controlType="' + res[i].controlType + '" type="text"  formLable="' + res[i].controlLable + '" isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '" value="' + res[i].controlDefValue + '" placeholder="" class="layui-input js_val">';
                             }
                             break;
                         case 'file':
                             if (res[i].controlDefValue === '无') {
-                                input = ' <input id="fileName" placeholder=""  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '"  controlType="'+res[i].controlType+'" formLable="' + res[i].controlLable + '" className="layui-input DialogInput" lay-verType="tips"  class="layui-input js_val" disabled/>' +
+                                input = ' <input id="fileName" placeholder=""  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '"  controlType="' + res[i].controlType + '" formLable="' + res[i].controlLable + '" className="layui-input DialogInput" lay-verType="tips"  class="layui-input js_val" disabled/>' +
                                     '<input className="layui-upload-file" type="file" accept="" name="processFile" id="uploadFile">';
                             } else {
                                 var fileDownloadUrl = res[i].controlDefValue.split("-_+!")[0];
                                 console.log(fileDownloadUrl);
                                 var fileDownloadName = res[i].controlDefValue.split("-_+!")[1];
-                                input = '<a  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '"  value="' + res[i].controlDefValue + '" controlType="'+res[i].controlType+'"  formLable="' + res[i].controlLable + '"  class="layui-a js_val"   href="/processDefinition/download?fileName=' + fileDownloadUrl + '&fileNewName=' + fileDownloadName + '">点击下载：' + fileDownloadName + '</a>';
+                                input = '<a  isParm="' + res[i].controlIsParam + '" name="' + res[i].id + '"  value="' + res[i].controlDefValue + '" controlType="' + res[i].controlType + '"  formLable="' + res[i].controlLable + '"  class="layui-a js_val"   href="/processDefinition/download?fileName=' + fileDownloadUrl + '&fileNewName=' + fileDownloadName + '">点击下载：' + fileDownloadName + '</a>';
                             }
                             break;
                     }

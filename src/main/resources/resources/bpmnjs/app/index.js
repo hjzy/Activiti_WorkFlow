@@ -132,8 +132,8 @@ $(function () {
     })
 
     $('.djs-shape').on('click', function () {
-            const id = $(this).attr(data-element-id);
-            console.log("id"+id);
+            const id = $(this).attr(data - element - id);
+            console.log("id" + id);
         }
     )
 

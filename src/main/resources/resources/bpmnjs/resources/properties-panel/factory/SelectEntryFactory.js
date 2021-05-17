@@ -9,16 +9,16 @@ var forEach = require('lodash/forEach');
 var entryFieldDescription = require('./EntryFieldDescription');
 
 
-var isList = function(list) {
-  return !(!list || Object.prototype.toString.call(list) !== '[object Array]');
+var isList = function (list) {
+    return !(!list || Object.prototype.toString.call(list) !== '[object Array]');
 };
 
-var addEmptyParameter = function(list) {
-  return list.concat([ { name: '', value: '' } ]);
+var addEmptyParameter = function (list) {
+    return list.concat([{name: '', value: ''}]);
 };
 
-var createOption = function(option) {
-  return '<option value="' + option.value + '">' + option.name + '</option>';
+var createOption = function (option) {
+    return '<option value="' + option.value + '">' + option.name + '</option>';
 };
 
 /**
@@ -34,104 +34,104 @@ var createOption = function(option) {
  *
  * @return {Object}
  */
-var selectbox = function(options, defaultParameters) {
-  var resource = defaultParameters,
-      label = options.label || resource.id,
-      selectOptions = options.selectOptions || [ { name: '', value: '' } ],
-      modelProperty = options.modelProperty,
-      emptyParameter = options.emptyParameter,
-      canBeDisabled = !!options.disabled && typeof options.disabled === 'function',
-      canBeHidden = !!options.hidden && typeof options.hidden === 'function',
-      description = options.description;
+var selectbox = function (options, defaultParameters) {
+    var resource = defaultParameters,
+        label = options.label || resource.id,
+        selectOptions = options.selectOptions || [{name: '', value: ''}],
+        modelProperty = options.modelProperty,
+        emptyParameter = options.emptyParameter,
+        canBeDisabled = !!options.disabled && typeof options.disabled === 'function',
+        canBeHidden = !!options.hidden && typeof options.hidden === 'function',
+        description = options.description;
 
 
-  if (emptyParameter) {
-    selectOptions = addEmptyParameter(selectOptions);
-  }
+    if (emptyParameter) {
+        selectOptions = addEmptyParameter(selectOptions);
+    }
 
 
-  resource.html =
-    '<label for="activiti-' + escapeHTML(resource.id) + '"' +
-    (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
-    (canBeHidden ? 'data-show="isHidden" ' : '') +
-    '>' + escapeHTML(label) + '</label>' +
-    '<select id="activiti-' + escapeHTML(resource.id) + '-select" name="' +
-    escapeHTML(modelProperty) + '"' +
-    (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
-    (canBeHidden ? 'data-show="isHidden" ' : '') +
-    ' data-value>';
+    resource.html =
+        '<label for="activiti-' + escapeHTML(resource.id) + '"' +
+        (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
+        (canBeHidden ? 'data-show="isHidden" ' : '') +
+        '>' + escapeHTML(label) + '</label>' +
+        '<select id="activiti-' + escapeHTML(resource.id) + '-select" name="' +
+        escapeHTML(modelProperty) + '"' +
+        (canBeDisabled ? 'data-disable="isDisabled" ' : '') +
+        (canBeHidden ? 'data-show="isHidden" ' : '') +
+        ' data-value>';
 
-  if (isList(selectOptions)) {
-    forEach(selectOptions, function(option) {
-      resource.html += '<option value="' + escapeHTML(option.value) + '">' +
-      (option.name ? escapeHTML(option.name) : '') + '</option>';
-    });
-  }
+    if (isList(selectOptions)) {
+        forEach(selectOptions, function (option) {
+            resource.html += '<option value="' + escapeHTML(option.value) + '">' +
+                (option.name ? escapeHTML(option.name) : '') + '</option>';
+        });
+    }
 
-  resource.html += '</select>';
+    resource.html += '</select>';
 
-  // add description below select box entry field
-  if (description && typeof options.showCustomInput !== 'function') {
-    resource.html += entryFieldDescription(description);
-  }
+    // add description below select box entry field
+    if (description && typeof options.showCustomInput !== 'function') {
+        resource.html += entryFieldDescription(description);
+    }
 
-  /**
-   * Fill the select box options dynamically.
-   *
-   * Calls the defined function #selectOptions in the entry to get the
-   * values for the options and set the value to the inputNode.
-   *
-   * @param {djs.model.Base} element
-   * @param {HTMLElement} entryNode
-   * @param {EntryDescriptor} inputNode
-   * @param {Object} inputName
-   * @param {Object} newValue
-   */
-  resource.setControlValue = function(element, entryNode, inputNode, inputName, newValue) {
-    if (typeof selectOptions === 'function') {
+    /**
+     * Fill the select box options dynamically.
+     *
+     * Calls the defined function #selectOptions in the entry to get the
+     * values for the options and set the value to the inputNode.
+     *
+     * @param {djs.model.Base} element
+     * @param {HTMLElement} entryNode
+     * @param {EntryDescriptor} inputNode
+     * @param {Object} inputName
+     * @param {Object} newValue
+     */
+    resource.setControlValue = function (element, entryNode, inputNode, inputName, newValue) {
+        if (typeof selectOptions === 'function') {
 
-      var options = selectOptions(element, inputNode);
+            var options = selectOptions(element, inputNode);
 
-      if (options) {
+            if (options) {
 
-        // remove existing options
-        while (inputNode.firstChild) {
-          inputNode.removeChild(inputNode.firstChild);
+                // remove existing options
+                while (inputNode.firstChild) {
+                    inputNode.removeChild(inputNode.firstChild);
+                }
+
+                // add options
+                forEach(options, function (option) {
+                    var template = domify(createOption(option));
+
+                    inputNode.appendChild(template);
+                });
+
+
+            }
         }
 
-        // add options
-        forEach(options, function(option) {
-          var template = domify(createOption(option));
+        // set select value
+        if (newValue !== undefined) {
+            inputNode.value = newValue;
+        }
 
-          inputNode.appendChild(template);
-        });
+    };
 
-
-      }
+    if (canBeDisabled) {
+        resource.isDisabled = function () {
+            return options.disabled.apply(resource, arguments);
+        };
     }
 
-    // set select value
-    if (newValue !== undefined) {
-      inputNode.value = newValue;
+    if (canBeHidden) {
+        resource.isHidden = function () {
+            return !options.hidden.apply(resource, arguments);
+        };
     }
 
-  };
+    resource.cssClasses = ['bpp-dropdown'];
 
-  if (canBeDisabled) {
-    resource.isDisabled = function() {
-      return options.disabled.apply(resource, arguments);
-    };
-  }
-
-  if (canBeHidden) {
-    resource.isHidden = function() {
-      return !options.hidden.apply(resource, arguments);
-    };
-  }
-
-  resource.cssClasses = ['bpp-dropdown'];
-
-  return resource;
+    return resource;
 };
 
 module.exports = selectbox;

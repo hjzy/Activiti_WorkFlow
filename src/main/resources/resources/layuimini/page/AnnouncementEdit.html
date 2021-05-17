@@ -3,47 +3,47 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../css/examples/style.css"/>
-    <link rel="stylesheet" href="../css/editormd.css"/>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <link href="../css/examples/style.css" rel="stylesheet"/>
+    <link href="../css/editormd.css" rel="stylesheet"/>
 
 </head>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <script type="text/html" id="toolbarDemo">
+        <script id="toolbarDemo" type="text/html">
             <div class="layui-btn-container">
-                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;流程实例列表</span>
+                <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>公告添加</span>
             </div>
         </script>
 
         <div id="layout">
             <header>
-                <h1>Simple example</h1>
+                <h1>请在此处编辑您的公告</h1>
             </header>
             <form name="mdEditorForm">
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题"
-                               class="layui-input">
+                        <input autocomplete="off" class="layui-input" lay-verify="title" name="title" placeholder="请输入标题"
+                               type="text">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">作者</label>
                     <div class="layui-input-block">
-                        <input type="text" name="author" lay-verify="title" autocomplete="off" placeholder="请输入作者"
-                               class="layui-input">
+                        <input autocomplete="off" class="layui-input" lay-verify="title" name="author" placeholder="请输入作者"
+                               type="text">
                     </div>
                 </div>
 
                 <div id="test-editormd">
-                    <textarea style="display:none;" name="content"></textarea>
+                    <textarea name="content" style="display:none;"></textarea>
                 </div>
             </form>
 
@@ -52,8 +52,8 @@
 
     </div>
 </div>
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
 <script src="../js/ManualPaging.js"></script>
 <script src="../js/examples/jquery.min.js"></script>
 <script src="../js/editormd.min.js"></script>

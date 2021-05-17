@@ -110,7 +110,7 @@ public class ArticleController {
 
     @ResponseBody
     @RequestMapping("/announcementSearchIndex")
-    public AjaxResponse announcementSearchIndex(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit,String titleStr) {
+    public AjaxResponse announcementSearchIndex(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit, String titleStr) {
 
         try {
             PageHelper.startPage(page, limit);
@@ -143,8 +143,6 @@ public class ArticleController {
                     "error", e.toString());
         }
     }
-
-
 
 
 }

@@ -50,7 +50,7 @@ public class MailServiceImpl implements MailService {
             String to = bean.getEmail();
             String subject = "【通知】管理员发布了新的通知！";
             String context = "通知名：" + article.getTitle() + "\n"
-                    +"通知内容："+article.getContent()+"\n"
+                    + "通知内容：" + article.getContent() + "\n"
                     + "发布时间：" + time;
             mailUtil.SendMail(subject, context, to);
         }

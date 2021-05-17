@@ -58,6 +58,7 @@ a:link {
       }
     }
   }
+
   &:not(.with-error) .error,
   &.with-error .intro,
   &.with-diagram .intro {
@@ -79,7 +80,7 @@ a:link {
 
   &.with-diagram {
     .canvas,
-    .properties-panel-parent  {
+    .properties-panel-parent {
       display: block;
     }
   }
@@ -125,11 +126,13 @@ a:link {
   z-index: 10;
   border-left: 1px solid #ccc;
   overflow: auto;
+
   &:empty {
     display: none;
   }
+
   > .djs-properties-panel {
     padding-bottom: 70px;
-    min-height:100%;
+    min-height: 100%;
   }
 }

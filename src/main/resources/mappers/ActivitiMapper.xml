@@ -37,7 +37,7 @@
     </select>
     <select id="getCountListTask" resultType="java.util.HashMap">
         -- 	获取每天产生的任务数
-        SELECT DATE_FORMAT(START_TIME_,'%Y.%m.%d') days,COUNT(START_TIME_) start,COUNT(END_TIME_) end
+        SELECT DATE_FORMAT(START_TIME_, '%Y.%m.%d') days, COUNT(START_TIME_) start, COUNT(END_TIME_) end
         FROM act_hi_taskinst
         GROUP BY days
         ORDER BY days

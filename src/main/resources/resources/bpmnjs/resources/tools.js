@@ -52,11 +52,11 @@ const tools = {
      * 通过Json设置颜色
      * @param {object} json json 字符串
      */
-    setColor(json,bpmnModeler) {
+    setColor(json, bpmnModeler) {
         var modeling = bpmnModeler.get('modeling');
         var elementRegistry = bpmnModeler.get('elementRegistry')
         var elementToColor = elementRegistry.get(json.name);
-        if(elementToColor){
+        if (elementToColor) {
             modeling.setColor([elementToColor], {
                 stroke: json.stroke,
                 fill: json.fill
@@ -68,25 +68,25 @@ const tools = {
      * @param {object} bpmnModeler bpmn对象
      */
     saveBpmn(bpmnModeler) {
-        bpmnModeler.saveXML({ format: true }, function (err, xml) {
+        bpmnModeler.saveXML({format: true}, function (err, xml) {
             if (err) {
                 return console.error('保存失败，请重试', err);
             }
             console.log(xml)
-            var param={
-                    "stringBPMN":xml
-                }
+            var param = {
+                "stringBPMN": xml
+            }
             $.ajax({
-                url: publicurl+'processDefinition/addDeploymentByString',
+                url: publicurl + 'processDefinition/addDeploymentByString',
                 type: 'POST',
-                dataType:"json",
+                dataType: "json",
                 data: param,
                 //headers:{'Content-Type':'application/json;charset=utf8'},
                 success: function (result) {
-                    if(result.msg==='成 功'){
+                    if (result.msg === '成 功') {
                         tools.syhide('alert')
                         alert('保存成功')
-                    }else{
+                    } else {
                         alert(result.msg)
                     }
                 },
@@ -102,7 +102,7 @@ const tools = {
      */
     downLoad(bpmnModeler) {
         var downloadLink = $("#downloadBpmn")
-        bpmnModeler.saveXML({ format: true }, function (err, xml) {
+        bpmnModeler.saveXML({format: true}, function (err, xml) {
             if (err) {
                 return console.error('could not save BPMN 2.0 diagram', err);
             }
@@ -136,14 +136,14 @@ const tools = {
         var fm = new FormData();
         fm.append('processFile', FileUpload);
         $.ajax({
-            url: publicurl+'processDefinition/upload',
+            url: publicurl + 'processDefinition/upload',
             type: 'POST',
             data: fm,
             async: false,
             contentType: false, //禁止设置请求类型
             processData: false, //禁止jquery对DAta数据的处理,默认会处理
             success: function (result) {
-                var url = publicurl+'bpmn/' + result.obj
+                var url = publicurl + 'bpmn/' + result.obj
                 tools.openFromUrl(bpmnModeler, container, url)
             },
             error: function (err) {
@@ -158,7 +158,7 @@ const tools = {
      * @param {string} url url地址
      */
     openFromUrl(bpmnModeler, container, url) {
-        $.ajax(url, { dataType: 'text' }).done(async function (xml) {
+        $.ajax(url, {dataType: 'text'}).done(async function (xml) {
             try {
                 await bpmnModeler.importXML(xml);
                 container.removeClass('with-error').addClass('with-diagram');
@@ -178,7 +178,7 @@ const tools = {
         dom.show();
         var that = this;
         $(".sy-mask").fadeIn(300)
-        setTimeout(function() {
+        setTimeout(function () {
             dom.removeClass(name)
         }, 300);
 
@@ -196,7 +196,7 @@ const tools = {
         var name = dom.attr("sy-leave");
         dom.addClass(name);
         $(".sy-mask").fadeOut(300);
-        setTimeout(function() {
+        setTimeout(function () {
             dom.hide();
             dom.removeClass(name);
         }, 300)
@@ -217,10 +217,10 @@ const tools = {
      * @param value
      * @returns {arg is Array<any>|boolean}
      */
-    isArrayFn(value){
+    isArrayFn(value) {
         if (typeof Array.isArray === "function") {
             return Array.isArray(value);
-        }else{
+        } else {
             return Object.prototype.toString.call(value) === "[object Array]";
         }
     },
@@ -229,47 +229,45 @@ const tools = {
      * @param data
      * @returns {Array}
      */
-    getByColor(data){
+    getByColor(data) {
 
-        var ColorJson=[]
-        for(var k in data['highLine']){
-            var par={
+        var ColorJson = []
+        for (var k in data['highLine']) {
+            var par = {
                 "name": data['highLine'][k],
-                "stroke":"green",
-                "fill":"green"
+                "stroke": "green",
+                "fill": "green"
             }
             ColorJson.push(par)
         }
-        for(var k in data['highPoint']){
-            var par={
+        for (var k in data['highPoint']) {
+            var par = {
                 "name": data['highPoint'][k],
-                "stroke":"gray",
-                "fill":"#eae9e9"
+                "stroke": "gray",
+                "fill": "#eae9e9"
 
             }
             ColorJson.push(par)
         }
-        for(var k in data['iDo']){
-            var par={
+        for (var k in data['iDo']) {
+            var par = {
                 "name": data['iDo'][k],
-                "stroke":"green",
-                "fill":"#a3d68e"
+                "stroke": "green",
+                "fill": "#a3d68e"
             }
             ColorJson.push(par)
         }
-        for(var k in data['waitingToDo']){
-            var par={
+        for (var k in data['waitingToDo']) {
+            var par = {
                 "name": data['waitingToDo'][k],
-                "stroke":"green",
-                "fill":"yellow"
+                "stroke": "green",
+                "fill": "yellow"
             }
             ColorJson.push(par)
         }
         return ColorJson
     }
 }
-
-
 
 
 export default tools

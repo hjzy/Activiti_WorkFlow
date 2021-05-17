@@ -3,7 +3,9 @@
 <mapper namespace="com.imooc.activitiweb.mapper.MailMapper">
 
     <select id="getSubscribeUser" resultType="com.imooc.activitiweb.pojo.UserInfoBean">
-        select * from user where is_subscribe=1;
+        select *
+        from user
+        where is_subscribe = 1;
     </select>
 
 

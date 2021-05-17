@@ -20,48 +20,48 @@ var cmdHelper = require('../../../../helper/CmdHelper');
  *
  * @return {Array<Object>} return an array containing the entries
  */
-module.exports = function(element, definition, bpmnFactory, options) {
+module.exports = function (element, definition, bpmnFactory, options) {
 
-  var id = options.id || 'element-property';
-  var label = options.label;
-  var referenceProperty = options.referenceProperty;
-  var modelProperty = options.modelProperty || 'name';
-  var shouldValidate = options.shouldValidate || false;
+    var id = options.id || 'element-property';
+    var label = options.label;
+    var referenceProperty = options.referenceProperty;
+    var modelProperty = options.modelProperty || 'name';
+    var shouldValidate = options.shouldValidate || false;
 
-  var entry = entryFactory.textField({
-    id: id,
-    label: label,
-    modelProperty: modelProperty,
+    var entry = entryFactory.textField({
+        id: id,
+        label: label,
+        modelProperty: modelProperty,
 
-    get: function(element, node) {
-      var reference = definition.get(referenceProperty);
-      var props = {};
-      props[modelProperty] = reference && reference.get(modelProperty);
-      return props;
-    },
+        get: function (element, node) {
+            var reference = definition.get(referenceProperty);
+            var props = {};
+            props[modelProperty] = reference && reference.get(modelProperty);
+            return props;
+        },
 
-    set: function(element, values, node) {
-      var reference = definition.get(referenceProperty);
-      var props = {};
-      props[modelProperty] = values[modelProperty] || undefined;
-      return cmdHelper.updateBusinessObject(element, reference, props);
-    },
+        set: function (element, values, node) {
+            var reference = definition.get(referenceProperty);
+            var props = {};
+            props[modelProperty] = values[modelProperty] || undefined;
+            return cmdHelper.updateBusinessObject(element, reference, props);
+        },
 
-    hidden: function(element, node) {
-      return !definition.get(referenceProperty);
+        hidden: function (element, node) {
+            return !definition.get(referenceProperty);
+        }
+    });
+
+    if (shouldValidate) {
+        entry.validate = function (element, values, node) {
+            var reference = definition.get(referenceProperty);
+            if (reference && !values[modelProperty]) {
+                var validationErrors = {};
+                validationErrors[modelProperty] = 'Must provide a value';
+                return validationErrors;
+            }
+        };
     }
-  });
 
-  if (shouldValidate) {
-    entry.validate = function(element, values, node) {
-      var reference = definition.get(referenceProperty);
-      if (reference && !values[modelProperty]) {
-        var validationErrors = {};
-        validationErrors[modelProperty] = 'Must provide a value';
-        return validationErrors;
-      }
-    };
-  }
-
-  return [ entry ];
+    return [entry];
 };

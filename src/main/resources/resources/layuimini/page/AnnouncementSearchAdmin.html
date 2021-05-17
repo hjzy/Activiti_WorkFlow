@@ -3,36 +3,41 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
     <style>
-        #barcon{text-align: center}
-		#searchDiv{text-align: right;}
+        #barcon {
+            text-align: center
+        }
+
+        #searchDiv {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <script type="text/html" id="toolbarDemo">
+        <script id="toolbarDemo" type="text/html">
             <div class="layui-btn-container">
                 <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;搜索结果</span>
             </div>
-<!--			<div id="searchDiv">-->
-<!--				<div class="layui-input-inline">-->
-<!--				    <input type="text" id="titleString" name="titleString" lay-verify="required" placeholder="请输入标题关键字" autocomplete="off" class="layui-input">-->
-<!--				</div>-->
-<!--                <i class="fa fa-search" id="searchBtn"></i>-->
-<!--			</div>-->
+            <!--			<div id="searchDiv">-->
+            <!--				<div class="layui-input-inline">-->
+            <!--				    <input type="text" id="titleString" name="titleString" lay-verify="required" placeholder="请输入标题关键字" autocomplete="off" class="layui-input">-->
+            <!--				</div>-->
+            <!--                <i class="fa fa-search" id="searchBtn"></i>-->
+            <!--			</div>-->
 
         </script>
 
         <table class="layui-hide" id="ProcessDefinitionTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="currentTableBar">
+        <script id="currentTableBar" type="text/html">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-add" lay-event="add">添加</a>
             <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
@@ -40,13 +45,13 @@
 
     </div>
 </div>
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
 <script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
 <script src="../js/ManualPaging.js"></script>
 <script>
 
-    function child(str){
+    function child(str) {
         layui.use(['form', 'table'], function () {
             var $ = layui.jquery,
                 form = layui.form,
@@ -56,7 +61,7 @@
                 elem: '#ProcessDefinitionTableId',
                 toolbar: '#toolbarDemo',
                 defaultToolbar: [''],
-                url: '' + publicurl + 'article/announcementSearchIndex?titleStr='+str,
+                url: '' + publicurl + 'article/announcementSearchIndex?titleStr=' + str,
                 parseData: function (res) { //res 即为原始返回的数据
                     console.log(res.obj.count, "数据长度");
                     objData = res.obj.data;
@@ -147,26 +152,26 @@
                 } else if (obj.event === 'delete') {
                     console.log(obj.data.id);
                     layer.confirm('您确定要删除当前公告吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
                         $.ajax({
-                            cache : true,
-                            type : "get",
-                            url :  ''+publicurl+'article/delete',
-                            async : false,
-                            data : {id:obj.data.id},
-                            success : function(res) {
+                            cache: true,
+                            type: "get",
+                            url: '' + publicurl + 'article/delete',
+                            async: false,
+                            data: {id: obj.data.id},
+                            success: function (res) {
                                 layer.msg(res.msg, {icon: 1});
                                 insTb.reload();
                             },
-                            error : function(res) {
-                                layer.alert(res.msg+'<br>'+res.obj, {
+                            error: function (res) {
+                                layer.alert(res.msg + '<br>' + res.obj, {
                                     icon: 2,
-                                    title:"提示"
+                                    title: "提示"
                                 });
                             }
                         });
-                    }, function(){
+                    }, function () {
 
                     });
                 }

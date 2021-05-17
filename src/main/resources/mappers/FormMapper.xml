@@ -4,12 +4,17 @@
 
 
     <select id="getFormDataList" resultType="com.imooc.activitiweb.pojo.FormData">
-        select * from formdata where formdata.PROC_INST_ID_=#{pro_ins_id}
+        select *
+        from formdata
+        where formdata.PROC_INST_ID_ = #{pro_ins_id}
     </select>
 
     <select id="getFormDataByProcessInstanceIdAndTaskDefinitionKey"
             resultType="com.imooc.activitiweb.pojo.FormData">
-        select * from formdata where PROC_INST_ID_=#{pro_ins_id} and FORM_KEY_=#{task_definition_key}
+        select *
+        from formdata
+        where PROC_INST_ID_ = #{pro_ins_id}
+          and FORM_KEY_ = #{task_definition_key}
     </select>
 
 </mapper>

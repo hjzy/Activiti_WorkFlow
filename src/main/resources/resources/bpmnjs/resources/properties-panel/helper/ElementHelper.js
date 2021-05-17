@@ -15,9 +15,9 @@ module.exports = ElementHelper;
  *
  * @returns {djs.model.Base} element which is created
  */
-ElementHelper.createElement = function(elementType, properties, parent, factory) {
-  var element = factory.create(elementType, properties);
-  element.$parent = parent;
+ElementHelper.createElement = function (elementType, properties, parent, factory) {
+    var element = factory.create(elementType, properties);
+    element.$parent = parent;
 
-  return element;
+    return element;
 };

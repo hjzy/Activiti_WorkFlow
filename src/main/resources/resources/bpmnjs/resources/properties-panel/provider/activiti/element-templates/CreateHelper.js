@@ -13,24 +13,24 @@ var assign = require('lodash/assign');
  * @return {ModdleElement}
  */
 function createInputParameter(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('activiti:Script', {
-      scriptFormat: scriptFormat,
-      value: value
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('activiti:Script', {
+            scriptFormat: scriptFormat,
+            value: value
+        });
+    } else {
+        parameterValue = value;
+    }
+
+    return bpmnFactory.create('activiti:InputParameter', {
+        name: binding.name,
+        value: parameterValue,
+        definition: parameterDefinition
     });
-  } else {
-    parameterValue = value;
-  }
-
-  return bpmnFactory.create('activiti:InputParameter', {
-    name: binding.name,
-    value: parameterValue,
-    definition: parameterDefinition
-  });
 }
 
 module.exports.createInputParameter = createInputParameter;
@@ -47,24 +47,24 @@ module.exports.createInputParameter = createInputParameter;
  * @return {ModdleElement}
  */
 function createOutputParameter(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('activiti:Script', {
-      scriptFormat: scriptFormat,
-      value: binding.source
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('activiti:Script', {
+            scriptFormat: scriptFormat,
+            value: binding.source
+        });
+    } else {
+        parameterValue = binding.source;
+    }
+
+    return bpmnFactory.create('activiti:OutputParameter', {
+        name: value,
+        value: parameterValue,
+        definition: parameterDefinition
     });
-  } else {
-    parameterValue = binding.source;
-  }
-
-  return bpmnFactory.create('activiti:OutputParameter', {
-    name: value,
-    value: parameterValue,
-    definition: parameterDefinition
-  });
 }
 
 module.exports.createOutputParameter = createOutputParameter;
@@ -80,10 +80,10 @@ module.exports.createOutputParameter = createOutputParameter;
  * @return {ModdleElement}
  */
 function createActivitiProperty(binding, value, bpmnFactory) {
-  return bpmnFactory.create('activiti:Property', {
-    name: binding.name,
-    value: value || ''
-  });
+    return bpmnFactory.create('activiti:Property', {
+        name: binding.name,
+        value: value || ''
+    });
 }
 
 module.exports.createActivitiProperty = createActivitiProperty;
@@ -100,9 +100,9 @@ module.exports.createActivitiProperty = createActivitiProperty;
  */
 function createActivitiIn(binding, value, bpmnFactory) {
 
-  var properties = createActivitiInOutAttrs(binding, value);
+    var properties = createActivitiInOutAttrs(binding, value);
 
-  return bpmnFactory.create('activiti:In', properties);
+    return bpmnFactory.create('activiti:In', properties);
 }
 
 module.exports.createActivitiIn = createActivitiIn;
@@ -118,9 +118,9 @@ module.exports.createActivitiIn = createActivitiIn;
  * @return {ModdleElement}
  */
 function createActivitiInWithBusinessKey(binding, value, bpmnFactory) {
-  return bpmnFactory.create('activiti:In', {
-    businessKey: value
-  });
+    return bpmnFactory.create('activiti:In', {
+        businessKey: value
+    });
 }
 
 module.exports.createActivitiInWithBusinessKey = createActivitiInWithBusinessKey;
@@ -136,9 +136,9 @@ module.exports.createActivitiInWithBusinessKey = createActivitiInWithBusinessKey
  * @return {ModdleElement}
  */
 function createActivitiOut(binding, value, bpmnFactory) {
-  var properties = createActivitiInOutAttrs(binding, value);
+    var properties = createActivitiInOutAttrs(binding, value);
 
-  return bpmnFactory.create('activiti:Out', properties);
+    return bpmnFactory.create('activiti:Out', properties);
 }
 
 module.exports.createActivitiOut = createActivitiOut;
@@ -154,24 +154,24 @@ module.exports.createActivitiOut = createActivitiOut;
  * @return {ModdleElement}
  */
 function createActivitiExecutionListenerScript(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('activiti:Script', {
-      scriptFormat: scriptFormat,
-      value: value
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('activiti:Script', {
+            scriptFormat: scriptFormat,
+            value: value
+        });
+    } else {
+        parameterValue = value;
+    }
+
+    return bpmnFactory.create('activiti:ExecutionListener', {
+        event: binding.event,
+        value: parameterValue,
+        script: parameterDefinition
     });
-  } else {
-    parameterValue = value;
-  }
-
-  return bpmnFactory.create('activiti:ExecutionListener', {
-    event: binding.event,
-    value: parameterValue,
-    script: parameterDefinition
-  });
 }
 
 module.exports.createActivitiExecutionListenerScript = createActivitiExecutionListenerScript;
@@ -186,23 +186,24 @@ module.exports.createActivitiExecutionListenerScript = createActivitiExecutionLi
  * @return {ModdleElement}
  */
 function createActivitiFieldInjection(binding, value, bpmnFactory) {
-  var DEFAULT_PROPS = {
-    'string': undefined,
-    'expression': undefined,
-    'name': undefined
-  };
+    var DEFAULT_PROPS = {
+        'string': undefined,
+        'expression': undefined,
+        'name': undefined
+    };
 
-  var props = assign({}, DEFAULT_PROPS);
+    var props = assign({}, DEFAULT_PROPS);
 
-  if (!binding.expression) {
-    props.string = value;
-  } else {
-    props.expression = value;
-  }
-  props.name = binding.name;
+    if (!binding.expression) {
+        props.string = value;
+    } else {
+        props.expression = value;
+    }
+    props.name = binding.name;
 
-  return bpmnFactory.create('activiti:Field', props);
+    return bpmnFactory.create('activiti:Field', props);
 }
+
 module.exports.createActivitiFieldInjection = createActivitiFieldInjection;
 
 
@@ -213,39 +214,39 @@ module.exports.createActivitiFieldInjection = createActivitiFieldInjection;
  */
 function createActivitiInOutAttrs(binding, value) {
 
-  var properties = {};
+    var properties = {};
 
-  // activiti:in source(Expression) target
-  if (binding.target) {
+    // activiti:in source(Expression) target
+    if (binding.target) {
 
-    properties.target = binding.target;
+        properties.target = binding.target;
 
-    if (binding.expression) {
-      properties.sourceExpression = value;
-    } else {
-      properties.source = value;
+        if (binding.expression) {
+            properties.sourceExpression = value;
+        } else {
+            properties.source = value;
+        }
+    } else
+
+        // activiti:(in|out) variables local
+    if (binding.variables) {
+        properties.variables = 'all';
+
+        if (binding.variables === 'local') {
+            properties.local = true;
+        }
     }
-  } else
 
-  // activiti:(in|out) variables local
-  if (binding.variables) {
-    properties.variables = 'all';
+    // activiti:out source(Expression) target
+    else {
+        properties.target = value;
 
-    if (binding.variables === 'local') {
-      properties.local = true;
+        ['source', 'sourceExpression'].forEach(function (k) {
+            if (binding[k]) {
+                properties[k] = binding[k];
+            }
+        });
     }
-  }
 
-  // activiti:out source(Expression) target
-  else {
-    properties.target = value;
-
-    [ 'source', 'sourceExpression' ].forEach(function(k) {
-      if (binding[k]) {
-        properties[k] = binding[k];
-      }
-    });
-  }
-
-  return properties;
+    return properties;
 }

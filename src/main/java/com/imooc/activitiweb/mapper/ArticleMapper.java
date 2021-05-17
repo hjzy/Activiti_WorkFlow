@@ -29,7 +29,7 @@ public interface ArticleMapper {
     public List<Article> getArticleByTypeLimitSize(int type, int size);
 
 
-   @MapKey("type")
-   Map<Integer, Count> getArticleCountMapForEcharts();
+    @MapKey("type")
+    Map<Integer, Count> getArticleCountMapForEcharts();
 
 }

@@ -68,34 +68,42 @@ body {
     -moz-border-radius: 2em;
     border-radius: 2em
 }
-.layui-card-header{
+
+.layui-card-header {
     font-size: 16px;
     font-weight: bold;
 }
-.layui-table-tool-temp{
+
+.layui-table-tool-temp {
     padding-right: 0;
 }
-.layui-table{
+
+.layui-table {
     width: 100% !important;
 }
-.floatR{
+
+.floatR {
     float: right;
 }
-.DialogInput{
+
+.DialogInput {
     width: 50%;
     display: inline-block;
     vertical-align: middle;
 }
-.DialogBtn{
+
+.DialogBtn {
     width: 48%;
     display: inline-block;
     vertical-align: middle;
     padding: 0 10px;
 }
+
 /*分页样式*/
-.layui-table-page{
+.layui-table-page {
     border: none;
 }
+
 .page_div {
     /*margin-top: 10px;*/
     /*margin-bottom: 10px;*/
@@ -105,8 +113,9 @@ body {
     margin-right: 10px;
     padding-left: 20px;
     box-sizing: border-box;
-    float:right;
+    float: right;
 }
+
 /* 页数按钮样式*/
 .page_div a {
     display: inline-block;
