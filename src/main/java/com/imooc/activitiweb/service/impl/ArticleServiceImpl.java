@@ -34,16 +34,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleByType(int type) {
-        return articleMapper.getArticleByType(type);
-    }
-
-    @Override
-    public List<Article> getArticleByTypeLimitSize(int type, int size) {
-        return articleMapper.getArticleByTypeLimitSize(type, size);
-    }
-
-    @Override
     public List<Article> getAllArticle() {
         return articleMapper.getAllArticle();
     }
@@ -68,6 +58,14 @@ public class ArticleServiceImpl implements ArticleService {
         return res > 0;
     }
 
-    //public List<Count> getArticleCountMapForEcharts(){return articleMapper.getArticleCountMapForEcharts();}
+    @Override
+    public int updateClick(int id) {
+        return articleMapper.updateClick(id);
+    }
+
+    @Override
+    public List<Article> getClick() {
+        return articleMapper.getArticleAndClick();
+    }
 
 }

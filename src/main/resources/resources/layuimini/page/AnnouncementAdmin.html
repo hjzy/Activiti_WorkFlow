@@ -130,10 +130,24 @@
                     area: ['100%', '100%'],
                     content: '../page/AnnouncementView.html',
                     success: function (layero, index) {
-
-
                         var iframe = window['layui-layer-iframe' + index];
                         iframe.child(obj.data);
+                        $.ajax({
+                            cache: true,
+                            type: "get",
+                            url: '' + publicurl + 'article/updateClick',
+                            async: true,
+                            data: {id: obj.data.id},
+                            success: function (res) {
+                                layer.msg(res.msg, {icon: 1});
+                            },
+                            error: function (res) {
+                                layer.alert(res.msg + '<br>' + res.obj, {
+                                    icon: 2,
+                                    title: "提示"
+                                });
+                            }
+                        });
                         // console.log(obj.data);
                     }
                 });

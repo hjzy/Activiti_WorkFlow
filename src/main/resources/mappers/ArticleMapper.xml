@@ -23,6 +23,14 @@
         where title LIKE '%${titleStr}%'
     </select>
 
+    <select id="getArticleAndClick" resultType="com.imooc.activitiweb.pojo.Article">
+        select *
+        FROM article
+        ORDER BY id
+        DESC
+        LIMIT 1,7
+    </select>
+
     <delete id="deleteArticle" parameterType="int">
         delete
         from article
@@ -48,23 +56,10 @@
         where id = #{id};
     </update>
 
-    <select id="getArticleByType" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
-        select *
-        from article
-        where type = #{type}
-    </select>
 
-    <select id="getArticleByTypeLimitSize" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
-        select *
-        from article
-        where type = #{type}
-        limit #{size}
-    </select>
-
-
-    <select id="getArticleCountMapForEcharts" resultType="java.util.Map">
-        select type, COUNT(type) as count
-        from article
-        group by type
-    </select>
+    <update id="updateClick" parameterType="int">
+        update article
+        set click=click+1
+        where id=#{id}
+    </update>
 </mapper>

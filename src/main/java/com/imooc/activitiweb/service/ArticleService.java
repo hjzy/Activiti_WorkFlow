@@ -15,14 +15,9 @@ import java.util.List;
  */
 public interface ArticleService {
 
-
     public boolean publishArticle(Article article);
 
     public Article getArticleById(int id);
-
-    public List<Article> getArticleByType(int type);
-
-    public List<Article> getArticleByTypeLimitSize(int type, int size);
 
     public List<Article> getAllArticle();
 
@@ -30,6 +25,9 @@ public interface ArticleService {
 
     public boolean deleteArticleById(int id);
 
-
     public boolean updateArticleById(Article article);
+
+    public int updateClick(int id);
+
+    public List<Article> getClick();
 }

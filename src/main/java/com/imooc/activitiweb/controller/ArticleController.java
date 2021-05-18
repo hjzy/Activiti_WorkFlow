@@ -144,5 +144,20 @@ public class ArticleController {
         }
     }
 
+    @RequestMapping("/updateClick")
+    @ResponseBody
+    public AjaxResponse updateClick(int id) {
+
+        try {
+            int res = articleService.updateClick(id);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "点击量添加失败", e.toString());
+        }
+    }
+
+
 
 }

@@ -24,12 +24,8 @@ public interface ArticleMapper {
 
     public int updateArticle(Article article);
 
-    public List<Article> getArticleByType(int type);
+    int updateClick(int id);
 
-    public List<Article> getArticleByTypeLimitSize(int type, int size);
-
-
-    @MapKey("type")
-    Map<Integer, Count> getArticleCountMapForEcharts();
+    List<Article> getArticleAndClick();
 
 }

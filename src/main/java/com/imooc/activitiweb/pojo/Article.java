@@ -15,7 +15,7 @@ public class Article {
 
     private String content;
 
-    private int type;
+    private int click;
 
     private Date date;
 

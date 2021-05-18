@@ -1,6 +1,8 @@
 package com.imooc.activitiweb.controller;
 
+import com.imooc.activitiweb.pojo.Article;
 import com.imooc.activitiweb.service.ActivitiService;
+import com.imooc.activitiweb.service.ArticleService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ChartsController {
 
     @Autowired
     ActivitiService activitiService;
+
+    @Autowired
+    ArticleService articleService;
 
     @RequestMapping("/getCount")
     public AjaxResponse getCount() {
@@ -83,13 +88,25 @@ public class ChartsController {
             //排名前列的流程定义创建的流程实例数
             List<HashMap<String, Object>> hashMapListProcessDefinition = activitiService.getCountProcessDefinitionCreateProcessInstance();
 
-
             List<HashMap<String, Object>> hashMapListTask = activitiService.getCountListTask();
+
+            List<HashMap<String, Object>> clickListMap= new ArrayList<HashMap<String, Object>>();;
+            List<Article> articleList =articleService.getClick();
+
+            for (Article article : articleList) {
+                HashMap<String, Object> click = new HashMap<>();
+                click.put("title",article.getTitle());
+                click.put("click",article.getClick());
+                clickListMap.add(click);
+            }
+
+
 
             List<List<HashMap<String, Object>>> list = new ArrayList<>();
             list.add(listMap);
             list.add(hashMapListProcessDefinition);
             list.add(hashMapListTask);
+            list.add(clickListMap);
 
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),

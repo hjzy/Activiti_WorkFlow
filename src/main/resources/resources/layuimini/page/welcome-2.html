@@ -152,6 +152,9 @@
         var c = [];
         var d = [];
         var e = [];
+        var f = [];
+        var g = [];
+        var h = [];
         $.ajax({
             cache: true,
             type: "get",
@@ -204,6 +207,9 @@
                 d[j] = hashMapListTask[j].days;
                 e[j] = hashMapListTask[j].end;
             }
+
+            var clickMapList = obj[3];
+
 
             $("#countPD").text(countProcessDefinition);
             $("#countTPD").text("今日新增" + countTodayProcessDefinitionDeployment);
@@ -317,98 +323,137 @@
             echartsPies.setOption(optionPies);
             echartsline.resize();
 
+            /**
+             * 柱状图
+             */
+            var echartsClickDataset = echarts.init(document.getElementById('echarts-records'), 'walden');
 
+            var optionClickDataset = {
+                title: {
+                    text: '公告点击量'
+                },
+                legend: {
+                    data: ["点击量"],
+                    top: 20
+                },
+                tooltip: {},
+                grid: {
+                    left: '30',
+                    right: '20',
+                    bottom: '30',
+                },
+                dataset: {
+                    dimensions: ["title", "click"],
+                    source: clickMapList
+                },
+                xAxis: [{type: 'category', show: true}, {
+                    axisLabel: {
+                        interval: 0,//代表显示所有x轴标签显示
+                    }
+                }],
+                yAxis: {},
+                // Declare several bar series, each will be mapped
+                // to a column of dataset.source by default.
+                series: [
+                    {type: 'bar'}
+                ]
+            };
+
+            echartsClickDataset.setOption(optionClickDataset);
+            echartsClickDataset.resize();
         }
 
-        /**
-         * 报表功能
-         */
-        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+        //此处为分界线
 
-        var optionRecords = {
-            title: {
-                text: '流程部署产生实例数'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
-                }
-            },
-            legend: {
-                data: ['请假流程', '报销流程', '出差申请流程', '采购申请流程', '业务审批流程'],
-                top: 30
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['06-26', '06-27', '06-28', '06-29', '06-30', '07-01', '07-02']
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '请假流程',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [2, 4, 6, 7, 9, 4, 2]
-                },
-                {
-                    name: '报销流程',
-                    type: 'line',
-                    areaStyle: {},
-                    data: [3, 1, 5, 3, 4, 8, 2]
-                },
-                {
-                    name: '出差申请流程',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [3, 2, 1, 4, 2, 1, 1]
-                },
-                {
-                    name: '采购申请流程',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: {},
-                    data: [3, 2, 6, 8, 4, 2, 3]
-                },
-                {
-                    name: '业务审批流程',
-                    type: 'line',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
+        /*        /!**
+                 * 报表功能
+                 *!/
+                var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+
+                var optionRecords = {
+                    title: {
+                        text: '流程部署产生实例数'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#6a7985'
+                            }
                         }
                     },
-                    areaStyle: {},
-                    data: [6, 5, 8, 7, 9, 10, 8]
-                }
-            ]
-        };
-        echartsRecords.setOption(optionRecords);
+                    legend: {
+                        data: ['请假流程', '报销流程', '出差申请流程', '采购申请流程', '业务审批流程'],
+                        top: 30
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['06-26', '06-27', '06-28', '06-29', '06-30', '07-01', '07-02']
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '请假流程',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [2, 4, 6, 7, 9, 4, 2]
+                        },
+                        {
+                            name: '报销流程',
+                            type: 'line',
+                            areaStyle: {},
+                            data: [3, 1, 5, 3, 4, 8, 2]
+                        },
+                        {
+                            name: '出差申请流程',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [3, 2, 1, 4, 2, 1, 1]
+                        },
+                        {
+                            name: '采购申请流程',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [3, 2, 6, 8, 4, 2, 3]
+                        },
+                        {
+                            name: '业务审批流程',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data: [6, 5, 8, 7, 9, 10, 8]
+                        }
+                    ]
+                };
+                echartsRecords.setOption(optionRecords);*/
 
 
         /**
@@ -480,9 +525,9 @@
             dataset: {
                 dimensions: ['product', '任务创建数', '任务完成数'],
                 source: [
-                    {product: '06-30', '任务创建数': 4, '任务完成数': 8},
-                    {product: '07-01', '任务创建数': 8, '任务完成数': 7},
-                    {product: '07-02', '任务创建数': 9, '任务完成数': 5},
+                    {product: '05-01', '任务创建数': 4, '任务完成数': 8},
+                    {product: '05-02', '任务创建数': 8, '任务完成数': 7},
+                    {product: '05-04', '任务创建数': 9, '任务完成数': 5},
                 ]
             },
             xAxis: {type: 'category'},
@@ -501,11 +546,6 @@
         /**
          * 过去7天任务创建和任务统计折线图
          */
-
-
-        console.log(c);
-        console.log(d);
-        console.log(e);
 
 
         // echarts 窗口缩放自适应
