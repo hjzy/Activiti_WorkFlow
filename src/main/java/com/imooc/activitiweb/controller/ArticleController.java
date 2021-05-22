@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Api
 @Controller
@@ -87,6 +88,40 @@ public class ArticleController {
         return jsonObject;
     }
 
+    //文件上传控制器
+    @RequestMapping("/file/upload")
+    @ResponseBody
+    public JSONObject fileUpload( MultipartFile file) {
+        JSONObject jsonObject = new JSONObject();
+        if (file != null) {
+            String path = FileUtils.uploadFile(file);
+
+                System.out.println(path);
+            jsonObject.put("url", path);
+            jsonObject.put("success", 1);
+            jsonObject.put("message", "upload success!");
+            return jsonObject;
+        }
+        jsonObject.put("success", 0);
+        jsonObject.put("message", "upload error!");
+        return jsonObject;
+    }
+
+    //插入文章附件id
+    @RequestMapping("/insertArticleFileId")
+    @ResponseBody
+    public AjaxResponse insertArticleFileId(String fileName, String articleId,String fileOriginName) {
+
+        try {
+            int result= articleService.insertArticleFileID(fileName,articleId,fileOriginName);
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "插入文章附件id失败！", e.toString());
+        }
+    }
 
     //在视图中显示所有文章，并进行分页
     @ResponseBody

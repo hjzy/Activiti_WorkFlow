@@ -30,4 +30,6 @@ public interface ArticleService {
     public int updateClick(int id);
 
     public List<Article> getClick();
+
+    int insertArticleFileID(String articleId,String fileName,String fileOriginName);
 }

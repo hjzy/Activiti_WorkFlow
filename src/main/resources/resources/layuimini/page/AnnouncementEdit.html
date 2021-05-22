@@ -7,6 +7,7 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
     <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/admins.css" media="all" rel="stylesheet">
     <link href="../css/public.css" media="all" rel="stylesheet">
     <link href="../css/examples/style.css" rel="stylesheet"/>
     <link href="../css/editormd.css" rel="stylesheet"/>
@@ -29,7 +30,8 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-block">
-                        <input autocomplete="off" class="layui-input" lay-verify="title" name="title" placeholder="请输入标题"
+                        <input autocomplete="off" class="layui-input" lay-verify="title" name="title"
+                               placeholder="请输入标题"
                                type="text">
                     </div>
                 </div>
@@ -37,8 +39,37 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">作者</label>
                     <div class="layui-input-block">
-                        <input autocomplete="off" class="layui-input" lay-verify="title" name="author" placeholder="请输入作者"
+                        <input autocomplete="off" class="layui-input" lay-verify="title" name="author"
+                               placeholder="请输入作者"
                                type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">附件</label>
+                    <div class="layui-input-block">
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择文件</button>
+                            <div class="layui-upload-list" style="max-width: 1000px;">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col>
+                                        <col width="150">
+                                        <col width="260">
+                                        <col width="150">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>文件名</th>
+                                        <th>大小</th>
+                                        <th>上传进度</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="demoList"></tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                        </div>
                     </div>
                 </div>
 
@@ -52,50 +83,152 @@
 
     </div>
 </div>
-<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+
+<script charset="utf-8" src="../lib/layui-v2.6.7/layui/layui.js"></script>
 <script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
-<script src="../js/ManualPaging.js"></script>
+<!--<script src="../js/ManualPaging.js"></script>-->
 <script src="../js/examples/jquery.min.js"></script>
 <script src="../js/editormd.min.js"></script>
 <script type="text/javascript">
-    var testEditor;
 
-    $(function () {
-        testEditor = editormd("test-editormd", {
-            width: "90%",
-            height: 640,
-            syncScrolling: "single",
-            path: "../lib/",
-            imageUpload: true,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "/article/image/upload",
-            toolbarIcons: function () {
-                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|", "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "help", "info", "||", "publish"];
-            },
 
-            toolbarIconTexts: {
-                publish: "<span bgcolor='gray'>发布</span>"
-            },
+    layui.use(['form', 'table', 'admin', 'upload', 'laypage'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            upload = layui.upload,
+            laypage = layui.laypage,
+            element = layui.element,
+            layer = layui.layer,
+            admin = layui.admin;
+        var articleId=generateUUID();
+        var testEditor;
 
-            toolbarHandlers: {
-                publish: function (cm, icon, cursor, selection) {
-                    mdEditorForm.method = "post";
-                    mdEditorForm.action = "/article/publish";//提交至服务器的路径
-                    mdEditorForm.submit();
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 640,
+                syncScrolling: "single",
+                path: "../lib/",
+                imageUpload: true,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: "/article/image/upload",
+                toolbarIcons: function () {
+                    return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|", "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "help", "info", "||", "publish"];
+                },
+
+                toolbarIconTexts: {
+                    publish: "<span bgcolor='gray'>发布</span>"
+                },
+
+                toolbarHandlers: {
+                    publish: function (cm, icon, cursor, selection) {
+                        mdEditorForm.method = "post";
+                        mdEditorForm.action = "/article/publish";//提交至服务器的路径
+                        mdEditorForm.submit();
+                    }
                 }
+            });
+        });
+        //多文件列表上传
+        var uploadListIns = upload.render({
+            elem: '#testList'
+            , elemList: $('#demoList') //列表元素对象
+            , url: '' + publicurl + 'article/file/upload'
+            , accept: 'file'
+            , multiple: true
+            , number: 3
+            , auto: false
+            , bindAction: '#testListAction'
+            , choose: function (obj) {
+                var that = this;
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function (index, file, result) {
+                    var tr = $(['<tr id="upload-' + index + '">'
+                        , '<td>' + file.name + '</td>'
+                        , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                        , '<td><div class="layui-progress" lay-filter="progress-demo-' + index + '"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                        , '<td>'
+                        , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                        , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                        , '</td>'
+                        , '</tr>'].join(''));
+
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function () {
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function () {
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    that.elemList.append(tr);
+                    element.render('progress'); //渲染新加的进度条组件
+                });
+            }
+            , done: function (res, index, upload) { //成功的回调
+                var that = this;
+                //if(res.code == 0){ //上传成功
+                var tr = that.elemList.find('tr#upload-' + index)
+                    , tds = tr.children();
+
+                tds.eq(3).html(''); //清空操作
+                delete this.files[index]; //删除文件队列已经上传成功的文件
+                var articleFileName={"fileName":res.url,"articleId":articleId ,"fileOriginName":tds[0].innerHTML};
+                //传入文件id
+                $.ajax({
+                    cache: true,
+                    type: "get",
+                    url: '' + publicurl + 'article/insertArticleFileId',
+                    async: true,
+                    data: articleFileName,
+                    success: function (res) {
+                        layer.msg(res.msg, {icon: 1});
+                    },
+                    error: function (res) {
+                        layer.alert(res.msg + '<br>' + res.obj, {
+                            icon: 2,
+                            title: "提示"
+                        });
+                    }
+                });
+                return;
+                //}
+                this.error(index, upload);
+            }
+            , allDone: function (obj) { //多文件上传完毕后的状态回调
+                console.log(obj)
+            }
+            , error: function (index, upload) { //错误回调
+                var that = this;
+                var tr = that.elemList.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+            , progress: function (n, elem, e, index) {
+                element.progress('progress-demo-' + index, n + '%'); //执行进度条。n 即为返回的进度百分比
             }
         });
 
-        /*
-        // or
-        testEditor = editormd({
-            id      : "test-editormd",
-            width   : "90%",
-            height  : 640,
-            path    : "../lib/"
-        });
-        */
+        function generateUUID() {
+            var d = new Date().getTime();
+            if (window.performance && typeof window.performance.now === "function") {
+                d += performance.now(); //use high-precision timer if available
+            }
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        }
     });
+
 </script>
 
 </body>

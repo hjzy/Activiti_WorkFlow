@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.ArticleMapper">
     <insert id="insertArticle" parameterType="com.imooc.activitiweb.pojo.Article">
-        insert into article (title, author, content, type, date)
-        values (#{title}, #{author}, #{content}, #{type}, NOW());
+        insert into article (title, author, content, date)
+        values (#{title}, #{author}, #{content}, NOW());
+    </insert>
+    <insert id="insertArticleFileID">
+        insert into article_file(id,file_name,file_origin_name)
+        values (#{articleId},#{fileName},#{fileOriginName})
     </insert>
 
     <select id="getArticleById" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
@@ -27,7 +31,7 @@
         select *
         FROM article
         ORDER BY id
-        DESC
+                DESC
         LIMIT 1,7
     </select>
 
@@ -59,7 +63,7 @@
 
     <update id="updateClick" parameterType="int">
         update article
-        set click=click+1
-        where id=#{id}
+        set click=click + 1
+        where id = #{id}
     </update>
 </mapper>

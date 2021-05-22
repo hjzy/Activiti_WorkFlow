@@ -28,4 +28,5 @@ public interface ArticleMapper {
 
     List<Article> getArticleAndClick();
 
+    int insertArticleFileID(String articleId,String fileName,String fileOriginName);
 }

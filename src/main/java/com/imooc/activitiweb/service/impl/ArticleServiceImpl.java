@@ -68,4 +68,9 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.getArticleAndClick();
     }
 
+    @Override
+    public int insertArticleFileID(String articleId, String fileName,String fileOriginName) {
+        return articleMapper.insertArticleFileID(articleId,fileName,fileOriginName);
+    }
+
 }
