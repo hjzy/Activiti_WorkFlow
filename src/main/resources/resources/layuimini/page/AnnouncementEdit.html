@@ -26,7 +26,7 @@
             <header>
                 <h1>请在此处编辑您的公告</h1>
             </header>
-            <form name="mdEditorForm">
+            <form name="mdEditorForm" id="mdEditorForm">
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-block">
@@ -101,7 +101,7 @@
             element = layui.element,
             layer = layui.layer,
             admin = layui.admin;
-        var articleId=generateUUID();
+        var articleId = generateUUID();
         var testEditor;
 
         $(function () {
@@ -123,9 +123,37 @@
 
                 toolbarHandlers: {
                     publish: function (cm, icon, cursor, selection) {
-                        mdEditorForm.method = "post";
-                        mdEditorForm.action = "/article/publish";//提交至服务器的路径
-                        mdEditorForm.submit();
+                        let form = document.getElementById("mdEditorForm");
+
+                        let formData = new FormData(form);
+                        formData.append("articleId", articleId);
+                        var objData = {}
+                        formData.forEach((v, k) => {
+                            if (k !== "file") {
+                                console.log(v, k)
+                                objData[k] = v;
+                            }
+
+                        })
+                        var articleJson = JSON.stringify(objData);
+
+                        $.ajax({
+                            cache: true,
+                            type: "post",
+                            url: '' + publicurl + 'article/publish',
+                            async: false,
+                            data: {"articleJson": articleJson},
+                            success: function (res) {
+                                layer.msg(res.msg, {icon: 1});
+                            },
+                            error: function (res) {
+                                layer.alert(res.msg + '<br>' + res.obj, {
+                                    icon: 2,
+                                    title: "提示"
+                                });
+                            }
+                        });
+
                     }
                 }
             });
@@ -179,7 +207,7 @@
 
                 tds.eq(3).html(''); //清空操作
                 delete this.files[index]; //删除文件队列已经上传成功的文件
-                var articleFileName={"fileName":res.url,"articleId":articleId ,"fileOriginName":tds[0].innerHTML};
+                var articleFileName = {"fileName": res.url, "articleId": articleId, "fileOriginName": tds[0].innerHTML};
                 //传入文件id
                 $.ajax({
                     cache: true,

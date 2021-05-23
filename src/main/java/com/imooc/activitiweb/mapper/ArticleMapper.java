@@ -5,6 +5,7 @@ import com.imooc.activitiweb.pojo.Count;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,6 @@ public interface ArticleMapper {
     List<Article> getArticleAndClick();
 
     int insertArticleFileID(String articleId,String fileName,String fileOriginName);
+
+    List<HashMap<String, String>> getAttachments(int id);
 }

@@ -4,6 +4,7 @@ import com.imooc.activitiweb.mapper.ArticleMapper;
 import com.imooc.activitiweb.pojo.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,4 +33,6 @@ public interface ArticleService {
     public List<Article> getClick();
 
     int insertArticleFileID(String articleId,String fileName,String fileOriginName);
+
+    List<HashMap<String, String>> getAttachments(int id);
 }

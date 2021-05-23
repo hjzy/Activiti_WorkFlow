@@ -19,6 +19,8 @@ public class Article {
 
     private Date date;
 
+    private String articleId;
+
     public int getId() {
         return id;
     }

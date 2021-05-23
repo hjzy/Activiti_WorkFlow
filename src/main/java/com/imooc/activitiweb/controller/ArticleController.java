@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api
 @Controller
@@ -58,8 +56,16 @@ public class ArticleController {
     //提交文章
     @RequestMapping("/publish")
     @ResponseBody
-    public AjaxResponse publishArticle(Article article) {
+    public AjaxResponse publishArticle(String articleJson) {
+
         try {
+            System.out.println(articleJson);
+            Map<String, String> articleMap = (Map<String, String>) JSONObject.parse(articleJson);
+            Article article=new Article();
+            article.setArticleId(articleMap.get("articleId"));
+            article.setTitle(articleMap.get("title"));
+            article.setAuthor(articleMap.get(("author")));
+            article.setContent(articleMap.get("content"));
             boolean res = articleService.publishArticle(article);
             mailService.SendMailToSubscribedUser(article);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -113,7 +119,7 @@ public class ArticleController {
     public AjaxResponse insertArticleFileId(String fileName, String articleId,String fileOriginName) {
 
         try {
-            int result= articleService.insertArticleFileID(fileName,articleId,fileOriginName);
+            int result= articleService.insertArticleFileID(articleId,fileName,fileOriginName);
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), "完成");
@@ -122,6 +128,26 @@ public class ArticleController {
                     "插入文章附件id失败！", e.toString());
         }
     }
+
+
+    //获取文章附件
+    @RequestMapping("/getArticleAttachments")
+    @ResponseBody
+    public AjaxResponse getArticleAttachments(int id) {
+
+        try {
+            List<HashMap<String, String>> listMap;
+            listMap=articleService.getAttachments(id);
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "插入文章附件id失败！", e.toString());
+        }
+    }
+
+
 
     //在视图中显示所有文章，并进行分页
     @ResponseBody
@@ -142,7 +168,7 @@ public class ArticleController {
                     "error", e.toString());
         }
     }
-
+    //文章搜索，在视图中显示所有文章，并进行分页
     @ResponseBody
     @RequestMapping("/announcementSearchIndex")
     public AjaxResponse announcementSearchIndex(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit, String titleStr) {
@@ -178,7 +204,7 @@ public class ArticleController {
                     "error", e.toString());
         }
     }
-
+    //更新点击量
     @RequestMapping("/updateClick")
     @ResponseBody
     public AjaxResponse updateClick(int id) {

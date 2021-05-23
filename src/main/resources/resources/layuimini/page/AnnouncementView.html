@@ -34,8 +34,14 @@
 
                     </div>
                 </div>
+                <fieldset class="layui-elem-field" id="fieldsetId">
+                    <legend>附件</legend>
+                    <div id="attachment"></div>
+                </fieldset>
             </div>
         </div>
+
+
     </div>
 </div>
 <script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
@@ -63,11 +69,47 @@
         $("#author").text(obj.author);
         $("#date").text(renderTime(obj.date));
         $("#content").text(obj.content);
-        console.log(obj.content);
+        let id = obj.id;
+        //console.log(obj.content);
+        var attachment = $("#attachment");
+        getArticleFiles();
 
         function renderTime(date) {
             var dateee = new Date(date).toJSON();
             return new Date(+new Date(dateee)).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+        }
+
+        function getArticleFiles() {
+            $.ajax({
+                cache: true,
+                type: "get",
+                url: '' + publicurl + 'article/getArticleAttachments',
+                async: true,
+                data: {"id": id},
+                success: function (res) {
+                    //layer.msg(res.msg, {icon: 1});
+                    console.log(res.obj);
+                    if (res.obj !== null || res.obj !== "") {
+                        for (let i = 0; i < res.obj.length; i++) {
+                            attachment.append(
+                                '<div className="layui-field-box">' +
+                                 res.obj[i].file_origin_name +
+                                '<a href="' + res.obj[i].file_name + '" class="layui-btn" target="_blank" download="'+res.obj[i].file_origin_name+'">点击下载</a>' +
+                                '</div>'
+                            )
+                        }
+                    } else{
+                        $("fieldsetId").hide();
+                    }
+
+                },
+                error: function (res) {
+                   // layer.alert(res.msg + '<br>' + res.obj, {
+                   //      icon: 2,
+                   //      title: "提示"
+                   //  });
+                }
+            });
         }
 
         $(function () {

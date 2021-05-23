@@ -90,16 +90,16 @@ public class ChartsController {
 
             List<HashMap<String, Object>> hashMapListTask = activitiService.getCountListTask();
 
-            List<HashMap<String, Object>> clickListMap= new ArrayList<HashMap<String, Object>>();;
-            List<Article> articleList =articleService.getClick();
+            List<HashMap<String, Object>> clickListMap = new ArrayList<HashMap<String, Object>>();
+
+            List<Article> articleList = articleService.getClick();
 
             for (Article article : articleList) {
                 HashMap<String, Object> click = new HashMap<>();
-                click.put("title",article.getTitle());
-                click.put("click",article.getClick());
+                click.put("title", article.getTitle());
+                click.put("click", article.getClick());
                 clickListMap.add(click);
             }
-
 
 
             List<List<HashMap<String, Object>>> list = new ArrayList<>();

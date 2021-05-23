@@ -6,6 +6,7 @@ import com.imooc.activitiweb.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -71,6 +72,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public int insertArticleFileID(String articleId, String fileName,String fileOriginName) {
         return articleMapper.insertArticleFileID(articleId,fileName,fileOriginName);
+    }
+
+    @Override
+    public List<HashMap<String, String>> getAttachments(int id) {
+        return articleMapper.getAttachments(id);
     }
 
 }
