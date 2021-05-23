@@ -2,32 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.ArticleMapper">
     <insert id="insertArticle" parameterType="com.imooc.activitiweb.pojo.Article">
+        -- 插入文章
         insert into article (title, author, content, date, article_id)
         values (#{title}, #{author}, #{content}, NOW(), #{articleId});
     </insert>
+
     <insert id="insertArticleFileID">
+        -- 插入文章附件的id和name
         insert into article_file(id, file_name, file_origin_name)
         values (#{articleId}, #{fileName}, #{fileOriginName})
     </insert>
 
     <select id="getArticleById" resultType="com.imooc.activitiweb.pojo.Article" parameterType="int">
+        -- 通过id获取文章
         select *
         from article
         where id = #{id};
     </select>
 
     <select id="getAllArticle" resultType="com.imooc.activitiweb.pojo.Article">
+        -- 获取文章列表
         select *
         from article
     </select>
 
     <select id="searchArticle" resultType="com.imooc.activitiweb.pojo.Article">
+        -- 根据关键字查询文章
         select *
         from article
         where title LIKE '%${titleStr}%'
     </select>
 
     <select id="getArticleAndClick" resultType="com.imooc.activitiweb.pojo.Article">
+        -- 获取文章标题和点击量
         select *
         FROM article
         ORDER BY id
@@ -45,12 +52,14 @@
     </select>
 
     <delete id="deleteArticle" parameterType="int">
+        -- 删除文章
         delete
         from article
         where id = #{id};
     </delete>
 
     <update id="updateArticle">
+        -- 更新文章
         update article
         <set>
             <if test="title != null">

@@ -1,5 +1,10 @@
 package com.imooc.activitiweb.pojo;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 public class Act_ru_task {
 
     private String NAME_;

@@ -5,7 +5,12 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.delegate.Expression;
 import org.springframework.beans.factory.annotation.Autowired;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 /**
  * @Description 执行监听器
  * @Date 2021/4/22 20:58

@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @RestController
 @RequestMapping("/processInstance")
 public class ProcessInstanceController {
@@ -39,6 +45,12 @@ public class ProcessInstanceController {
 
 
     //查询流程定义
+    /**
+     * Description //TODO 
+     * @Date 2021/5/23 18:16
+     * @param userInfoBean 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/getInstances")
     public AjaxResponse getInstances(@AuthenticationPrincipal UserInfoBean userInfoBean) {
         Page<ProcessInstance> processInstances = null;
@@ -88,6 +100,14 @@ public class ProcessInstanceController {
 
     //启动流程实例
     //启动前询问用户需要添加哪些变量，以达到复用流程部署的目的
+    /**
+     * Description //TODO 
+     * @Date 2021/5/23 18:16
+     * @param processDefinitionKey
+     * @param instanceName
+     * @param instanceVariable 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/startProcess")
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                      @RequestParam("instanceName") String instanceName,
@@ -138,6 +158,12 @@ public class ProcessInstanceController {
     }
 
     //挂起冷冻
+    /**
+     * Description //TODO 
+     * @Date 2021/5/23 18:16
+     * @param instanceID 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/suspendInstance")
     public AjaxResponse suspendInstance(@RequestParam("instanceID") String instanceID) {
 
@@ -160,6 +186,12 @@ public class ProcessInstanceController {
     }
 
     //激活
+    /**
+     * Description //TODO 
+     * @Date 2021/5/23 18:16
+     * @param instanceID 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/resumeInstance")
     public AjaxResponse resumeInstance(@RequestParam("instanceID") String instanceID) {
 
@@ -183,6 +215,12 @@ public class ProcessInstanceController {
 
 
     //获取参数
+    /**
+     * Description //TODO 
+     * @Date 2021/5/23 18:16
+     * @param instanceID 
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/variables")
     public AjaxResponse variables(@RequestParam("instanceID") String instanceID) {
         try {

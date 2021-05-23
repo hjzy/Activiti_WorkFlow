@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @RestController
 public class ActivitiSecurityController {
     private Logger logger = LoggerFactory.getLogger(getClass());

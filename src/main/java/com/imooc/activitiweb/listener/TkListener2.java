@@ -2,7 +2,12 @@ package com.imooc.activitiweb.listener;
 
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 public class TkListener2 implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {

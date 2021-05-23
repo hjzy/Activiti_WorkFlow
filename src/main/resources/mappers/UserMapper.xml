@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.UserInfoBeanMapper">
     <insert id="addUser" parameterType="java.util.Map">
+        -- 添加用户
         insert into moocactiviti.user (name, username, password, roles, email, is_subscribe)
         values (#{name}, #{username}, #{password}, #{access}, #{email}, #{isEmail})
     </insert>
@@ -23,6 +24,7 @@
         where username = #{username}
     </update>
     <delete id="deleteUser" parameterType="java.lang.String">
+        -- 删除任务
         delete
         from moocactiviti.user
         where id = #{id}
@@ -30,11 +32,13 @@
 
 
     <select id="getAllUsers" resultType="java.util.HashMap">
+        -- 获取用户列表
         select id, name, username, roles, email, is_subscribe
         from moocactiviti.user
     </select>
     <select id="selectByUsername" resultType="com.imooc.activitiweb.pojo.UserInfoBean"
             parameterType="java.lang.String">
+        -- 根据用户名获取用户
         select *
         from user
         where username = #{username}

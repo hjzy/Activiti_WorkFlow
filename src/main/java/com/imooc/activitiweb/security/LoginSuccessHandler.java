@@ -15,7 +15,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @Component("loginSuccessHandler")
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());

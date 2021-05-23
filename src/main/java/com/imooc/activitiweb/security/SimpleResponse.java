@@ -1,5 +1,10 @@
 package com.imooc.activitiweb.security;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 public class SimpleResponse {
 
 

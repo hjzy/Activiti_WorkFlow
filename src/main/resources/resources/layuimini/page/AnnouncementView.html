@@ -93,6 +93,7 @@
                         for (let i = 0; i < res.obj.length; i++) {
                             attachment.append(
                                 '<div className="layui-field-box">' +
+                                "|"+
                                  res.obj[i].file_origin_name +
                                 '<a href="' + res.obj[i].file_name + '" class="layui-btn" target="_blank" download="'+res.obj[i].file_origin_name+'">点击下载</a>' +
                                 '</div>'
@@ -104,10 +105,7 @@
 
                 },
                 error: function (res) {
-                   // layer.alert(res.msg + '<br>' + res.obj, {
-                   //      icon: 2,
-                   //      title: "提示"
-                   //  });
+
                 }
             });
         }

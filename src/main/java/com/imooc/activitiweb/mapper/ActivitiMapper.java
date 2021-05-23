@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @Mapper
 @Component
 public interface ActivitiMapper {

@@ -27,7 +27,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipInputStream;
 
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @RestController
 @RequestMapping("/processDefinition")
 public class ProcessDefinitionController {
@@ -42,6 +47,14 @@ public class ProcessDefinitionController {
     private SecurityUtil securityUtil;
 
     //添加流程定义->上传BPMN
+
+    /**
+     * Description //TODO
+     *
+     * @param multipartFile
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:15
+     **/
     @PostMapping(value = "/uploadStreamAndDeployment")
     public AjaxResponse uploadStreamAndDeployment(@RequestParam("processFile") MultipartFile multipartFile) {
         // 获取上传的文件名
@@ -154,6 +167,15 @@ public class ProcessDefinitionController {
 
 
     //获取流程定义信息
+
+    /**
+     * Description //TODO
+     *
+     * @param page
+     * @param limit
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:15
+     **/
     @GetMapping(value = "/getDefinitions")
     public AjaxResponse getDefinitions(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit) {
 
@@ -186,6 +208,16 @@ public class ProcessDefinitionController {
     }
 
     //获取流程定义XML
+
+    /**
+     * Description //TODO
+     *
+     * @param response
+     * @param deploymentId
+     * @param resourceName
+     * @return void
+     * @Date 2021/5/23 18:15
+     **/
     @GetMapping(value = "/getDefinitionXML")
     public void getProcessDefineXML(HttpServletResponse response,
                                     @RequestParam("deploymentId") String deploymentId,
@@ -206,6 +238,14 @@ public class ProcessDefinitionController {
     }
 
     //获取流程部署列表
+
+    /**
+     * Description //TODO
+     *
+     * @param
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:15
+     **/
     @GetMapping(value = "/getDeployments")
     public AjaxResponse getDeployments() {
         try {
@@ -257,6 +297,16 @@ public class ProcessDefinitionController {
         }
     }
 
+    /**
+     * Description //TODO
+     *
+     * @param response
+     * @param request
+     * @param fileName
+     * @param fileNewName
+     * @return java.lang.String
+     * @Date 2021/5/23 18:15
+     **/
     @RequestMapping(value = "/download")
     public String downloads(HttpServletResponse response, HttpServletRequest request, String fileName, String fileNewName) throws Exception {
         //要下载的图片地址

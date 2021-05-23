@@ -59,7 +59,6 @@
             defaultToolbar: [''],
             url: '' + publicurl + 'processInstance/getInstances',
             parseData: function (res) { //res 即为原始返回的数据
-                // console.log(res.obj.length,"数据长度")
                 //处理时间
                 for (var i = 0; i < res.obj.length; i++) {
                     for (k in res.obj[i]) {

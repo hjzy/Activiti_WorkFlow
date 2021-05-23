@@ -4,6 +4,7 @@
 
 
     <select id="getFormDataList" resultType="com.imooc.activitiweb.pojo.FormData">
+        -- 获取表单信息列表
         select *
         from formdata
         where formdata.PROC_INST_ID_ = #{pro_ins_id}
@@ -11,6 +12,7 @@
 
     <select id="getFormDataByProcessInstanceIdAndTaskDefinitionKey"
             resultType="com.imooc.activitiweb.pojo.FormData">
+        -- 根据流程定义key和任务id获取任务表单
         select *
         from formdata
         where PROC_INST_ID_ = #{pro_ins_id}

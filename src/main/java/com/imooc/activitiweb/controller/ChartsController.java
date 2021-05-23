@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -88,8 +89,10 @@ public class ChartsController {
             //排名前列的流程定义创建的流程实例数
             List<HashMap<String, Object>> hashMapListProcessDefinition = activitiService.getCountProcessDefinitionCreateProcessInstance();
 
+            //近七天产生的任务和完成的任务数
             List<HashMap<String, Object>> hashMapListTask = activitiService.getCountListTask();
-
+            Collections.reverse(hashMapListTask);
+            //公告点击数
             List<HashMap<String, Object>> clickListMap = new ArrayList<HashMap<String, Object>>();
 
             List<Article> articleList = articleService.getClick();

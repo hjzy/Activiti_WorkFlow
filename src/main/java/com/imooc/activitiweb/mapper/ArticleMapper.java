@@ -8,7 +8,12 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 @Mapper
 public interface ArticleMapper {
 

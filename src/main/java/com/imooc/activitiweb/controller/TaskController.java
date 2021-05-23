@@ -28,6 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+/**
+ * @author yifansun
+ * @version 1.0
+ * @Description
+ * @email yifan@yifansun.cn
+ */
 
 @RestController
 @RequestMapping("/task")
@@ -44,6 +50,12 @@ public class TaskController {
     private RepositoryService repositoryService;
 
     //获取我的代办任务
+    /**
+     * Description //TODO
+     * @Date 2021/5/23 18:17
+     * @param
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/getTasks")
     public AjaxResponse getTasks() {
         try {
@@ -81,7 +93,15 @@ public class TaskController {
         }
     }
 
+
+
     //完成待办任务
+    /**
+     * Description //TODO
+     * @Date 2021/5/23 18:17
+     * @param taskID
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/completeTask")
     public AjaxResponse completeTask(@RequestParam("taskID") String taskID) {
         try {
@@ -108,7 +128,17 @@ public class TaskController {
         }
     }
 
+
+
     //启动
+    /**
+     * Description //TODO
+     * @Date 2021/5/23 18:17
+     * @param processDefinitionKey
+     * @param instanceName
+     * @param instanceVariable
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/startProcess4")
     public AjaxResponse startProcess3(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                       @RequestParam("instanceName") String instanceName,
@@ -127,7 +157,14 @@ public class TaskController {
     }
 
 
+
     //渲染表单
+    /**
+     * Description //TODO
+     * @Date 2021/5/23 18:17
+     * @param taskID
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @GetMapping(value = "/formDataShow")
     public AjaxResponse formDataShow(@RequestParam("taskID") String taskID) {
         try {
@@ -236,7 +273,16 @@ public class TaskController {
         }
     }
 
+
+
     //保存表单
+    /**
+     * Description //TODO
+     * @Date 2021/5/23 18:17
+     * @param taskID
+     * @param formData
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     **/
     @PostMapping(value = "/formDataSave")
     public AjaxResponse formDataSave(@RequestParam("taskID") String taskID,
                                      @RequestParam("formData") String formData) {

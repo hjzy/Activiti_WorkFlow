@@ -143,4 +143,12 @@ public class MailTest {
         }
         System.out.println(clickListMap);
     }
+    @Test
+    public void charts(){
+        List<HashMap<String, Object>> hashMapListTask = activitiService.getCountListTask();
+        Collections.reverse(hashMapListTask);
+        for (HashMap<String, Object> stringObjectHashMap : hashMapListTask) {
+            System.out.println(stringObjectHashMap);
+        }
+    }
 }
