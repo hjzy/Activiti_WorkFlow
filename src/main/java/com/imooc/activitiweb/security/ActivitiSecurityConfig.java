@@ -62,7 +62,7 @@ public class ActivitiSecurityConfig extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().anyRequest().permitAll().and().logout().permitAll().and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
         //--------------------------activiti与layui的自定义登录-----------------------------
         http
-                .formLogin()
+                .formLogin()//http请求登录
                 .loginPage("/login")//登录页面
                 .loginProcessingUrl("/login")
                 .successHandler(loginSuccessHandler)//登录成功
@@ -73,8 +73,7 @@ public class ActivitiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login", "/demo-login.html", "/demo-login1.html", "/layuimini/page/login-1.html").permitAll()
-                .anyRequest()
-                .permitAll()
+                .anyRequest().permitAll()
                 .and().logout().permitAll()
                 .and().csrf().disable().headers().frameOptions().disable();//全部页面不验证
 

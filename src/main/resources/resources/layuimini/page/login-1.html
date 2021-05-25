@@ -201,8 +201,18 @@
                 processData: false,
                 success: function (res) {
                     layer.msg('登录成功', function () {
-                        localStorage.setItem("userName", res.obj)
-                        window.location = '../index.html';
+                        localStorage.setItem("userName", res.obj.userName)
+                        switch (res.obj.userRole) {
+                            case "user":
+                                window.location = '../indexTeacher.html';
+                                break;
+                            case "admin":
+                                window.location = '../index.html';
+                                break;
+                            case "expert":
+                                window.location = '../indexTeacher.html';
+                        }
+                       // window.location = '../index.html';
                     });
                 },
                 error: function (request) {

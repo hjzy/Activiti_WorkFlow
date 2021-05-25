@@ -26,21 +26,16 @@
             <div class="layui-btn-container">
                 <span class="layui-card-header"><i class="layui-icon layui-icon-form"></i>&nbsp;搜索结果</span>
             </div>
-            <!--			<div id="searchDiv">-->
-            <!--				<div class="layui-input-inline">-->
-            <!--				    <input type="text" id="titleString" name="titleString" lay-verify="required" placeholder="请输入标题关键字" autocomplete="off" class="layui-input">-->
-            <!--				</div>-->
-            <!--                <i class="fa fa-search" id="searchBtn"></i>-->
-            <!--			</div>-->
+
 
         </script>
 
         <table class="layui-hide" id="ProcessDefinitionTableId" lay-filter="currentTableFilter"></table>
 
         <script id="currentTableBar" type="text/html">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-add" lay-event="add">添加</a>
+
             <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+
         </script>
 
     </div>
@@ -150,33 +145,8 @@
                     $(window).on("resize", function () {
                         layer.full(index2);
 
-                    });
+                    })
 
-                } else if (obj.event === 'delete') {
-                    console.log(obj.data.id);
-                    layer.confirm('您确定要删除当前公告吗？', {
-                        btn: ['确定', '取消'] //按钮
-                    }, function () {
-                        $.ajax({
-                            cache: true,
-                            type: "get",
-                            url: '' + publicurl + 'article/delete',
-                            async: false,
-                            data: {id: obj.data.id},
-                            success: function (res) {
-                                layer.msg(res.msg, {icon: 1});
-                                insTb.reload();
-                            },
-                            error: function (res) {
-                                layer.alert(res.msg + '<br>' + res.obj, {
-                                    icon: 2,
-                                    title: "提示"
-                                });
-                            }
-                        });
-                    }, function () {
-
-                    });
                 }
             });
 

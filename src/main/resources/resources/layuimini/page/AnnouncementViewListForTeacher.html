@@ -32,8 +32,6 @@
                            autocomplete="off" class="layui-input">
                 </div>
                 <i class="fa fa-search" id="searchBtn"></i>
-                <span>|</span>
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn floatR" lay-event="add">添加公告
                 </button>
             </div>
 
@@ -48,7 +46,6 @@
         <script id="currentTableBar" type="text/html">
             <!--            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-add" lay-event="add">添加</a>-->
             <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -71,7 +68,6 @@
             parseData: function (res) { //res 即为原始返回的数据
                 console.log(res.obj.count, "数据长度");
                 objData = res.obj.data;
-               // console.log(objData)
                 for (var i = 0; i < res.obj.data.length; i++) {
                     res.obj.data[i]["date"] = renderTime(res.obj.data[i].date);
                 }
@@ -155,55 +151,9 @@
 
                 });
 
-            } else if (obj.event === 'delete') {
-                //  console.log(obj.data.id);
-                layer.confirm('您确定要删除当前公告吗？', {
-                    btn: ['确定', '取消'] //按钮
-                }, function () {
-                    $.ajax({
-                        cache: true,
-                        type: "get",
-                        url: '' + publicurl + 'article/delete',
-                        async: false,
-                        data: {id: obj.data.id},
-                        success: function (res) {
-                            layer.msg(res.msg, {icon: 1});
-                            insTb.reload();
-                        },
-                        error: function (res) {
-                            layer.alert(res.msg + '<br>' + res.obj, {
-                                icon: 2,
-                                title: "提示"
-                            });
-                        }
-                    });
-                }, function () {
-
-                });
             }
         });
-        table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {
-                var index1 = layer.open({
-                    title: '添加公告',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../page/AnnouncementEdit.html',
-                    success: function (layero, index) {
-                    },
-                    end: function () {
-                    }
-                });
-                $(window).on("resize", function () {
-                    layer.full(index1);
-                });
-            }// 监听添加操作
 
-
-        });
 
         function renderTime(date) {
             var dateee = new Date(date).toJSON();
@@ -223,7 +173,7 @@
                 maxmin: true,
                 shadeClose: true,
                 area: ['100%', '100%'],
-                content: '../page/AnnouncementSearchAdmin.html',
+                content: '../page/AnnouncementSearchTeacher.html',
                 success: function (layero, index) {
                     var iframe = window['layui-layer-iframe' + index];
                     iframe.child(str);
@@ -233,23 +183,6 @@
                 layer.full(index3);
 
             });
-            // $.ajax({
-            //     cache : true,
-            //     type : "get",
-            //     url :  ''+publicurl+'article/announcementSearchIndex',
-            //     async : false,
-            //     data : {titleStr:str},
-            //     success : function(res) {
-            //         layer.msg(res.msg, {icon: 1});
-            //
-            //     },
-            //     error : function(res) {
-            //         layer.alert(res.msg+'<br>'+res.obj, {
-            //             icon: 2,
-            //             title:"提示"
-            //         });
-            //     }
-            // });
         })
     });
 

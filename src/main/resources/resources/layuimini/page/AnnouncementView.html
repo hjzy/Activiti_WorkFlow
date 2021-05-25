@@ -89,7 +89,7 @@
                 success: function (res) {
                     //layer.msg(res.msg, {icon: 1});
                     console.log(res.obj);
-                    if (res.obj !== null || res.obj !== "") {
+                    if (res.obj.length!==0) {
                         for (let i = 0; i < res.obj.length; i++) {
                             attachment.append(
                                 '<div className="layui-field-box">' +
@@ -100,7 +100,7 @@
                             )
                         }
                     } else{
-                        $("fieldsetId").hide();
+                        $("#fieldsetId").hide();
                     }
 
                 },
