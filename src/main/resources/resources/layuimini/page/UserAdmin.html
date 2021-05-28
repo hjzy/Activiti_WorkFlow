@@ -198,18 +198,37 @@
         });
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'addUser') {
-                var index = layer.open({
-                    title: '添加用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../page/UserAdd.html',
-                    success: function (layero, index) {
-                        var iframe = window['layui-layer-iframe' + index];
-                    }
+                //询问框
+                layer.confirm('您想要怎样添加？', {
+                    btn: ['手动添加','Excel添加'] //按钮
+                }, function(){
+                    var index = layer.open({
+                        title: '添加用户',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/UserAdd.html',
+                        success: function (layero, index) {
+                            var iframe = window['layui-layer-iframe' + index];
+                        }
+                    });
+                }, function(){
+                    var index2 = layer.open({
+                        title: 'Excel',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/UserAddExcel.html',
+                        success: function (layero, index) {
+
+                        }
+                    });
                 });
+
             }// 监听添加操作
 
 

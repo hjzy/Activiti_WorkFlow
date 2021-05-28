@@ -92,17 +92,23 @@ public class UserController {
     }
 
     @RequestMapping("/addUserByExcel")
-    public AjaxResponse addUserByExcel(MultipartFile multipartFile) {
+    public AjaxResponse addUserByExcel(MultipartFile file) {
+        System.out.println("excel-----------------------------------------------------");
+        if(file == null)
+        {
+            System.out.println("文件为空");
+        }
+
         try {
-
-
-            InputStream in = multipartFile.getInputStream();
+            assert file != null;
+            InputStream in = file.getInputStream();
             EasyExcel.read(in, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
+
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
-                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "");
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "成功导入！");
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
-                    "获取用户信息失败", e.toString());
+                    "添加用户失败，请检查excel格式！", e.toString());
         }
     }
 

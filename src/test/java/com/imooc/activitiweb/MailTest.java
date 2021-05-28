@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -161,6 +162,9 @@ public class MailTest {
     @Test
     public void excel(){
         String filename = "F:\\Develop_Project\\user.xlsx";
-        EasyExcel.read(filename, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
+        File file=new File(filename);
+
+        //EasyExcel.read(in, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
+        //EasyExcel.read(filename, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
     }
 }
