@@ -3,6 +3,7 @@ package com.imooc.activitiweb.controller;
 import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.pojo.FormData;
 import com.imooc.activitiweb.pojo.UserInfoBean;
+import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.service.HistoryFormService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
@@ -40,6 +41,8 @@ public class ActivitiHistoryController {
     private RepositoryService repositoryService;
     @Autowired
     private HistoryService historyService;
+    @Autowired
+    private ActivitiService activitiService;
 
     //根据用户名查询任务
     @GetMapping(value = "/getInstancesByUserName")
@@ -369,6 +372,22 @@ public class ActivitiHistoryController {
                     "获取历史任务失败", e.toString());
         }
 
+    }
+
+    @GetMapping(value = "/getHistoryFromDataByPIidAndFromKey")
+    public AjaxResponse getHistoryFromDataByPIidAndFromKey(String processInstanceId, String fromKey) {
+        try {
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+            listMap=activitiService.getHistoryTaskFrom(processInstanceId,fromKey);
+
+            //HashMap<String,Object> Map=new HashMap<>();
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取历史数据失败！", e.toString());
+        }
     }
 
 

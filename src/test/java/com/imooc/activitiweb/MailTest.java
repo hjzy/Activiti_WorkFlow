@@ -1,10 +1,15 @@
 package com.imooc.activitiweb;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSONObject;
+import com.imooc.activitiweb.listener.ExcelListener;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.pojo.Article;
+import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.service.ArticleService;
+
+import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.GlobalConfig;
 import com.imooc.activitiweb.util.MailUtil;
 import org.junit.jupiter.api.Test;
@@ -52,6 +57,8 @@ public class MailTest {
 
     @Autowired
     ArticleService articleService;
+@Autowired
+    UserService userService;
 
     @Test
     public void main() {
@@ -150,5 +157,10 @@ public class MailTest {
         for (HashMap<String, Object> stringObjectHashMap : hashMapListTask) {
             System.out.println(stringObjectHashMap);
         }
+    }
+    @Test
+    public void excel(){
+        String filename = "F:\\Develop_Project\\user.xlsx";
+        EasyExcel.read(filename, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
     }
 }

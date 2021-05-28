@@ -1,7 +1,7 @@
 {
   "homeInfo": {
     "title": "首页",
-    "href": "page/welcome-2.html?t=1"
+    "href": "page/ToDoTasks.html"
   },
   "logoInfo": {
     "title": "评审审批",
@@ -15,6 +15,12 @@
       "href": "",
       "target": "_self",
       "child": [
+        {
+          "title": "流程实例",
+          "href": "page/ProcessInstanceForTeacher.html",
+          "icon": "fa fa-bars",
+          "target": "_self"
+        },
         {
           "title": "待办任务",
           "href": "page/ToDoTasks.html",

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yifansun
@@ -74,5 +75,8 @@ public interface ActivitiMapper {
 
     //获取今天部署的流程定义数
     Integer getCountTodayProcessDefinitionDeployment();
+
+    //获取历史表单
+    List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId,String formKey);
 
 }

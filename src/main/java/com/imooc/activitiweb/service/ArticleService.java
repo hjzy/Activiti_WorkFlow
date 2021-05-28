@@ -34,4 +34,6 @@ public interface ArticleService {
     int insertArticleFileID(String articleId,String fileName,String fileOriginName);
 
     List<HashMap<String, String>> getAttachments(int id);
+
+
 }

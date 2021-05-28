@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @Description
  * @email yifan@yifansun.cn
  */
-@Component
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

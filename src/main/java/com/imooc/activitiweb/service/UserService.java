@@ -1,5 +1,6 @@
 package com.imooc.activitiweb.service;
 
+import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface UserService {
     int addUser(Map<String, Object> map);
 
     int resetPassword(Map<String, Object> map);
+
+    int saveUser(List<UserDataForExcel> userDataForExcelList);
 }

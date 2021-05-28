@@ -24,18 +24,11 @@
         </script>
 
         <table class="layui-hide" id="HistoryTasksTableId" lay-filter="currentTableFilter"></table>
-        <!--        &lt;!&ndash;分页&ndash;&gt;-->
-        <!--        <div class="layui-table-page layui-border-box">-->
-        <!--            <div id="barcon" class="page_div" name="barcon"></div>-->
-        <!--        </div>-->
 
         <script id="currentTableBar" type="text/html">
-            <!--            {{#  if(d.status == 'RUNNING'){ }}-->
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-hangUp" lay-event="hangUp">挂起</a>
-            <!--            {{#  }else{ }}-->
-            <a class="layui-btn layui-btn-success layui-btn-xs data-count-active" lay-event="active">激活</a>
-            <!--            {{#  } }}-->
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">表单</a>
+
         </script>
 
     </div>
@@ -103,18 +96,14 @@
          * toolbar监听事件
          */
         table.on('tool(currentTableFilter)', function (obj) {
-            if (obj.event === 'hangUp') {  // 监听挂起操作
-                // doHangUp(obj);
-            } else if (obj.event === 'active') {// 监听激活操作
-                // doActive(obj);
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                // doDel(obj);
+            if (obj.event === 'look') {  // 监听查看操作
+
             }
         });
 
         function renderTime(date) {
             var dateee = new Date(date).toJSON();
-            return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+            return new Date(+new Date(dateee)).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
         }
 
         //监听表格复选框选择
@@ -122,74 +111,6 @@
             console.log(obj)
         });
 
-        /* 挂起流程定义 */
-        function doHangUp(obj) {
-            console.log(obj, "单条数据");
-            layer.confirm('确定要挂起该流程吗？', {
-                skin: 'layui-layer-admin',
-                shade: .1
-            }, function (i) {
-                layer.close(i);
-                var loadIndex = layer.load(2);
-                $.get('' + publicurl + 'processInstance/suspendInstance', {
-                    instanceID: obj.data ? obj.data.DeploymentId : '',
-                }, function (res) {
-                    layer.close(loadIndex);
-                    if (res.status === 0) {
-                        layer.msg(res.msg, {icon: 1});
-                        insTb.reload();
-                    } else {
-                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
-                    }
-                }, 'json');
-            });
-        };
-
-        /* 激活流程定义 */
-        function doActive(obj) {
-            layer.confirm('确定要激活该流程吗？', {
-                skin: 'layui-layer-admin',
-                shade: .1
-            }, function (i) {
-                layer.close(i);
-                var loadIndex = layer.load(2);
-                $.get('' + publicurl + 'processInstance/resumeInstance', {
-                    instanceID: obj.data ? obj.data.DeploymentId : '',
-                }, function (res) {
-                    layer.close(loadIndex);
-                    if (res.status === 0) {
-                        layer.msg(res.msg, {icon: 1});
-                        insTb.reload();
-                    } else {
-                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
-                    }
-                }, 'json');
-            });
-        };
-
-        /* 删除流程定义 */
-        function doDel(obj) {
-            layer.confirm('确定要删除该流程吗？', {
-                skin: 'layui-layer-admin',
-                shade: .1
-            }, function (i) {
-                layer.close(i);
-                var loadIndex = layer.load(2);
-                $.get('' + publicurl + 'processDefinition/delDefinition', {
-                    pdID: obj.data ? obj.data.DeploymentId : '',
-                }, function (res) {
-                    layer.close(loadIndex);
-                    if (res.status === 0) {
-                        layer.msg(res.msg, {icon: 1});
-                        obj.del();
-                        console.log(obj, "删除数据");
-                        insTb.reload();
-                    } else {
-                        layer.alert(res.msg + '<br>' + res.obj, {icon: 2});
-                    }
-                }, 'json');
-            });
-        };
 
     });
 </script>

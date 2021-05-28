@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.service.impl;
 
 import com.imooc.activitiweb.mapper.UserInfoBeanMapper;
+import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public int resetPassword(Map<String, Object> map) {
         return userInfoBeanMapper.resetPassword(map);
+    }
+
+    @Override
+    public int saveUser(List<UserDataForExcel> userDataForExcelList) {
+//        for (UserDataForExcel data : userDataForExcelList) {
+//            HashMap<String,Object> userMap=new  HashMap<>();
+//            userMap.put("name",data.getName());
+//            userMap.put("username",data.getUsername());
+//            userMap.put("password",data.getPassword());
+//            userMap.put("access",data.getRoles());
+//            userMap.put("email",data.getEmail());
+//            userMap.put("isEmail",data.getIs_subscribe());
+//            this.addUser(userMap);
+//            System.out.println(userMap);
+//        }
+
+        return userInfoBeanMapper.addUserList(userDataForExcelList);
     }
 }

@@ -70,4 +70,9 @@ public class ActivitiServiceImpl implements ActivitiService {
     public Integer getCountTodayProcessDefinitionDeployment() {
         return activitiMapper.getCountTodayProcessDefinitionDeployment();
     }
+
+    @Override
+    public  List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId, String formKey) {
+        return activitiMapper.getHistoryTaskFrom(processInstanceId,formKey);
+    }
 }

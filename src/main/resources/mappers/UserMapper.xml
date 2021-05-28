@@ -7,6 +7,29 @@
         values (#{name}, #{username}, #{password}, #{access}, #{email}, #{isEmail})
     </insert>
 
+    <insert id="addUserList" parameterType="java.util.List">
+        insert
+        into user(
+            name,
+            username,
+            password,
+            roles,
+            email,
+            is_subscribe
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+             #{item.name},
+             #{item.username},
+             #{item.password},
+             #{item.roles},
+             #{item.email},
+             #{item.is_subscribe}
+            )
+        </foreach>
+    </insert>
+
     <update id="updateUserInfo" parameterType="java.util.Map">
         #更新用户信息
         update moocactiviti.user
@@ -17,14 +40,16 @@
             roles=#{access}
         where username = #{username}
     </update>
+
     <update id="resetPassword" parameterType="java.util.Map">
         -- 重置密码
         update moocactiviti.user
         set password=#{password}
         where username = #{username}
     </update>
+
     <delete id="deleteUser" parameterType="java.lang.String">
-        -- 删除任务
+        -- 删除用户
         delete
         from moocactiviti.user
         where id = #{id}
@@ -36,6 +61,7 @@
         select id, name, username, roles, email, is_subscribe
         from moocactiviti.user
     </select>
+
     <select id="selectByUsername" resultType="com.imooc.activitiweb.pojo.UserInfoBean"
             parameterType="java.lang.String">
         -- 根据用户名获取用户
@@ -43,11 +69,13 @@
         from user
         where username = #{username}
     </select>
+
     <select id="getUserPartInfoByUsername" resultType="java.util.HashMap"
             parameterType="java.lang.String">
         select *
         from user
         where username = #{username}
     </select>
+
 
 </mapper>

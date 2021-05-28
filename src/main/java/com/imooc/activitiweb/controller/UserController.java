@@ -1,8 +1,11 @@
 package com.imooc.activitiweb.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSONObject;
 import com.imooc.activitiweb.SecurityUtil;
+import com.imooc.activitiweb.listener.ExcelListener;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
+import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.service.UserService;
@@ -15,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +85,21 @@ public class UserController {
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), mapList);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取用户信息失败", e.toString());
+        }
+    }
+
+    @RequestMapping("/addUserByExcel")
+    public AjaxResponse addUserByExcel(MultipartFile multipartFile) {
+        try {
+
+
+            InputStream in = multipartFile.getInputStream();
+            EasyExcel.read(in, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), "");
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "获取用户信息失败", e.toString());

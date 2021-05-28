@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.mapper;
 
 
+import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,5 +41,5 @@ public interface UserInfoBeanMapper {
 
     int resetPassword(Map<String, Object> map);
 
-
+    int addUserList(List<UserDataForExcel> userDataForExcelList);
 }

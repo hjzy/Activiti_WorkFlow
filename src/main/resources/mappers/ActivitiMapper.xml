@@ -68,5 +68,11 @@
         FROM act_re_deployment
         WHERE DATE_FORMAT(DEPLOY_TIME_, '%Y.%m.%d') = DATE_FORMAT(NOW(), '%Y.%m.%d')
     </select>
+    <select id="getHistoryTaskFrom" resultType="java.util.HashMap">
+        -- 获取历史任务的表单信息
+        SELECT *
+        FROM `formdata`
+        WHERE PROC_INST_ID_=#{processInstanceId} and FORM_KEY_=#{formKey}
+    </select>
 
 </mapper>
