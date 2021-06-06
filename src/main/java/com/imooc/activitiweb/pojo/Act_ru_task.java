@@ -1,4 +1,5 @@
 package com.imooc.activitiweb.pojo;
+
 /**
  * @author yifansun
  * @version 1.0

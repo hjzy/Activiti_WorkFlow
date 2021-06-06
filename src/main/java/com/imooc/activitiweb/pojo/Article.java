@@ -3,6 +3,7 @@ package com.imooc.activitiweb.pojo;
 import lombok.Data;
 
 import java.util.Date;
+
 /**
  * @author yifansun
  * @version 1.0

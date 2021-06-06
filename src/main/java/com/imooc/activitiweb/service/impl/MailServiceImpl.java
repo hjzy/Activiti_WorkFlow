@@ -37,7 +37,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public String SendMail(String subject, String text, String to) {
-        mailUtil.SendMail("怡雪", "谢谢你", "19592439 70@qq.com");
+        mailUtil.SendMail(subject, text, to);
         return null;
     }
 

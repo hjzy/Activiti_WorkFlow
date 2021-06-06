@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.pojo;
 
 import lombok.Data;
+
 /**
  * @author yifansun
  * @version 1.0

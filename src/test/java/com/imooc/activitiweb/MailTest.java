@@ -136,7 +136,8 @@ public class MailTest {
         System.out.println(userMap);
         //int result= userService.addUser(userMap);
         System.out.println(userMap);
-        System.out.println(System.getProperty("user.dir"));
+        //System.out.println(System.getProperty("user.dir"));
+        System.out.println(passwordEncoder.matches("301127", password));
     }
 
     @Test

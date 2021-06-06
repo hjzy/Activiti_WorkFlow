@@ -6,6 +6,7 @@ import org.activiti.engine.delegate.Expression;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+
 /**
  * @author yifansun
  * @version 1.0

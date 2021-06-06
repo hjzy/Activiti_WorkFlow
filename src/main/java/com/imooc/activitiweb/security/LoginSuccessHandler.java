@@ -44,17 +44,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         System.out.println(roles);
         String path = httpServletRequest.getContextPath();
-        String basePath = httpServletRequest.getScheme()+"://"+httpServletRequest.getServerName()+":"+httpServletRequest.getServerPort()+path+"/";
+        String basePath = httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getServerPort() + path + "/";
         httpServletResponse.setContentType("application/json;charset=UTF-8");
-        HashMap<String,String> authMap=new HashMap<>();
-        if(roles.contains("ROLE_ACTIVITI_ADMIN")) {
-            authMap.put("userRole","admin");
-        }else if(roles.contains("ROLE_ACTIVITI_USER")){
-            authMap.put("userRole","user");
-        }else if(roles.contains("ROLE_ACTIVITI_EXPERT")){
-            authMap.put("userRole","expert");
+        HashMap<String, String> authMap = new HashMap<>();
+        if (roles.contains("ROLE_ACTIVITI_ADMIN")) {
+            authMap.put("userRole", "admin");
+        } else if (roles.contains("ROLE_ACTIVITI_USER")) {
+            authMap.put("userRole", "user");
+        } else if (roles.contains("ROLE_ACTIVITI_EXPERT")) {
+            authMap.put("userRole", "expert");
         }
-        authMap.put("userName",authentication.getName());
+        authMap.put("userName", authentication.getName());
         System.out.println(authMap);
         httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
                 AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),

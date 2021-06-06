@@ -45,11 +45,13 @@ public class ProcessInstanceController {
 
 
     //查询流程定义
+
     /**
-     * Description //TODO 
-     * @Date 2021/5/23 18:16
-     * @param userInfoBean 
+     * Description //TODO
+     *
+     * @param userInfoBean
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:16
      **/
     @GetMapping(value = "/getInstances")
     public AjaxResponse getInstances(@AuthenticationPrincipal UserInfoBean userInfoBean) {
@@ -100,13 +102,15 @@ public class ProcessInstanceController {
 
     //启动流程实例
     //启动前询问用户需要添加哪些变量，以达到复用流程部署的目的
+
     /**
-     * Description //TODO 
-     * @Date 2021/5/23 18:16
+     * Description //TODO
+     *
      * @param processDefinitionKey
      * @param instanceName
-     * @param instanceVariable 
+     * @param instanceVariable
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:16
      **/
     @GetMapping(value = "/startProcess")
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
@@ -158,11 +162,13 @@ public class ProcessInstanceController {
     }
 
     //挂起冷冻
+
     /**
-     * Description //TODO 
-     * @Date 2021/5/23 18:16
-     * @param instanceID 
+     * Description //TODO
+     *
+     * @param instanceID
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:16
      **/
     @GetMapping(value = "/suspendInstance")
     public AjaxResponse suspendInstance(@RequestParam("instanceID") String instanceID) {
@@ -186,11 +192,13 @@ public class ProcessInstanceController {
     }
 
     //激活
+
     /**
-     * Description //TODO 
-     * @Date 2021/5/23 18:16
-     * @param instanceID 
+     * Description //TODO
+     *
+     * @param instanceID
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:16
      **/
     @GetMapping(value = "/resumeInstance")
     public AjaxResponse resumeInstance(@RequestParam("instanceID") String instanceID) {
@@ -215,11 +223,13 @@ public class ProcessInstanceController {
 
 
     //获取参数
+
     /**
-     * Description //TODO 
-     * @Date 2021/5/23 22:55
-     * @param instanceID 
+     * Description //TODO
+     *
+     * @param instanceID
      * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 22:55
      **/
     @GetMapping(value = "/variables")
     public AjaxResponse variables(@RequestParam("instanceID") String instanceID) {

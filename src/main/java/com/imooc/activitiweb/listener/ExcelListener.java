@@ -30,9 +30,8 @@ import java.util.Map;
 
 public class ExcelListener extends AnalysisEventListener<UserDataForExcel> {
     private static final int BATCH_COUNT = 5;
-
-    private UserService userService;
     List<UserDataForExcel> userList = new ArrayList<>();
+    private UserService userService;
 
     public ExcelListener(UserService userService) {
         this.userService = userService;

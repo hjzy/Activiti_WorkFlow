@@ -8,6 +8,7 @@ import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.pojo.UserDataForExcel;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.ActivitiService;
+import com.imooc.activitiweb.service.MailService;
 import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
@@ -46,6 +47,9 @@ public class UserController {
 
     @Autowired
     SecurityUtil securityUtil;
+
+    @Autowired
+    MailService mailService;
 
     //获取用户
     @GetMapping(value = "/getUsers")
@@ -94,15 +98,14 @@ public class UserController {
     @RequestMapping("/addUserByExcel")
     public AjaxResponse addUserByExcel(MultipartFile file) {
         System.out.println("excel-----------------------------------------------------");
-        if(file == null)
-        {
+        if (file == null) {
             System.out.println("文件为空");
         }
 
         try {
             assert file != null;
             InputStream in = file.getInputStream();
-            EasyExcel.read(in, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
+            EasyExcel.read(in, UserDataForExcel.class, new ExcelListener(userService)).sheet().doRead();
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), "成功导入！");
@@ -186,7 +189,6 @@ public class UserController {
             String tempPassword = temp.substring(4);
             String password = passwordEncoder.encode(tempPassword);
             userMap.put("password", password);
-            System.out.println(userMap);
             int result = userService.resetPassword(userMap);
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                     GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
@@ -202,8 +204,9 @@ public class UserController {
             Map<String, Object> passwordMap = (Map<String, java.lang.Object>) JSONObject.parse(passwordInfo);
             System.out.println(passwordMap);
             UserInfoBean user = userService.selectByUsername((String) passwordMap.get("username"));
-            if (user.getPassword().equals((String) passwordMap.get("old_password"))) {
-                passwordMap.put("password", passwordMap.get("new_password"));
+
+            if (passwordEncoder.matches((String)passwordMap.get("old_password"),user.getPassword())) {
+                passwordMap.put("password", passwordEncoder.encode((String)passwordMap.get("new_password")));
                 userService.resetPassword(passwordMap);
                 return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
                         GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
@@ -215,6 +218,21 @@ public class UserController {
         } catch (Exception e) {
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
                     "更改密码失败", e.toString());
+        }
+    }
+
+    @RequestMapping("/verificationCode")
+    public AjaxResponse verificationCode(String verificationCode,String username) {
+        try {
+            UserInfoBean user = userService.selectByUsername(username);
+            String email=user.getEmail();
+            String content ="感谢您使用评审审批和过程管理系统，您本次的验证码是："+verificationCode;
+            mailService.SendMail("【验证码】通用评审审批和过程管理系统",content,email);
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), null);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "邮件发送失败！", e.toString());
         }
     }
 }

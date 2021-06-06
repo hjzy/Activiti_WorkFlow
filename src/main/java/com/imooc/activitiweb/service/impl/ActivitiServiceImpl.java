@@ -72,7 +72,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public  List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId, String formKey) {
-        return activitiMapper.getHistoryTaskFrom(processInstanceId,formKey);
+    public List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId, String formKey) {
+        return activitiMapper.getHistoryTaskFrom(processInstanceId, formKey);
     }
 }

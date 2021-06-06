@@ -31,7 +31,7 @@ public interface ArticleService {
 
     public List<Article> getClick();
 
-    int insertArticleFileID(String articleId,String fileName,String fileOriginName);
+    int insertArticleFileID(String articleId, String fileName, String fileOriginName);
 
     List<HashMap<String, String>> getAttachments(int id);
 

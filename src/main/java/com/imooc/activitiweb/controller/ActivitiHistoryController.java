@@ -378,7 +378,7 @@ public class ActivitiHistoryController {
     public AjaxResponse getHistoryFromDataByPIidAndFromKey(String processInstanceId, String fromKey) {
         try {
             List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
-            listMap=activitiService.getHistoryTaskFrom(processInstanceId,fromKey);
+            listMap = activitiService.getHistoryTaskFrom(processInstanceId, fromKey);
 
             //HashMap<String,Object> Map=new HashMap<>();
 

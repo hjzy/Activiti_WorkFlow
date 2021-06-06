@@ -77,6 +77,6 @@ public interface ActivitiMapper {
     Integer getCountTodayProcessDefinitionDeployment();
 
     //获取历史表单
-    List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId,String formKey);
+    List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId, String formKey);
 
 }

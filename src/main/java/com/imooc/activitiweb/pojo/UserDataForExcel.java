@@ -30,6 +30,7 @@ public class UserDataForExcel {
     private String email;
 
     private String password;
+    private int is_subscribe;
 
     public String getPassword() {
         return password;
@@ -38,6 +39,4 @@ public class UserDataForExcel {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private int is_subscribe;
 }

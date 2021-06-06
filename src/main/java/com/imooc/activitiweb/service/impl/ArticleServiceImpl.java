@@ -70,8 +70,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int insertArticleFileID(String articleId, String fileName,String fileOriginName) {
-        return articleMapper.insertArticleFileID(articleId,fileName,fileOriginName);
+    public int insertArticleFileID(String articleId, String fileName, String fileOriginName) {
+        return articleMapper.insertArticleFileID(articleId, fileName, fileOriginName);
     }
 
     @Override
