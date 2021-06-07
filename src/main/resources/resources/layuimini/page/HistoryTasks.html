@@ -47,7 +47,7 @@
             elem: '#HistoryTasksTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [''],
-            url: '' + publicurl + 'activitiHistory/getInstancesByUserName',
+            url: '' + publicurl + 'activitiHistory/getInstancesByUserName?username='+userName,
             parseData: function (res) { //res 即为原始返回的数据
                 //处理时间
                 for (var i = 0; i < res.obj.length; i++) {

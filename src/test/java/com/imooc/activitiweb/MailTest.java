@@ -12,6 +12,9 @@ import com.imooc.activitiweb.service.ArticleService;
 import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.GlobalConfig;
 import com.imooc.activitiweb.util.MailUtil;
+import org.activiti.bpmn.model.UserTask;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,8 +61,12 @@ public class MailTest {
 
     @Autowired
     ArticleService articleService;
-@Autowired
+    @Autowired
     UserService userService;
+    @Autowired
+    private RepositoryService repositoryService;
+    @Autowired
+    private HistoryService historyService;
 
     @Test
     public void main() {
@@ -142,7 +149,8 @@ public class MailTest {
 
     @Test
     public void click() {
-        List<HashMap<String, Object>> clickListMap= new ArrayList<HashMap<String, Object>>();;
+        List<HashMap<String, Object>> clickListMap = new ArrayList<HashMap<String, Object>>();
+        ;
         List<Article> articleList = articleService.getClick();
 
         for (Article article : articleList) {
@@ -152,20 +160,31 @@ public class MailTest {
         }
         System.out.println(clickListMap);
     }
+
     @Test
-    public void charts(){
+    public void charts() {
         List<HashMap<String, Object>> hashMapListTask = activitiService.getCountListTask();
         Collections.reverse(hashMapListTask);
         for (HashMap<String, Object> stringObjectHashMap : hashMapListTask) {
             System.out.println(stringObjectHashMap);
         }
     }
+
     @Test
-    public void excel(){
+    public void excel() {
         String filename = "F:\\Develop_Project\\user.xlsx";
-        File file=new File(filename);
+        File file = new File(filename);
 
         //EasyExcel.read(in, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
         //EasyExcel.read(filename, UserDataForExcel.class,new ExcelListener(userService)).sheet().doRead();
     }
+
+    @Test
+    public void user() {
+        //根据传入的taskId拿到所有的UserTask信息
+        UserTask userTask = (UserTask) repositoryService.getBpmnModel("Process_1_UEL_Test1:1:faa6ce34-b006-11eb-9237-001a7dda7111")
+                .getFlowElement("Activity_02tlckc");
+        System.out.println(userTask.getAssignee());
+    }
+
 }

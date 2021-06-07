@@ -1,12 +1,14 @@
 package com.imooc.activitiweb.controller;
 
 import com.imooc.activitiweb.SecurityUtil;
+import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.pojo.FormData;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.service.ActivitiService;
 import com.imooc.activitiweb.service.HistoryFormService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
+import org.activiti.api.task.model.Task;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
 import org.activiti.engine.HistoryService;
@@ -43,15 +45,17 @@ public class ActivitiHistoryController {
     private HistoryService historyService;
     @Autowired
     private ActivitiService activitiService;
+    @Autowired
+    ActivitiMapper mapper;
 
     //根据用户名查询任务
     @GetMapping(value = "/getInstancesByUserName")
-    public AjaxResponse InstancesByUser() {
+    public AjaxResponse InstancesByUser(String username) {
         try {
 
             List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
                     .orderByHistoricTaskInstanceEndTime().asc()
-                    .taskAssignee("bajie")
+                    .taskAssignee(username)
                     .list();
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
@@ -391,4 +395,122 @@ public class ActivitiHistoryController {
     }
 
 
+    /**
+     * Description //TODO
+     *
+     * @param taskID
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:17
+     **/
+    @GetMapping(value = "/historyFormDataShow")
+    public AjaxResponse historyFormDataShow( String taskID) {
+        try {
+//            if (GlobalConfig.Test) {
+//                securityUtil.logInAs("bajie");
+//            }
+            //拿到对应的task
+            HistoricTaskInstance historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .orderByHistoricTaskInstanceEndTime().asc()
+                    .taskId(taskID)
+                    .singleResult();
+
+
+//-----------------------构建表单控件历史数据字典------------------------------------------------
+            //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
+            HashMap<String, String> controlListMap = new HashMap<>();
+
+            //根据流程实例ID查出本实例所有保存的表单数据
+            List<HashMap<String, Object>> tempControlList = mapper.selectFormData(historicTaskInstances.getProcessInstanceId());
+
+            for (HashMap ls : tempControlList) {
+                String Control_ID = ls.get("Control_ID_").toString();//拿到控件id
+                String Control_VALUE = ls.get("Control_VALUE_").toString();//拿到控件值
+                controlListMap.put(Control_ID, Control_VALUE);
+            }
+            //String controlistMapValue = controlistMap.get("控件ID");
+            //controlistMap.containsKey()
+
+
+/*  ------------------------------------------------------------------------------
+            FormProperty_0ueitp2-_!类型-_!名称-_!默认值-_!是否参数
+            例子：
+            FormProperty_0137fhi-_!file-_!文件-_!无-_!f
+            FormProperty_0lovri0-_!string-_!姓名-_!请输入姓名-_!f
+            FormProperty_1iu6onu-_!long-_!年龄-_!请输入年龄-_!s
+            FormProperty_227uamu-_!cUser-_!经办用户-_!张三-_!s
+            FormProperty_0e84poa-_!cUser-_!经办用户-_!FormProperty_227uamu-_!s
+
+            默认值：无、字符常量、FormProperty_开头定义过的控件ID
+            是否参数：f为不是参数，s是字符，t是时间(不需要int，因为这里int等价于string)
+            注：类型是可以获取到的，但是为了统一配置原则，都配置到
+ */
+
+            //注意!!!!!!!!:表单Key必须要和任务编号一模一样，因为参数需要任务key，但是无法获取，只能获取表单key“task.getFormKey()”当做任务key
+
+            //根据传入的taskId拿到所有的UserTask信息
+            UserTask userTask = (UserTask) repositoryService.getBpmnModel(historicTaskInstances.getProcessDefinitionId())
+                    .getFlowElement(historicTaskInstances.getFormKey());
+
+            //如果userTask为空，告知用户无表单
+            if (userTask == null) {
+                return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                        GlobalConfig.ResponseCode.SUCCESS.getDesc(), "无表单");
+            }
+            //拿到表单信息
+            List<FormProperty> formProperties = userTask.getFormProperties();
+
+            //返回给前端的list
+            List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+
+            //根据"-_!"分隔符拿到所需各项信息
+            for (FormProperty fp : formProperties) {
+                String[] splitFP = fp.getId().split("-_!");
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+                //控件id，FormProperty_1iu6onu
+                hashMap.put("id", splitFP[0]);
+                //控件类型，String，Int等
+                hashMap.put("controlType", splitFP[1]);
+                //控件标签，年龄，姓名等
+                hashMap.put("controlLable", splitFP[2]);
+
+                //使得可以读取上一个环节填入的参数值
+                //默认值如果是表单控件ID
+                /*
+                 * 如何在流程流转中使用前面动态表单中填写的值为后面动态表单中的值赋值？
+                 * 例如，前面八戒填写了请假日期，在后面的审批环节中，排他网关需要用到八戒填写的值
+                 * 在设定变量的时候，将变量的类型设为s（如FormProperty_1iu6onu-_!long-_!天数-_!请输入请假天数-_!s）
+                 * 在后续需要用到该变量的地方，如排他网关中，需要用到八戒的请假天数，则可以使用${FormProperty_1iu6onu}<3
+                 * 来表示八戒的请假天数小于3天
+                 * 如果后续审批的时候需要用到该变量，则将变量的默认值设置为八戒的请假天数的id即可（如FormProperty_0ueitp2-_!long-_!天数-_!FormProperty_1iu6onu-_!s）
+                 *
+                 **/
+                if (splitFP[3].startsWith("FormProperty_")) {
+                    /*
+                    如果默认值是“FormProperty_开头定义过的控件ID”这种形式，说明我们想读取之前的这个控件填入的数据，就可以根据控件id得到该值
+                     **/
+                    //控件ID存在
+                    if (controlListMap.containsKey(splitFP[3])) {
+                        hashMap.put("controlDefValue", controlListMap.get(splitFP[3]));
+                    } else {
+                        //控件ID不存在
+                        hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
+                    }
+                } else {
+                    //默认值如果不是表单控件ID则写入默认值
+                    hashMap.put("controlDefValue", splitFP[3]);
+                }
+
+
+                hashMap.put("controlIsParam", splitFP[4]);//参数类型，如Sting，文件等
+                listMap.add(hashMap);
+            }
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "失败", e.toString());
+        }
+    }
 }

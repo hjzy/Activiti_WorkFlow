@@ -61,6 +61,7 @@
                 $ = layui.$,
                 param = '';
             formTable(dataObj);
+
             form.render();
 
             var $fileName = $("#fileName");
@@ -141,13 +142,14 @@
                         var label = $(this).attr("formLable");
                         var val = "";
                         var type = $(this).attr("controlType");
-                        if (fileName === "") {
+                        if (type!=="file") {
                             val = $(this).val();
                         } else {
                             val = fileName + "-_+!" + $(this).val();
                         }
                         var str = id + '-_!' + val + '-_!' + isParm + '-_!' + label + '-_!' + type;
-                        param += str + '!_!'
+                        param += str + '!_!';
+
 
                         console.log(param + "单个参数");
                     });
@@ -185,7 +187,7 @@
                 for (var i = 0; i < res.length; i++) {
                     var formItem;
                     var input;
-                    console.log(res[i].controlDefValue);
+                    console.log(res[i]);
                     switch (res[i].controlType) {
                         case 'long':
                             if (res[i].controlDefValue === '无') {

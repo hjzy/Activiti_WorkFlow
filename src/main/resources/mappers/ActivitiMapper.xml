@@ -74,5 +74,10 @@
         FROM `formdata`
         WHERE PROC_INST_ID_=#{processInstanceId} and FORM_KEY_=#{formKey}
     </select>
+    <select id="getProcessDefinitionId" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT DISTINCT PROC_DEF_ID_ FROM `act_hi_taskinst`
+        WHERE ID_='#{taskId}'
+
+    </select>
 
 </mapper>

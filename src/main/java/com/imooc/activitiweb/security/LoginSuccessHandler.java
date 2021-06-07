@@ -53,11 +53,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String basePath = httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getServerPort() + path + "/";
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         HashMap<String, String> authMap = new HashMap<>();
-        if (roles.contains("ROLE_ACTIVITI_ADMIN")) {
+        if (roles.contains("GROUP_ADMIN")) {
             authMap.put("userRole", "admin");
-        } else if (roles.contains("ROLE_ACTIVITI_USER")) {
+        } else if (roles.contains("GROUP_TEACHER")) {
             authMap.put("userRole", "user");
-        } else if (roles.contains("ROLE_ACTIVITI_EXPERT")) {
+        } else if (roles.contains("GROUP_EXPERT")) {
             authMap.put("userRole", "expert");
         }
         authMap.put("userName", authentication.getName());
