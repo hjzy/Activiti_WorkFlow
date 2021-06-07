@@ -1,6 +1,7 @@
 package com.imooc.activitiweb.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    SecurityUtil securityUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
@@ -41,9 +44,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         logger.info("登录成功2");
+
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         System.out.println(roles);
+        securityUtil.logInAs(authentication.getName());
         String path = httpServletRequest.getContextPath();
+
         String basePath = httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getServerPort() + path + "/";
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         HashMap<String, String> authMap = new HashMap<>();

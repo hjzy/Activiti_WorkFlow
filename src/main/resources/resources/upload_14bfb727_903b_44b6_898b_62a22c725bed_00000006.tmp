@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Process_1_Test_Pingshen" name="简单申报评审" isExecutable="true">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>Flow_0i83yen</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:userTask id="Activity_1payzvr" name="教师申报" activiti:formKey="Activity_1payzvr" activiti:assignee="1700301127">
+      <bpmn2:extensionElements>
+        <activiti:formProperty id="FormProperty_0lovri0-_!string-_!姓名-_!请输入姓名-_!f" label="地方" />
+        <activiti:formProperty id="FormProperty_23qgm2j-_!string-_!申报项目-_!请输入申报项目-_!f" />
+        <activiti:formProperty id="FormProperty_3bfppr5-_!string-_!申报简述-_!请输入申报简述-_!f" />
+        <activiti:formProperty id="FormProperty_0il2rrp-_!file-_!申报书-_!无-_!f" />
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>Flow_0i83yen</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0s9iosj</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="Activity_0lzc9zc" name="专家评审" activiti:formKey="Activity_0lzc9zc" activiti:assignee="bajie">
+      <bpmn2:extensionElements>
+        <activiti:formProperty id="FormProperty_15ujc37-_!string-_!打分-_!请输入分数-_!f" />
+        <activiti:formProperty id="FormProperty_0hbh2ej-_!string-_!评审意见-_!请输入评审意见-_!f" />
+        <activiti:formProperty id="FormProperty_0e2530o-_!file-_!评审意见书-_!无-_!f" />
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>Flow_0s9iosj</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_182ahz7</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="Event_0bcld86">
+      <bpmn2:incoming>Flow_182ahz7</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_0i83yen" sourceRef="StartEvent_1" targetRef="Activity_1payzvr" />
+    <bpmn2:sequenceFlow id="Flow_0s9iosj" sourceRef="Activity_1payzvr" targetRef="Activity_0lzc9zc" />
+    <bpmn2:sequenceFlow id="Flow_182ahz7" sourceRef="Activity_0lzc9zc" targetRef="Event_0bcld86" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1_Test_Pingshen">
+      <bpmndi:BPMNEdge id="Flow_182ahz7_di" bpmnElement="Flow_182ahz7">
+        <di:waypoint x="790" y="258" />
+        <di:waypoint x="862" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s9iosj_di" bpmnElement="Flow_0s9iosj">
+        <di:waypoint x="610" y="258" />
+        <di:waypoint x="690" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0i83yen_di" bpmnElement="Flow_0i83yen">
+        <di:waypoint x="448" y="266" />
+        <di:waypoint x="510" y="266" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="412" y="248" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1payzvr_di" bpmnElement="Activity_1payzvr">
+        <dc:Bounds x="510" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lzc9zc_di" bpmnElement="Activity_0lzc9zc">
+        <dc:Bounds x="690" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0bcld86_di" bpmnElement="Event_0bcld86">
+        <dc:Bounds x="862" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

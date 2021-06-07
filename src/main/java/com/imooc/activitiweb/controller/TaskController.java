@@ -2,6 +2,7 @@ package com.imooc.activitiweb.controller;
 
 import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.mapper.ActivitiMapper;
+import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.activiti.api.process.model.ProcessInstance;
@@ -18,6 +19,7 @@ import org.activiti.engine.repository.Deployment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,7 +61,7 @@ public class TaskController {
      * @Date 2021/5/23 18:17
      **/
     @GetMapping(value = "/getTasks")
-    public AjaxResponse getTasks() {
+    public AjaxResponse getTasks(@AuthenticationPrincipal UserInfoBean UserInfoBean) {
         try {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");

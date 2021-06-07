@@ -8,7 +8,7 @@ public class GlobalConfig {
     /**
      * 测试场景
      */
-    public static final Boolean Test = true;
+    public static final Boolean Test = false;
 
     //windows路径
     public static final String BPMN_PathMapping = "file:F:\\Develop_Project\\Activiti_WorkFlow\\src\\main\\resources\\resources\\bpmn\\";
