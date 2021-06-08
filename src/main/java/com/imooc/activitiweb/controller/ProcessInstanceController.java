@@ -1,5 +1,6 @@
 package com.imooc.activitiweb.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.activitiweb.SecurityUtil;
 import com.imooc.activitiweb.pojo.UserInfoBean;
 import com.imooc.activitiweb.util.AjaxResponse;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yifansun
@@ -115,13 +117,15 @@ public class ProcessInstanceController {
     @GetMapping(value = "/startProcess")
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                      @RequestParam("instanceName") String instanceName,
-                                     @RequestParam("instanceVariable") String instanceVariable) {
+                                     @RequestParam("instanceVariable") String instanceVariable,
+                                     @RequestParam("userJsonObj") String userJsonObj) {
         try {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");
             } else {
                 securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());//登录的第二种方法
             }
+            Map<String, Object> userMap = (Map<String, Object>) JSONObject.parse(userJsonObj);
             ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
                     .start()
                     .withProcessDefinitionKey(processDefinitionKey)
@@ -129,6 +133,7 @@ public class ProcessInstanceController {
                     //.withVariable("content", instanceVariable)
                     //.withVariable("user", "bajie")
                     //.withVariable("参数2", "参数2的值")
+                    .withVariables(userMap)
                     .withBusinessKey("自定义BusinessKey")
                     .build());
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),

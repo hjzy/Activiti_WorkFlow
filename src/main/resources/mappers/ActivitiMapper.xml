@@ -8,8 +8,6 @@
             where PROC_INST_ID_=#{item.PROC_INST_ID_} and Control_ID_=#{item.Control_ID_}
         </foreach>
     </update>
-
-
     <select id="getCountProcessDefinition" resultType="java.lang.Integer">
         -- 获取流程定义数
         SELECT COUNT(ID_)

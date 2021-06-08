@@ -6,6 +6,9 @@ import com.imooc.activitiweb.mapper.ActivitiMapper;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.activiti.api.process.runtime.ProcessRuntime;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -21,10 +24,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -148,6 +148,7 @@ public class ProcessDefinitionController {
         }
 
     }
+
 
     @PostMapping(value = "/addDeploymentByString")
     public AjaxResponse addDeploymentByString(@RequestParam("stringBPMN") String stringBPMN) {
@@ -346,6 +347,40 @@ public class ProcessDefinitionController {
         out.close();
         input.close();
         return null;
+    }
+
+    @GetMapping(value = "/checkProcessDefinitionUEL")
+    public AjaxResponse checkProcessDefinitionUEL(String processDefinitionID) {
+        try {
+            BpmnModel model = repositoryService.getBpmnModel(processDefinitionID);
+            Collection<FlowElement> flowElements = model.getMainProcess().getFlowElements();
+            List<HashMap<String, String>> listMap = new ArrayList<HashMap<String, String>>();
+
+            for (FlowElement e : flowElements) {
+                String clazz = e.getClass().toString();
+                if(clazz.endsWith("UserTask")){
+
+                    UserTask userTask = (UserTask) repositoryService.getBpmnModel(processDefinitionID)
+                            .getFlowElement(e.getId());
+
+                    if(userTask.getAssignee().contains("${")){
+                        HashMap<String,String> userMap=new HashMap<>();
+                        String username=userTask.getAssignee();
+                        username= username.substring(2,username.length()-1);
+                        userMap.put("userParameter",username);
+                        userMap.put("taskName",e.getName());
+                        listMap.add(userMap);
+                    }
+                }
+
+            }
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "获取流程定义中的用户UEL变量失败", e.toString());
+        }
+
     }
 
 
