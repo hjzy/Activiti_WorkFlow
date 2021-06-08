@@ -153,11 +153,11 @@ public class UserController {
             Map<String, Object> userMap = (Map<String, java.lang.Object>) JSONObject.parse(userInfo);
             Object access = userMap.get("access");
             if ("教师".equals(access)) {
-                userMap.replace("access", "ROLE_ACTIVITI_USER");
+                userMap.replace("access", "ROLE_ACTIVITI_USER,GROUP_TEACHER");
             } else if ("专家".equals(access)) {
-                userMap.replace("access", "ROLE_ACTIVITI_EXPERT");
+                userMap.replace("access", "ROLE_ACTIVITI_USER,GROUP_EXPERT");
             } else if ("管理员".equals(access)) {
-                userMap.replace("access", "ROLE_ACTIVITI_ADMIN");
+                userMap.replace("access", "ROLE_ACTIVITI_USER,GROUP_ADMIN");
             }
             Object isEmail = userMap.get("isEmail");
             if ("是".equals(isEmail)) {

@@ -403,7 +403,7 @@ public class ActivitiHistoryController {
      * @Date 2021/5/23 18:17
      **/
     @GetMapping(value = "/historyFormDataShow")
-    public AjaxResponse historyFormDataShow( String taskID) {
+    public AjaxResponse historyFormDataShow(String taskID) {
         try {
 //            if (GlobalConfig.Test) {
 //                securityUtil.logInAs("bajie");
@@ -485,22 +485,18 @@ public class ActivitiHistoryController {
                  * 如果后续审批的时候需要用到该变量，则将变量的默认值设置为八戒的请假天数的id即可（如FormProperty_0ueitp2-_!long-_!天数-_!FormProperty_1iu6onu-_!s）
                  *
                  **/
-                if (splitFP[3].startsWith("FormProperty_")) {
+
                     /*
                     如果默认值是“FormProperty_开头定义过的控件ID”这种形式，说明我们想读取之前的这个控件填入的数据，就可以根据控件id得到该值
                      **/
-                    //控件ID存在
-                    if (controlListMap.containsKey(splitFP[3])) {
-                        hashMap.put("controlDefValue", controlListMap.get(splitFP[3]));
-                    } else {
-                        //控件ID不存在
-                        hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
-                    }
+                //控件ID存在
+                if (controlListMap.containsKey(splitFP[0])) {
+                    hashMap.put("controlDefValue", controlListMap.get(splitFP[0]));
                 } else {
-                    //默认值如果不是表单控件ID则写入默认值
-                    hashMap.put("controlDefValue", splitFP[3]);
+                    //控件ID不存在
+                    hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
                 }
-
+       
 
                 hashMap.put("controlIsParam", splitFP[4]);//参数类型，如Sting，文件等
                 listMap.add(hashMap);

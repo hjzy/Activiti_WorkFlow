@@ -12,6 +12,8 @@ import com.imooc.activitiweb.service.ArticleService;
 import com.imooc.activitiweb.service.UserService;
 import com.imooc.activitiweb.util.GlobalConfig;
 import com.imooc.activitiweb.util.MailUtil;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
@@ -181,10 +183,26 @@ public class MailTest {
 
     @Test
     public void user() {
-        //根据传入的taskId拿到所有的UserTask信息
-        UserTask userTask = (UserTask) repositoryService.getBpmnModel("Process_1_UEL_Test1:1:faa6ce34-b006-11eb-9237-001a7dda7111")
-                .getFlowElement("Activity_02tlckc");
-        System.out.println(userTask.getAssignee());
+        BpmnModel model = repositoryService.getBpmnModel("Process_1_UEL_Test1:1:faa6ce34-b006-11eb-9237-001a7dda7111");
+        Collection<FlowElement> flowElements = model.getMainProcess().getFlowElements();
+        HashMap<String,String> userMap=new HashMap<>();
+        for (FlowElement e : flowElements) {
+            String clazz = e.getClass().toString();
+            if(clazz.endsWith("UserTask")){
+                System.out.println(e.getId());
+                System.out.println(e.getName());
+                UserTask userTask = (UserTask) repositoryService.getBpmnModel("Process_1_UEL_Test1:1:faa6ce34-b006-11eb-9237-001a7dda7111")
+                        .getFlowElement(e.getId());
+                System.out.println(userTask.getAssignee());
+                if(userTask.getAssignee().contains("${")){
+                    String username=userTask.getAssignee();
+                    username= username.substring(2,username.length()-1);
+                    System.out.println(username);
+                    userMap.put(e.getName(),username);
+                }
+            }
+
+        }
     }
 
 }
