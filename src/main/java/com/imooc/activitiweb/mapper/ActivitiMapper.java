@@ -79,5 +79,8 @@ public interface ActivitiMapper {
     //获取历史表单
     List<HashMap<String, Object>> getHistoryTaskFrom(String processInstanceId, String formKey);
 
+    //根据任务id获取流程实例id
     String getProcessDefinitionId(String taskId);
+
+    int updateFormData(List<HashMap<String, Object>> maps);
 }

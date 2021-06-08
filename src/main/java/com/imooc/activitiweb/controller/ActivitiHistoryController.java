@@ -9,6 +9,7 @@ import com.imooc.activitiweb.service.HistoryFormService;
 import com.imooc.activitiweb.util.AjaxResponse;
 import com.imooc.activitiweb.util.GlobalConfig;
 import org.activiti.api.task.model.Task;
+import org.activiti.api.task.model.builders.TaskPayloadBuilder;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
 import org.activiti.engine.HistoryService;
@@ -16,13 +17,12 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -494,12 +494,107 @@ public class ActivitiHistoryController {
                     hashMap.put("controlDefValue", controlListMap.get(splitFP[0]));
                 } else {
                     //控件ID不存在
-                    hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
+                    hashMap.put("controlDefValue", "值为空");
                 }
        
 
                 hashMap.put("controlIsParam", splitFP[4]);//参数类型，如Sting，文件等
                 listMap.add(hashMap);
+            }
+
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),
+                    GlobalConfig.ResponseCode.SUCCESS.getDesc(), listMap);
+        } catch (Exception e) {
+            return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.ERROR.getCode(),
+                    "失败", e.toString());
+        }
+    }
+
+
+    //更新历史表单
+
+    /**
+     * Description //TODO
+     *
+     * @param taskID
+     * @param formData
+     * @return com.imooc.activitiweb.util.AjaxResponse
+     * @Date 2021/5/23 18:17
+     **/
+    @PostMapping(value = "/updateFormData")
+    public AjaxResponse updateFormData(@RequestParam("taskID") String taskID,
+                                     @RequestParam("formData") String formData) {
+        try {
+            if (GlobalConfig.Test) {
+                securityUtil.logInAs("bajie");
+            }
+
+            HistoricTaskInstance historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .orderByHistoricTaskInstanceEndTime().asc()
+                    .taskId(taskID)
+                    .singleResult();
+
+            //formData:控件id-_!控件值-_!是否参数!_!控件id-_!控件值-_!是否参数
+            //FormProperty_0lovri0-_!不是参数-_!f!_!FormProperty_1iu6onu-_!数字参数-_!s
+
+
+            HashMap<String, Object> variables = new HashMap<String, Object>();
+            Boolean hasVariables = false;//是否有参数
+
+
+            List<HashMap<String, Object>> listMap = new ArrayList<>();
+
+            //前端传来的字符串，拆分成每个控件
+            String[] formDataList = formData.split("!_!");//分割每个控件
+            //提取控件的值
+            for (String controlItem : formDataList) {
+                String[] formDataItem = controlItem.split("-_!");
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+                if (!formDataItem[1].equals("")) {
+
+                    hashMap.put("PROC_DEF_ID_", historicTaskInstances.getProcessDefinitionId());//流程定义id
+                    hashMap.put("PROC_INST_ID_", historicTaskInstances.getProcessInstanceId());//流程实例id
+                    hashMap.put("FORM_KEY_", historicTaskInstances.getFormKey());//表单key
+                    hashMap.put("Control_ID_", formDataItem[0]);//控件id
+                    hashMap.put("Control_VALUE_", formDataItem[1]);//控件值
+                    hashMap.put("Control_Is_Param_", formDataItem[2]);//控件类型
+                    hashMap.put("Control_Label", formDataItem[3]);
+                    hashMap.put("Control_Type", formDataItem[4]);
+                    listMap.add(hashMap);
+                    System.out.println(formDataItem[3]);
+                    //构建参数集合
+                    switch (formDataItem[2]) {
+                        case "f"://非参数
+                            System.out.println("控件值不作为参数");
+                            break;
+                        case "s"://字符
+                            variables.put(formDataItem[0], formDataItem[1]);
+                            hasVariables = true;
+                            break;
+                        case "t"://时间
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            variables.put(formDataItem[0], timeFormat.parse(formDataItem[2]));
+                            hasVariables = true;
+                            break;
+                        case "b"://布尔型
+                            variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
+                            hasVariables = true;
+                            break;
+                        case "e"://文件
+                            variables.put(formDataItem[0], formDataItem[1]);
+                            hasVariables = true;
+                        default:
+                            System.out.println("控件参数类型配置错误：" + formDataItem[0] + "的参数类型不存在，" + formDataItem[2]);
+                    }
+                }
+
+            }//for结束
+
+
+            //写入数据库
+            if (listMap.size() != 0) {
+                int result = mapper.updateFormData(listMap);
             }
 
             return AjaxResponse.AjaxData(GlobalConfig.ResponseCode.SUCCESS.getCode(),

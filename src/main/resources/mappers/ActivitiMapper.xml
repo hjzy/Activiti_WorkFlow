@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.activitiweb.mapper.ActivitiMapper">
+    <update id="updateFormData" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update formdata
+            set Control_VALUE_=#{item.Control_VALUE_}
+            where PROC_INST_ID_=#{item.PROC_INST_ID_} and Control_ID_=#{item.Control_ID_}
+        </foreach>
+    </update>
 
 
     <select id="getCountProcessDefinition" resultType="java.lang.Integer">
@@ -47,7 +54,7 @@
         FROM act_hi_taskinst
         GROUP BY days
         ORDER BY days
-        DESC
+                DESC
         LIMIT 0,7
     </select>
     <select id="getCountTodayTasks" resultType="java.lang.Integer">
@@ -72,11 +79,13 @@
         -- 获取历史任务的表单信息
         SELECT *
         FROM `formdata`
-        WHERE PROC_INST_ID_=#{processInstanceId} and FORM_KEY_=#{formKey}
+        WHERE PROC_INST_ID_ = #{processInstanceId}
+          and FORM_KEY_ = #{formKey}
     </select>
     <select id="getProcessDefinitionId" resultType="java.lang.String" parameterType="java.lang.String">
-        SELECT DISTINCT PROC_DEF_ID_ FROM `act_hi_taskinst`
-        WHERE ID_='#{taskId}'
+        SELECT DISTINCT PROC_DEF_ID_
+        FROM `act_hi_taskinst`
+        WHERE ID_ = '#{taskId}'
 
     </select>
 

@@ -27,7 +27,8 @@
 
         <script id="currentTableBar" type="text/html">
 
-            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">表单</a>
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="look">查看</a>
+            <a class="layui-btn layui-btn-xs layui-btn-info data-count-look" lay-event="update">修改</a>
 
         </script>
 
@@ -68,12 +69,12 @@
                 {type: "checkbox", width: '5%', align: "center"},
                 {field: 'id', width: '18%', title: 'ID', align: "center"},
                 {field: 'taskDefinitionKey', width: '10%', title: 'KEY', align: "center"},
-                {field: 'name', width: '15%', title: '流程名称', align: "center"},
+                {field: 'name', width: '10%', title: '流程名称', align: "center"},
                 {field: 'processInstanceId', width: '18%', title: '实例ID', align: "center"},
                 {field: 'createTime', title: '创建时间', Width: '17%', align: "center"},
                 {field: 'startTime', title: '开始时间', Width: '17%', align: "center"},
                 {field: 'assignee', title: '办理人', Width: '5%', align: "center"},
-                {title: '操作', width: '5%', toolbar: '#currentTableBar', align: "center"}
+                {title: '操作', width: '10%', toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
@@ -97,7 +98,7 @@
         function creatFormTable(obj) {
             var loadIndex = layer.load(2);
             $.get('' + publicurl + 'activitiHistory/historyFormDataShow', {
-                taskID: obj.data ? obj.data.id : '',
+                taskID: obj.data ?     obj.data.id : '',
             }, function (res) {
                 layer.close(loadIndex);
                 if (res.obj != '无表单' && res.status == 0) {
@@ -108,7 +109,44 @@
                         maxmin: true,
                         shadeClose: true,
                         area: ['100%', '100%'],
-                        content: '../page/table/FormDataShow.html',
+                        content: '../page/table/HistoryFormDataShow.html',
+                        success: function (layero, index) {
+                            var iframe = window['layui-layer-iframe' + index];
+                            iframe.child(JSON.stringify(res.obj), obj.data.id)
+                            localStorage.setItem("ID", obj.data.id);
+                        },
+                        end: function () {
+                            insTb.reload();
+                        }
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                } else if (res.status == 1) {
+                    parent.layer.msg(res.obj, {
+                        icon: 0,
+                        time: 2000
+                    });
+                }
+            }, 'json');
+
+        }
+        //动态生成表单
+        function updateFormTable(obj) {
+            var loadIndex = layer.load(2);
+            $.get('' + publicurl + 'activitiHistory/historyFormDataShow', {
+                taskID: obj.data ?     obj.data.id : '',
+            }, function (res) {
+                layer.close(loadIndex);
+                if (res.obj != '无表单' && res.status == 0) {
+                    var index = layer.open({
+                        title: '办理任务',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/table/UpdateHistoryFormData.html',
                         success: function (layero, index) {
                             var iframe = window['layui-layer-iframe' + index];
                             iframe.child(JSON.stringify(res.obj), obj.data.id)
@@ -131,13 +169,14 @@
 
         }
 
-
         /**
          * toolbar监听事件
          */
         table.on('tool(currentTableFilter)', function (obj) {
             if (obj.event === 'look') {  // 监听查看操作
                 creatFormTable(obj);
+            }else if(obj.event==='update'){
+                updateFormTable(obj);
             }
         });
 

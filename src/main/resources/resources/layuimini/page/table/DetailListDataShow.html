@@ -88,7 +88,7 @@
                 var formFoot = '</ul>\n' +
                     '</div>\n' +
                     '</li>\n';
-                taskKey = dataObj[i].taskKey;
+                taskKey = dataObj[i].id;
 
 
                 if (dataObj[i].isFormKey === 0) {
@@ -97,7 +97,7 @@
 
                 } else {
                     formList = '<div style="width: 25%; margin: 0;">\n' +
-                        '  <button type="button" class="layui-btn layui-btn-fluid"' + ' id="' + dataObj[i].taskKey + '"' + ' lay-submit lay-filter="saveBtn">点击查看表单</button>\n' +
+                        '  <button type="button" class="layui-btn layui-btn-fluid"' + ' id="' + dataObj[i].id + '"' + ' lay-submit lay-filter="saveBtn">点击查看表单</button>\n' +
                         '</div>'
                     // formList = '<li>' + '<b>表单字段：</b>' + dataObj[i].controlLabel + '</li>\n' +
                     //     '<li>' + '<b>表单值：</b>' + dataObj[i].controlValue + '</li>\n' +
@@ -115,7 +115,11 @@
             $("button").click(function (e) {
                 var taskKey1 = $(this).attr("taskKey");
                 var taskKey2 = e.target.id;
-                var index = layer.open({
+                console.log(taskKey1);
+                console.log(taskKey2);
+                creatFormTable(taskKey2);
+
+        /*        var index = layer.open({
                     title: '表单',
                     type: 2,
                     shade: 0.2,
@@ -129,11 +133,50 @@
                     },
                     end: function () {
                     }
-                });
-                $(window).on("resize", function () {
+                });*/
+
+/*                $(window).on("resize", function () {
                     layer.full(index);
-                });
+                });*/
             });
+
+            //动态生成表单
+            function creatFormTable(taskKey2) {
+                var loadIndex = layer.load(2);
+                $.get('' + publicurl + 'activitiHistory/historyFormDataShow', {
+                    taskID: taskKey2,
+                }, function (res) {
+                    layer.close(loadIndex);
+                    if (res.obj != '无表单' && res.status == 0) {
+                        var index = layer.open({
+                            title: '办理任务',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin: true,
+                            shadeClose: true,
+                            area: ['100%', '100%'],
+                            content: '../table/HistoryFormDataShow.html',
+                            success: function (layero, index) {
+                                var iframe = window['layui-layer-iframe' + index];
+                                iframe.child(JSON.stringify(res.obj), taskKey2)
+                                localStorage.setItem("ID", taskKey2);
+                            },
+                            end: function () {
+                                insTb.reload();
+                            }
+                        });
+                        $(window).on("resize", function () {
+                            layer.full(index);
+                        });
+                    } else if (res.status == 1) {
+                        parent.layer.msg(res.obj, {
+                            icon: 0,
+                            time: 2000
+                        });
+                    }
+                }, 'json');
+
+            }
 
             function time(date) {
                 var dateee = new Date(date).toJSON();
