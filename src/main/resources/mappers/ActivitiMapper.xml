@@ -17,12 +17,12 @@
     <select id="getCountRunningProcessInstance" resultType="java.lang.Integer">
         -- 获取正在运行的流程实例数
         SELECT COUNT(DISTINCT PROC_INST_ID_)
-        from act_ru_execution
+        from ACT_RU_EXECUTION
     </select>
     <select id="getCountProcessDefinitionCreateProcessInstance" resultType="java.util.HashMap">
         -- 获取流程定义产生的流程实例数
         SELECT p.NAME_, COUNT(DISTINCT e.PROC_INST_ID_) as PiNUM
-        from act_ru_execution AS e
+        from ACT_RU_EXECUTION AS e
                  RIGHT JOIN ACT_RE_PROCDEF AS p on e.PROC_DEF_ID_ = p.ID_
         WHERE p.NAME_ IS NOT NULL
         GROUP BY p.NAME_
@@ -49,7 +49,7 @@
     <select id="getCountListTask" resultType="java.util.HashMap">
         -- 	获取每天产生的任务数
         SELECT DATE_FORMAT(START_TIME_, '%Y.%m.%d') days, COUNT(START_TIME_) start, COUNT(END_TIME_) end
-        FROM act_hi_taskinst
+        FROM ACT_HI_TASKINST
         GROUP BY days
         ORDER BY days
                 DESC
@@ -58,7 +58,7 @@
     <select id="getCountTodayTasks" resultType="java.lang.Integer">
         --  获取今天产生的任务数
         SELECT Count(*)
-        FROM act_hi_actinst
+        FROM ACT_HI_ACTINST
         WHERE DATE_FORMAT(START_TIME_, '%Y.%m.%d') = DATE_FORMAT(NOW(), '%Y.%m.%d')
     </select>
     <select id="getCountTodayProcessInstances" resultType="java.lang.Integer">
@@ -70,7 +70,7 @@
     <select id="getCountTodayProcessDefinitionDeployment" resultType="java.lang.Integer">
         -- 	获取今天部署的流程定义数
         SELECT Count(*)
-        FROM act_re_deployment
+        FROM ACT_RE_DEPLOYMENT
         WHERE DATE_FORMAT(DEPLOY_TIME_, '%Y.%m.%d') = DATE_FORMAT(NOW(), '%Y.%m.%d')
     </select>
     <select id="getHistoryTaskFrom" resultType="java.util.HashMap">
@@ -82,7 +82,7 @@
     </select>
     <select id="getProcessDefinitionId" resultType="java.lang.String" parameterType="java.lang.String">
         SELECT DISTINCT PROC_DEF_ID_
-        FROM `act_hi_taskinst`
+        FROM `ACT_HI_TASKINST`
         WHERE ID_ = '#{taskId}'
 
     </select>

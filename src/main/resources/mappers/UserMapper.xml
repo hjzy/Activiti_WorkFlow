@@ -3,7 +3,7 @@
 <mapper namespace="com.imooc.activitiweb.mapper.UserInfoBeanMapper">
     <insert id="addUser" parameterType="java.util.Map">
         -- 添加用户
-        insert into moocactiviti.user (name, username, password, roles, email, is_subscribe)
+        insert into user (name, username, password, roles, email, is_subscribe)
         values (#{name}, #{username}, #{password}, #{access}, #{email}, #{isEmail})
     </insert>
 
@@ -32,7 +32,7 @@
 
     <update id="updateUserInfo" parameterType="java.util.Map">
         #更新用户信息
-        update moocactiviti.user
+        update user
         set name=#{name},
             email=#{email},
             username=#{username},
@@ -43,7 +43,7 @@
 
     <update id="resetPassword" parameterType="java.util.Map">
         -- 重置密码
-        update moocactiviti.user
+        update user
         set password=#{password}
         where username = #{username}
     </update>
@@ -51,7 +51,7 @@
     <delete id="deleteUser" parameterType="java.lang.String">
         -- 删除用户
         delete
-        from moocactiviti.user
+        from user
         where id = #{id}
     </delete>
 
@@ -59,7 +59,7 @@
     <select id="getAllUsers" resultType="java.util.HashMap">
         -- 获取用户列表
         select id, name, username, roles, email, is_subscribe
-        from moocactiviti.user
+        from user
     </select>
 
     <select id="selectByUsername" resultType="com.imooc.activitiweb.pojo.UserInfoBean"

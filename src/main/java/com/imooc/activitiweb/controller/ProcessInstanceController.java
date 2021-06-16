@@ -118,14 +118,19 @@ public class ProcessInstanceController {
     public AjaxResponse startProcess(@RequestParam("processDefinitionKey") String processDefinitionKey,
                                      @RequestParam("instanceName") String instanceName,
                                      @RequestParam("instanceVariable") String instanceVariable,
-                                     @RequestParam("userJsonObj") String userJsonObj) {
+                                      String userJsonObj) {
         try {
             if (GlobalConfig.Test) {
                 securityUtil.logInAs("bajie");
             } else {
                 securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());//登录的第二种方法
             }
-            Map<String, Object> userMap = (Map<String, Object>) JSONObject.parse(userJsonObj);
+            Map<String, Object> userMap=new HashMap<>();
+            if(userJsonObj!=null){
+                 userMap = (Map<String, Object>) JSONObject.parse(userJsonObj);
+            }else{
+                userMap.put("kong","kong");
+            }
             ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
                     .start()
                     .withProcessDefinitionKey(processDefinitionKey)

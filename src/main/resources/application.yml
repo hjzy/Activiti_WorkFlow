@@ -37,7 +37,7 @@ spring:
           enable: true
   servlet:
     multipart:
-      location: F:/Develop_Project/Activiti_WorkFlow/src/main/resources/resources
+      location: D:/develop_project/Activiti_WorkFlow/src/main/resources/resources
   resources:
     static-locations: classpath:resources/, file:${spring.servlet.multipart.location}
 

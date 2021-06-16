@@ -11,7 +11,7 @@ public class GlobalConfig {
     public static final Boolean Test = false;
 
     //windows路径
-    public static final String BPMN_PathMapping = "file:F:\\Develop_Project\\Activiti_WorkFlow\\src\\main\\resources\\resources\\bpmn\\";
+    public static final String BPMN_PathMapping = "file:D:\\develop_project\\Activiti_WorkFlow\\src\\main\\resources\\resources\\bpmn\\";
 
     //Linux路径
     //public static final String BPMN_PathMapping = "file:/root/Activiti/";
