@@ -1,0 +1,2 @@
+# Activiti_WorkFlow
+使用Activity结合LayUI做的一个前后端分离的工作流管理系统
